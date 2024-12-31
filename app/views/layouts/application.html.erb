@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>HabitTracker</title>
+    <title>Эвент знакомства</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,15 +11,15 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="min-h-screen flex flex-col bg-white dark:bg-[#1e1e1e] ">
+    
+    <%= render "layouts/header" %>
 
-      <%= render "layouts/header" %>
-      <main class="mx-auto mt-14 px-5 ">
-        <%= yield %>
-      </main>
-  <div class="stars stars1"></div>
-  <div class="stars stars2"></div>
-  <div class="stars stars3"></div>
+    <main class="flex-grow">
+      <%= yield %>
+    </main>
+    
+    <%= render "layouts/footer" %>
 
   </body>
 </html>

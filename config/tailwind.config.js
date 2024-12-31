@@ -7,6 +7,8 @@ module.exports = {
     './app/javascript/**/*.js',
     './app/views/**/*.{erb,haml,html,slim}'
   ],
+  darkMode: 'class',
+
   theme: {
     extend: {
       colors: { customBackground: '#1E1E1E', },

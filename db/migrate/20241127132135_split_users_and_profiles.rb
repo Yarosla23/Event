@@ -6,6 +6,19 @@ class SplitUsersAndProfiles < ActiveRecord::Migration[7.0]
       t.string :avatar
       t.string :username
       t.text :options
+      t.string :first_name, null: false           # Имя
+      t.string :last_name, null: false            # Фамилия
+      t.string :middle_name                      # Отчество (опционально)
+      t.date :birthdate                          # Дата рождения
+      t.string :phone, null: false               # Номер телефона
+      t.string :email                            # Электронная почта (может быть дублирована из User)
+      t.string :avatar_url                       # URL для аватарки пользователя
+      t.string :gender                           # Пол (мужской, женский, другое)
+      t.string :address                          # Адрес пользователя
+      t.string :city                             # Город
+      t.string :country                          # Страна
+      t.text :bio                                # Биография или краткая информация о себе
+      t.boolean :is_active, default: true        # Активность профиля
 
       t.timestamps
     end
