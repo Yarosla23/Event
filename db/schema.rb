@@ -25,10 +25,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_132135) do
 
   create_table "profiles", force: :cascade do |t|
     t.integer "user_id", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "middle_name"
     t.date "birthday_date"
+    t.string "phone", null: false
     t.string "avatar"
-    t.string "username"
+    t.string "gender", null: false
+    t.string "city"
     t.text "options"
+    t.boolean "is_active", default: true
+    t.jsonb "social_media_links", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_profiles_on_user_id"
@@ -42,8 +49,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_132135) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
-    t.string "status"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

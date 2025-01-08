@@ -31,7 +31,7 @@
       <p class="text-2xl">Имя пользователя</p>
         <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
           <div class="ml-4 text-2xl">
-            <%= @profile.username %>
+            <%= @profile.first_name %>
           </div>
         </div>
         <p class="text-2xl">Дата рождения</p>
@@ -46,6 +46,37 @@
             <%= @profile.options %>
           </div>
         </div>
+        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
+          <div class="ml-4 text-2xl">
+            <%= @profile.last_name %>
+          </div>
+        </div>
+        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
+          <div class="ml-4 text-2xl">
+            <%= @profile.middle_name %>
+          </div>
+        </div>
+        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
+          <div class="ml-4 text-2xl">
+            <%= @profile.gender %>
+          </div>
+        </div>
+        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
+          <div class="ml-4 text-2xl">
+            <%= @profile.city %>
+          </div>
+        </div>
+        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
+          <div class="ml-4 text-2xl">
+            <%= @profile.is_active %>
+          </div>
+        </div>
+        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
+          <div class="ml-4 text-2xl">
+            <%= @profile.social_media_links %>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -83,5 +114,70 @@
       </div>
     </div>
     </div>
+  </div>
+</div>
+<div class="contents">
+  <div class="grid gap-6 mb-6 md:grid-cols-2">
+    <div>
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Фамилия</label>
+      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        <%= @profile.last_name || "Иванов" %>
+      </p>
+    </div>
+    <div>
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Имя</label>
+      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        <%= @profile.first_name || "Иван" %>
+      </p>
+    </div>
+    <div>
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Отчество</label>
+      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        <%= @profile.middle_name || "Иванович" %>
+      </p>
+    </div>
+    <div>
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Дата рождения</label>
+      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        <%= @profile.birthday_date || "Не указано" %>
+      </p>
+    </div>  
+    <div>
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Номер телефона</label>
+      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        <%= @profile.phone || "+711-111-11-111" %>
+      </p>
+    </div>
+    <div>
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Город</label>
+      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        <%= @profile.city || "Москва" %>
+      </p>
+    </div>
+    <div>
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Пол</label>
+      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        <%= @profile.gender == "male" ? "Мужской" : "Женский" %>
+      </p>
+    </div>
+  </div>
+  <div class="mb-6">
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Описание</label>
+    <p class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+      <%= @profile.options || "Расскажите о себе" %>
+    </p>
+  </div>
+  <div class="my-5">
+    <div class="relative">
+      <% if @profile.avatar.present? %>
+        <img src="<%= @profile.avatar_url %>" alt="Аватар" class="w-32 h-32 object-cover rounded-lg" />
+      <% else %>
+        <p class="text-sm text-gray-500">Изображение не загружено</p>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="mt-6 flex items-center justify-end gap-x-6">
+    <a href="<%= edit_user_profile_path(@user) %>" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">Редактировать</a>
   </div>
 </div>

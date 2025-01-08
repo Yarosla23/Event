@@ -1,7 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :set_user, only: [:new, :create, :show, :edit]
 
-  before_action :authenticate_user!
 
   def show
     @user = current_user
@@ -49,6 +48,9 @@ class ProfilesController < ApplicationController
   end
 
   def profile_params
-    params.require(:profile).permit(:avatar, :username, :birthday_date, :options)
+    params.require(:profile).permit(
+      *Profile.column_names.map(&:to_sym),  
+      social_media_links: {} 
+    )
   end
 end
