@@ -1,183 +1,173 @@
-<div class="mx-20 w-full text-white">
-  <h1 class="font-bold text-4xl text-left">Профиль</h1>
+<div class="w-full lg:w-3/4 flex justify-center py-8 bg-gray-50 dark:bg-gray-900 min-h-screen relative overflow-hidden">
+  <!-- Animated Background with more dynamic colors and movement -->
+  <div class="absolute inset-0 bg-gradient-to-r from-pink-300 via-blue-200 to-pink-300 animate-gradient-background"></div>
 
-  <div class="mt-12 px-6">
-    <div class="flex items-start space-x-40">
-      <div class="flex-shrink-0">
-        <h3 class="text-3xl font-semibold mb-4">Фото профиля</h3>
-          <div class="bg-gray-800 p-4 rounded-xl">
-            <% if @profile.avatar.present? %>
-              <%= image_tag @profile.avatar.url, alt: 'Avatar', class: "rounded-xl w-72 h-80" %>
-            <% else %>
-              <p class="text-lg">Аватар не установлен</p>
-            <% end %>
-            <div class="flex justify-center my-4 gap-2">
-            <div>
-              <%= link_to 'Редактировать профиль', edit_user_profile_path(@profile),
-                class: "rounded-lg py-3 px-5 bg-gray-700 text-white font-medium hover:bg-gray-600" %>
-            </div>
-            <a href="<%= @telegram_link %>" target="_blank" class="btn btn-primary">
-              <%= image_tag 'icons/telegram.svg', class: "w-6 h-6" %>
-            </a>
-
-        </div>
-
-        </div>
-      </div>
-
-      <div>
-      <h2 class="text-3xl font-semibold text-center mb-6">Информация о пользователе</h2>
-      <div class="mb-4">
-      <p class="text-2xl">Имя пользователя</p>
-        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
-          <div class="ml-4 text-2xl">
-            <%= @profile.first_name %>
-          </div>
-        </div>
-        <p class="text-2xl">Дата рождения</p>
-        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
-          <div class="ml-4 text-2xl">
-            <%= @profile.birthday_date %>
-          </div>
-        </div>
-        <p class="text-2xl">О себе</p>
-        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
-          <div class="ml-4 text-2xl">
-            <%= @profile.options %>
-          </div>
-        </div>
-        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
-          <div class="ml-4 text-2xl">
-            <%= @profile.last_name %>
-          </div>
-        </div>
-        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
-          <div class="ml-4 text-2xl">
-            <%= @profile.middle_name %>
-          </div>
-        </div>
-        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
-          <div class="ml-4 text-2xl">
-            <%= @profile.gender %>
-          </div>
-        </div>
-        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
-          <div class="ml-4 text-2xl">
-            <%= @profile.city %>
-          </div>
-        </div>
-        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
-          <div class="ml-4 text-2xl">
-            <%= @profile.is_active %>
-          </div>
-        </div>
-        <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-2 mb-8">
-          <div class="ml-4 text-2xl">
-            <%= @profile.social_media_links %>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-      <div class="w-1/4">
-      <h3 class="text-3xl font-semibold">Достижения</h3>
-
-      <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-8">
-        <div class="flex items-center justify-center w-10 h-10 bg-pink-100 rounded-full">
-          <span class="text-pink-500 text-lg font-bold">❤</span>
-        </div>
-        <div class="ml-4">
-          <p class="text-xl font-bold">1</p>
-          <p class="text-sm text-gray-400">Столько привычек достигнуто</p>
-        </div>
-      </div>
-
-      <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-8">
-        <div class="flex items-center justify-center w-10 h-10 bg-pink-100 rounded-full">
-          <span class="text-pink-500 text-lg font-bold">~</span>
-        </div>
-        <div class="ml-4">
-          <p class="text-xl font-bold"><%= @days_registered %></p>
-          <p class="text-sm text-gray-400">Столько дней вы с нами</p>
-        </div>
-      </div>
-
-      <div class="flex items-center bg-gray-800 rounded-lg p-4 mt-8 ">
-        <div class="flex items-center justify-center w-10 h-10 bg-pink-100 rounded-full">
-          <span class="text-pink-500 text-lg font-bold">Z</span>
-        </div>
-        <div class="ml-4">
-          <p class="text-xl font-bold"><%= @habits_count %></p>
-          <p class="text-sm text-gray-400">Количество привычек</p>
-        </div>
-      </div>
-    </div>
-    </div>
+  <!-- Floating Bubbles Animation -->
+  <div class="absolute inset-0 flex justify-center items-center">
+    <div id="bubbles-container" class="bubbles-container"></div>
   </div>
-</div>
-<div class="contents">
-  <div class="grid gap-6 mb-6 md:grid-cols-2">
-    <div>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Фамилия</label>
-      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-        <%= @profile.last_name || "Иванов" %>
-      </p>
-    </div>
-    <div>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Имя</label>
-      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-        <%= @profile.first_name || "Иван" %>
-      </p>
-    </div>
-    <div>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Отчество</label>
-      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-        <%= @profile.middle_name || "Иванович" %>
-      </p>
-    </div>
-    <div>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Дата рождения</label>
-      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-        <%= @profile.birthday_date || "Не указано" %>
-      </p>
-    </div>  
-    <div>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Номер телефона</label>
-      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-        <%= @profile.phone || "+711-111-11-111" %>
-      </p>
-    </div>
-    <div>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Город</label>
-      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-        <%= @profile.city || "Москва" %>
-      </p>
-    </div>
-    <div>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Пол</label>
-      <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-        <%= @profile.gender == "male" ? "Мужской" : "Женский" %>
-      </p>
-    </div>
-  </div>
-  <div class="mb-6">
-    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Описание</label>
-    <p class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-      <%= @profile.options || "Расскажите о себе" %>
-    </p>
-  </div>
-  <div class="my-5">
+
+  <!-- Profile container with responsive width: full width on small screens, 2/3 width on large screens -->
+  <div class="bg-white dark:bg-gray-900 rounded-lg shadow-xl text-gray-800 dark:text-white relative z-10">
+    <!-- Верхняя часть профиля -->
     <div class="relative">
-      <% if @profile.avatar.present? %>
-        <img src="<%= @profile.avatar_url %>" alt="Аватар" class="w-32 h-32 object-cover rounded-lg" />
-      <% else %>
-        <p class="text-sm text-gray-500">Изображение не загружено</p>
-      <% end %>
+      <!-- Обложка с выбором цвета -->
+
+<%= turbo_stream.replace "profile-cover" do %>
+  <div id="profile-cover" class="h-48 rounded-t-lg" style="background-color: <%= @profile.cover_color %>;">
+    <%= form_with url: user_profile_path(@user), method: :patch, data: { turbo_frame: 'profile-cover' }, class: 'absolute top-2 right-2' do |f| %>
+      <label for="cover_color" class="block text-white text-sm font-medium">Цвет:</label>
+      <%= f.color_field :cover_color, value: @profile.cover_color || '#4f46e5', class: 'rounded-full w-10 h-10 border-none shadow-md cursor-pointer' %>
+      <button type="submit" class="mt-2 bg-white text-indigo-600 px-2 py-1 rounded-full shadow hover:bg-gray-100">Сохранить</button>
+    <% end %>
+  </div>
+<% end %>
+
+      <!-- Аватар -->
+      <div class="absolute -bottom-20 left-1/2 transform -translate-x-1/2">
+        <% if @profile.avatar.present? %>
+          <img src="<%= @profile.avatar_url %>" alt="Аватар" class="w-40 h-40 object-cover rounded-full border-4 border-white shadow-lg" />
+        <% else %>
+          <div class="w-40 h-40 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 border-4 border-gray-300 dark:border-gray-800 shadow-lg">
+            <span class="text-gray-500 dark:text-gray-400 text-sm">Нет фото</span>
+          </div>
+        <% end %>
+        <div class="absolute -bottom-3 -right-3 bg-indigo-600 p-2 rounded-full shadow-md hover:bg-indigo-500 cursor-pointer">
+          <a href="<%= edit_user_profile_path(@user) %>">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L7 21H3v-4L16.732 3.732z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Имя и статус -->
+    <div class="text-center mt-24">
+      <h1 class="text-2xl font-extrabold"><%= @profile.first_name || "Иван" %> <%= @profile.last_name || "Иванов" %></h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 italic">"Люблю путешествия и вечеринки!"</p>
+    </div>
+
+    <!-- Информация профиля -->
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 px-8">
+      <div class="flex items-center">
+        <span class="material-icons text-indigo-500 dark:text-indigo-400 mr-2">cake</span>
+        <p><strong>Дата рождения:</strong> <%= @profile.birthday_date || "Не указано" %></p>
+      </div>
+      <div class="flex items-center">
+        <span class="material-icons text-indigo-500 dark:text-indigo-400 mr-2">call</span>
+        <p><strong>Телефон:</strong> <%= @profile.phone || "+711-111-11-111" %></p>
+      </div>
+      <div class="flex items-center">
+        <span class="material-icons text-indigo-500 dark:text-indigo-400 mr-2">location_on</span>
+        <p><strong>Город:</strong> <%= @profile.city || "Москва" %></p>
+      </div>
+      <div class="flex items-center">
+        <span class="material-icons text-indigo-500 dark:text-indigo-400 mr-2">male</span>
+        <p><strong>Пол:</strong> <%= @profile.gender == "male" ? "Мужской" : "Женский" %></p>
+      </div>
+    </div>
+
+    <!-- Описание -->
+    <div class="mt-6 px-8">
+      <label class="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-300">О себе</label>
+      <div class="p-4 bg-gray-100 rounded-lg border border-gray-300 dark:bg-gray-800 dark:border-gray-700">
+        <p class="text-gray-600 dark:text-gray-300">
+          <%= @profile.options || "Расскажите о себе" %>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-8 flex justify-center gap-4 px-8 pb-8">
+      <a href="<%= events_path %>" class="rounded-full bg-indigo-500 px-6 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-400 dark:bg-indigo-600 dark:hover:bg-indigo-500">
+        Мероприятия
+      </a>
     </div>
   </div>
-  
-  <div class="mt-6 flex items-center justify-end gap-x-6">
-    <a href="<%= edit_user_profile_path(@user) %>" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">Редактировать</a>
-  </div>
 </div>
+
+<style>
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-gradient-background {
+    background-size: 200% 200%;
+    animation: gradientAnimation 15s ease infinite;
+  }
+
+  /* Bubbles container */
+  .bubbles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  /* Bubble styles */
+  .bubble {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    opacity: 0.5;
+    pointer-events: none;
+    animation-timing-function: linear;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const bubblesContainer = document.getElementById("bubbles-container");
+
+    function createBubble() {
+      const bubble = document.createElement("div");
+      const size = Math.random() * (150 - 40) + 40; // Random size between 40px and 150px
+      const startX = Math.random() * window.innerWidth; // Random horizontal start
+      const startY = window.innerHeight + size; // Start below the viewport
+      const endX = Math.random() * window.innerWidth; // Random horizontal end position
+      const duration = Math.random() * (20 - 10) + 10; // Random duration between 10s and 20s
+      const delay = Math.random() * 5; // Random delay before starting animation
+
+      bubble.classList.add("bubble");
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+      bubble.style.left = `${startX}px`;
+      bubble.style.top = `${startY}px`;
+      bubble.style.animation = `bubbleAnimation ${duration}s ${delay}s infinite`;
+
+      bubblesContainer.appendChild(bubble);
+    }
+
+    // Create multiple bubbles (adjust the number as needed)
+    for (let i = 0; i < 50; i++) {
+      createBubble();
+    }
+
+    // Keyframes for bubble animation
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes bubbleAnimation {
+        0% {
+          transform: translateY(0) translateX(0) scale(1);
+        }
+        50% {
+          transform: translateY(-100vh) translateX(${Math.random() * 100 - 50}vw) scale(1.5);
+        }
+        100% {
+          transform: translateY(100vh) translateX(${Math.random() * 100 - 50}vw) scale(1);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  });
+</script>

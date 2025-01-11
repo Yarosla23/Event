@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_27_132135) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_11_104603) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "event_type"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string "location"
+    t.string "location_link"
+    t.string "event_format"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "habits", force: :cascade do |t|
     t.string "title"
@@ -21,6 +34,29 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_132135) do
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "logistics", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.text "organizers"
+    t.text "contact_info"
+    t.text "technical_requirements"
+    t.text "special_instructions"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_logistics_on_event_id"
+  end
+
+  create_table "participants", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.integer "min_participants"
+    t.integer "max_participants"
+    t.string "participant_type"
+    t.boolean "is_private"
+    t.boolean "is_paid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_participants_on_event_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -38,7 +74,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_132135) do
     t.jsonb "social_media_links", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "cover_color"
     t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
+  create_table "tickets", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "ticket_type"
+    t.decimal "price"
+    t.string "currency"
+    t.string "payment_method"
+    t.string "discount_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_tickets_on_event_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -53,4 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_132135) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "logistics", "events"
+  add_foreign_key "participants", "events"
+  add_foreign_key "tickets", "events"
 end

@@ -15,6 +15,13 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
+      screens: {
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px', // это стандартное значение
+        'xl': '1280px',
+        '2xl': '1536px',
+      }
     },
   },
   plugins: [

@@ -1,0 +1,58 @@
+<div class="max-w-4xl mx-auto p-4 bg-white shadow-lg rounded-lg">
+  <h1 class="text-2xl font-bold text-gray-900"><%= @event.name %></h1>
+  
+  <p class="mt-2 text-gray-700"><strong>Описание:</strong> <%= @event.description %></p>
+  <p class="mt-2 text-gray-700"><strong>Тип:</strong> <%= @event.event_type %></p>
+  <p class="mt-2 text-gray-700"><strong>Дата начала:</strong> <%= @event.start_time %></p>
+  <p class="mt-2 text-gray-700"><strong>Дата окончания:</strong> <%= @event.end_time %></p>
+  <p class="mt-2 text-gray-700"><strong>Местоположение:</strong> <%= @event.location %></p>
+  <p class="mt-2 text-gray-700"><strong>Ссылка на карту:</strong> <%= @event.location_link %></p>
+
+  <h3 class="mt-4 text-xl font-semibold text-gray-900">Участники</h3>
+  <p class="mt-2 text-gray-700"><strong>Минимальное количество участников:</strong> <%= @event.participant&.min_participants || "" %></p>
+  <p class="mt-2 text-gray-700"><strong>Максимальное количество участников:</strong> <%= @event.participant&.max_participants || "" %></p>
+  <p class="mt-2 text-gray-700"><strong>Тип участников:</strong> <%= @event.participant&.participant_type %></p>
+
+  <h3 class="mt-4 text-xl font-semibold text-gray-900">Билеты</h3>
+  <div class="overflow-x-auto mt-2">
+    <table class="min-w-full table-auto">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="px-4 py-2 text-left text-gray-900">Тип билета</th>
+          <th class="px-4 py-2 text-left text-gray-900">Цена</th>
+          <th class="px-4 py-2 text-left text-gray-900">Валюта</th>
+          <th class="px-4 py-2 text-left text-gray-900">Метод оплаты</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @event.tickets.each do |ticket| %>
+          <tr class="border-t">
+            <td class="px-4 py-2 text-gray-700"><%= ticket.ticket_type %></td>
+            <td class="px-4 py-2 text-gray-700"><%= ticket.price %></td>
+            <td class="px-4 py-2 text-gray-700"><%= ticket.currency %></td>
+            <td class="px-4 py-2 text-gray-700"><%= ticket.payment_method %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="mt-4 text-xl font-semibold text-gray-900">Организация и логистика</h3>
+  <% if @event.logistic.present? %>
+    <p class="mt-2 text-gray-700"><strong>Организаторы:</strong> <%= @event.logistic.organizers %></p>
+    <p class="mt-2 text-gray-700"><strong>Контактная информация:</strong> <%= @event.logistic.contact_info %></p>
+    <p class="mt-2 text-gray-700"><strong>Технические требования:</strong> <%= @event.logistic.technical_requirements %></p>
+    <p class="mt-2 text-gray-700"><strong>Специальные инструкции:</strong> <%= @event.logistic.special_instructions %></p>
+  <% else %>
+    <p class="mt-2 text-gray-700">Информация о логистике отсутствует.</p>
+  <% end %>
+
+  <div class="mt-4 flex justify-between">
+
+  <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
+    <%= submit_tag 'Удалить', class: "text-blue-500 hover:underline bg-transparent border-none cursor-pointer" %>
+  <% end %>
+
+    <%= link_to 'Редактировать', edit_event_path(@event), class: "text-blue-500 hover:underline" %> |
+    <%= link_to 'Назад', events_path, class: "text-blue-500 hover:underline" %>
+  </div>
+</div>

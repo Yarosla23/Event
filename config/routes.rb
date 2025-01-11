@@ -5,16 +5,15 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { 
     omniauth_callbacks: 'users/omniauth_callbacks' 
   }
-  
-  resources :habits do
-    resources :habit_tracks, only: [:create, :update]
-    member do
-      patch :complete
+  resources :events
+  resources :users do
+    resource :profile do
     end
   end
-
   resources :users, only: [] do
     resource :profile, only: %i[new create edit update destroy show] do
+      patch :update_cover_color, on: :member
+
       get :connect_telegram, on: :collection
     end
   end

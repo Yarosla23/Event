@@ -10,7 +10,6 @@ class ProfilesController < ApplicationController
     render :show
   end
 
-
   def new
     @profile = @user.build_profile
   end
@@ -30,15 +29,25 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    @profile = @user.profile
-
-    if @profile.update(profile_params)
-      redirect_to user_profile_path(@user), notice: 'Профиль был обновлен.'
+    @profile = current_user.profile
+  
+    if params[:cover_color]
+      logger.debug "Received cover_color: #{params[:cover_color]}"
+      if @profile.update_cover_color(params[:cover_color])
+        redirect_to user_profile_path(current_user), notice: 'Цвет обложки успешно обновлен.'
+      else
+        redirect_to user_profile_path(current_user), alert: 'Ошибка: недопустимый формат цвета.'
+      end
+    elsif @profile.update(profile_params)
+      respond_to do |format|
+        format.html { redirect_to user_profile_path(current_user) } # для обычных запросов
+        format.turbo_stream # для Turbo Stream запроса
+      end
     else
-      render :edit
+      render :edit, alert: 'Ошибка при обновлении профиля.'
     end
   end
-
+  
 
   private
 
@@ -49,8 +58,8 @@ class ProfilesController < ApplicationController
 
   def profile_params
     params.require(:profile).permit(
-      *Profile.column_names.map(&:to_sym),  
-      social_media_links: {} 
+      :first_name, :last_name, :birthday_date, :phone, :city, :gender, :options, :avatar, :cover_color
     )
   end
+  
 end

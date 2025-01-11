@@ -1,0 +1,22 @@
+<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Организация и логистика</h3>
+<%= form.fields_for :logistics do |logistics_form| %>
+  <div class="field mb-4">
+    <%= logistics_form.label :organizers, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= logistics_form.text_area :organizers, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  </div>
+
+  <div class="field mb-4">
+    <%= logistics_form.label :contact_info, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= logistics_form.text_area :contact_info, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  </div>
+
+  <div class="field mb-4">
+    <%= logistics_form.label :technical_requirements, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= logistics_form.text_area :technical_requirements, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  </div>
+
+  <div class="field mb-4">
+    <%= logistics_form.label :special_instructions, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= logistics_form.text_area :special_instructions, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  </div>
+<% end %>

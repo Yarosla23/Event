@@ -1,0 +1,27 @@
+<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Билеты</h3>
+<%= form.fields_for :tickets do |ticket_form| %>
+  <div class="field mb-4">
+    <%= ticket_form.label :ticket_type, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= ticket_form.text_field :ticket_type, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  </div>
+
+  <div class="field mb-4">
+    <%= ticket_form.label :price, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= ticket_form.number_field :price, step: 0.01, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  </div>
+
+  <div class="field mb-4">
+    <%= ticket_form.label :currency, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= ticket_form.text_field :currency, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  </div>
+
+  <div class="field mb-4">
+    <%= ticket_form.label :payment_method, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= ticket_form.text_field :payment_method, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  </div>
+
+  <div class="field mb-4">
+    <%= ticket_form.label :discount_code, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= ticket_form.text_field :discount_code, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  </div>
+<% end %>
