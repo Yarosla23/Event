@@ -35,4 +35,6 @@ function setupThemeToggle() {
   });
 }
 
-document.addEventListener('turbo:load', setupThemeToggle);
+document.addEventListener('turbo:load', function() {
+  setupThemeToggle();
+});
