@@ -1,5 +1,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
+import "./bubbles";
 
 function setupThemeToggle() {
   const themeToggleButton = document.getElementById('theme-toggle');

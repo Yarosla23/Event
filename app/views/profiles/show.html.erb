@@ -1,199 +1,87 @@
-<div class="w-full min-h-screen bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-  <!-- Общий контейнер для анимации -->
+<div class="w-full bg-gray-50 dark:bg-gray-900 relative overflow-hidden" style="min-height: calc(100vh - 6.5rem);">
+
   <div class="absolute inset-0 bg-gradient-to-r from-pink-300 via-blue-200 to-pink-300 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 animate-gradient-background"></div>
 
   <div class="absolute inset-0 flex justify-center items-center">
     <div id="bubbles-container" class="bubbles-container"></div>
   </div>
 
-  <!-- Блок с профилем в центре -->
   <div class="flex justify-center items-center mt-5 relative z-10">
-  <div class="bg-white dark:bg-gray-900 rounded-lg shadow-xl text-gray-800 dark:text-white w-5/6 lg:w-1/2  ">
-    <div class="relative">
-      <turbo-frame id="profile-cover">
-        <div id="profile-cover" class="h-48 rounded-t-lg relative" style="background-color: <%= @profile.cover_color %>;">
-          <%= form_with url: user_profile_path(@user), method: :patch, data: { turbo_frame: 'profile-cover' }, class: 'absolute top-2 right-2 flex items-center space-x-1 opacity-20 hover:opacity-100 transition-opacity duration-200' do |f| %>
-            <label for="cover_color" class="sr-only">Цвет</label>
-            <%= f.color_field :cover_color, 
-                value: @profile.cover_color || '#4f46e5', 
-                class: 'w-6 h-6 rounded-full border border-gray-300 cursor-pointer' %>
-            <button type="submit" 
-                    class="text-gray-400 text-[10px] px-1 py-0.5 rounded hover:text-gray-600 transition-colors duration-200">
-              Сохранить
-            </button>
-          <% end %>
-        </div>
-      </turbo-frame>
+    <div class="bg-white dark:bg-gray-900 rounded-lg shadow-xl text-gray-800 dark:text-white w-5/6 lg:w-1/2  ">
+      <div class="relative">
+        <turbo-frame id="profile-cover">
+          <div id="profile-cover" class="h-48  rounded-t-lg relative" style="background-color: <%= @profile.cover_color %>;">
+            <%= form_with url: user_profile_path(@user), method: :patch, data: { turbo_frame: 'profile-cover' }, class: 'absolute top-2 right-2 flex items-center space-x-1 opacity-20 hover:opacity-100 transition-opacity duration-200' do |f| %>
+              <label for="cover_color" class="sr-only">Цвет</label>
+              <%= f.color_field :cover_color, 
+                  value: @profile.cover_color || '#4f46e5', 
+                  class: 'w-6 h-6 rounded-full border border-gray-300 cursor-pointer' %>
+              <button type="submit" 
+                      class="text-gray-400 text-[10px] px-1 py-0.5 rounded hover:text-gray-600 transition-colors duration-200">
+                Сохранить
+              </button>
+            <% end %>
+          </div>
+        </turbo-frame>
 
-      <!-- Аватар -->
-      <div class="absolute -bottom-20 left-1/2 transform -translate-x-1/2">
-        <% if @profile.avatar.present? %>
-          <img src="<%= @profile.avatar_url %>" alt="Аватар" class="w-48 h-48 object-cover rounded-full border-4 border-white shadow-lg" />
-        <% else %>
-          <div class="w-48 h-48 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 border-4 border-gray-300 dark:border-gray-800 shadow-lg">
-            <span class="text-gray-500 dark:text-gray-400 text-sm">Нет фото</span>
+        <div class="absolute -bottom-20 left-1/2 transform -translate-x-1/2">
+          <% if @profile.avatar.present? %>
+            <img src="<%= @profile.avatar_url %>" alt="Аватар" class="w-48 h-48 object-cover rounded-full border-4 border-white shadow-lg" />
+          <% else %>
+            <div class="w-48 h-48 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 border-4 border-gray-300 dark:border-gray-800 shadow-lg">
+              <span class="text-gray-500 dark:text-gray-400 text-sm">Нет фото</span>
+            </div>
+          <% end %>
+          <div class="absolute -bottom-3 -right-3 bg-indigo-600 p-2 rounded-full shadow-md hover:bg-indigo-500 cursor-pointer">
+            <a href="<%= edit_user_profile_path(@user) %>">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L7 21H3v-4L16.732 3.732z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-24 px-4 sm:px-8">
+        <h1 class="text-2xl font-extrabold"><%= @profile.first_name %> <%= @profile.last_name %></h1>
+        <h1 class="text-2xl font-extrabold"><%= @profile.middle_name %></h1>
+      </div>
+
+      <div class="mt-6 px-8 text-xs  lg:text-xl lg:px-16">
+        <div class="p-4 bg-gray-100 rounded-lg border border-gray-300 dark:bg-gray-800 dark:border-gray-700">
+          <p class="text-gray-600 dark:text-gray-300">
+            <%= @profile.options || "Пока нет информации" %>
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-8 grid gap-6 sm:grid-cols-2 px-8 lg:px-16">
+        <% data = [
+          { label: "Дата рождения", value: @profile.birthday_date || "Не указано", emoji: "🎂" },
+          { label: "Телефон", value: @profile.phone || "Нет информации", emoji: "📞" },
+          { label: "Город", value: @profile.city || "Нет информации", emoji: "🌆" },
+          { label: "Пол", value: @profile.gender == "male" ? "Мужской" : "Женский", emoji: @profile.gender == "male" ? "👨" : "👩" }
+        ] %>
+
+        <% data.each do |item| %>
+          <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 flex items-center space-x-4">
+            <span class="text-2xl">
+              <%= item[:emoji] %>
+            </span>
+            <div>
+              <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300"><%= item[:label] %></h3>
+              <p class="text-base text-gray-900 dark:text-gray-100"><%= item[:value] %></p>
+            </div>
           </div>
         <% end %>
-        <div class="absolute -bottom-3 -right-3 bg-indigo-600 p-2 rounded-full shadow-md hover:bg-indigo-500 cursor-pointer">
-          <a href="<%= edit_user_profile_path(@user) %>">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L7 21H3v-4L16.732 3.732z" />
-            </svg>
-          </a>
-        </div>
       </div>
-    </div>
-
-    <!-- Имя и статус -->
-    <div class="text-center mt-24 px-4 sm:px-8">
-      <h1 class="text-2xl font-extrabold"><%= @profile.first_name || "Иван" %> <%= @profile.last_name || "Иванов" %></h1>
-      <h1 class="text-2xl font-extrabold"><%= @profile.middle_name  %></h1>
-      <p class="text-sm text-gray-500 dark:text-gray-400 italic">"Люблю путешествия и вечеринки!"</p>
-    </div>
-
-    <!-- Информация профиля -->
-    <div class="mt-8 grid gap-6 sm:grid-cols-2 px-4 sm:px-8">
-      <div class="flex items-center">
-        <span class="material-icons font-bold text-indigo-500 dark:text-indigo-400 mr-2">Дата рождения:</span>
-        <p> <%= @profile.birthday_date || "Не указано" %></p>
+      
+      <div class="mt-8 flex justify-center gap-4 px-4 sm:px-8 pb-8">
+        <a href="<%= events_path %>" class="rounded-full bg-indigo-500 px-6 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-400 dark:bg-indigo-600 dark:hover:bg-indigo-500">
+          Мероприятия
+        </a>
       </div>
-      <div class="flex items-center">
-        <span class="material-icons font-bold text-indigo-500 dark:text-indigo-400 mr-2">Телефон:</span>
-        <p><%= @profile.phone || "+711-111-11-111" %></p>
-      </div>
-      <div class="flex items-center">
-        <span class="material-icons font-bold text-indigo-500 dark:text-indigo-500 mr-2">Город:</span>
-        <p> <%= @profile.city || "Москва" %></p>
-      </div>
-      <div class="flex items-center">
-        <span class="material-icons font-bold text-indigo-500 dark:text-indigo-500 mr-2">Пол:</span>
-        <p> <%= @profile.gender == "male" ? "Мужской" : "Женский" %></p>
-      </div>
-    </div>
-
-    <!-- Описание -->
-    <div class="mt-6 px-4 sm:px-8">
-      <label class="block mb-2 text-lg font-bold text-gray-700 dark:text-gray-300">О себе</label>
-      <div class="p-4 bg-gray-100 rounded-lg border border-gray-300 dark:bg-gray-800 dark:border-gray-700">
-        <p class="text-gray-600 dark:text-gray-300">
-          <%= @profile.options || "Пока нет" %>
-        </p>
-      </div>
-    </div>
-
-    <div class="mt-8 flex justify-center gap-4 px-4 sm:px-8 pb-8">
-      <a href="<%= events_path %>" class="rounded-full bg-indigo-500 px-6 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-400 dark:bg-indigo-600 dark:hover:bg-indigo-500">
-        Мероприятия
-      </a>
     </div>
   </div>
 </div>
 
-</div>
-
-<style>
-  @keyframes gradientAnimation {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  .animate-gradient-background {
-    background-size: 200% 200%;
-    animation: gradientAnimation 15s ease infinite;
-  }
-
-  .bubbles-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-
-  .bubble {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    opacity: 0.5;
-    pointer-events: none;
-    animation-timing-function: linear;
-  }
-</style>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const bubblesContainer = document.getElementById("bubbles-container");
-  const gradientElement = document.querySelector('.animate-gradient-background');
-
-  function createBubble() {
-    const bubble = document.createElement("div");
-    const size = Math.random() * (150 - 40) + 40; // Random size between 40px and 150px
-    const startX = Math.random() * window.innerWidth; // Random horizontal start
-    const startY = window.innerHeight + size; // Start below the viewport
-    const endX = Math.random() * window.innerWidth; // Random horizontal end position
-    const duration = Math.random() * (20 - 10) + 10; // Random duration between 10s and 20s
-    const delay = Math.random() * 5; // Random delay before starting animation
-
-    bubble.classList.add("bubble");
-    bubble.style.width = `${size}px`;
-    bubble.style.height = `${size}px`;
-    bubble.style.left = `${startX}px`;
-    bubble.style.top = `${startY}px`;
-    bubble.style.animation = `bubbleAnimation ${duration}s ${delay}s infinite`;
-
-    bubblesContainer.appendChild(bubble);
-  }
-
-  function resetAnimations() {
-    const bubbles = bubblesContainer.querySelectorAll(".bubble");
-
-    bubbles.forEach(bubble => {
-      bubble.style.animation = 'none';
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const size = bubble.offsetWidth;
-          const duration = Math.random() * (20 - 10) + 10; 
-          const delay = Math.random() * 5; 
-          bubble.style.animation = `bubbleAnimation ${duration}s ${delay}s infinite`;
-        });
-      });
-    });
-
-    gradientElement.style.animation = 'none'; 
-    requestAnimationFrame(() => {
-      gradientElement.style.animation = 'gradientAnimation 15s ease infinite'; 
-    });
-  }
-
-  for (let i = 0; i < 50; i++) {
-    createBubble();
-  }
-
-  resetAnimations();
-
-  const style = document.createElement("style");
-  style.innerHTML = `
-    @keyframes bubbleAnimation {
-      0% {
-        transform: translateY(0) translateX(0) scale(1);
-      }
-      50% {
-        transform: translateY(-100vh) translateX(${Math.random() * 100 - 50}vw) scale(1.5);
-      }
-      100% {
-        transform: translateY(100vh) translateX(${Math.random() * 100 - 50}vw) scale(1);
-      }
-    }
-  `;
-  document.head.appendChild(style);
-});
-</script>

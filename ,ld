@@ -1,0 +1,14 @@
+=> 
+[32m#<Event:0x00007de612249110[0m
+ id: [36m[1mnil[0m,
+ name: [31m[1m"[0m[31mdasdsadasd[0m[31m[1m"[0m,
+ description: [31m[1m"[0m[31m[1m"[0m,
+ event_type: [31m[1m"[0m[31m[1m"[0m,
+ start_time: Sun, 12 Jan 2025 20:37:00.000000000 MSK +03:00,
+ end_time: Sun, 12 Jan 2025 20:37:00.000000000 MSK +03:00,
+ location: [31m[1m"[0m[31m[1m"[0m,
+ location_link: [31m[1m"[0m[31m[1m"[0m,
+ event_format: [31m[1m"[0m[31m[1m"[0m,
+ created_at: [36m[1mnil[0m,
+ updated_at: [36m[1mnil[0m,
+ user_id: [34m[1m1[0m[32m>[0m

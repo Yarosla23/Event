@@ -15,9 +15,10 @@ class ProfilesController < ApplicationController
   end
 
   def create
+    binding.irb
     @profile = @user.build_profile(profile_params)
 
-    if @profile.save
+    if @profile.save!
       redirect_to user_profile_path(@user), notice: 'Профиль был создан.'
     else
       render :new, alert: 'Ошибочка.'
@@ -29,6 +30,8 @@ class ProfilesController < ApplicationController
   end
 
   def update
+    binding.irb
+    
     @profile = current_user.profile
   
     if params[:cover_color]
@@ -38,10 +41,10 @@ class ProfilesController < ApplicationController
       else
         redirect_to user_profile_path(current_user), alert: 'Ошибка: недопустимый формат цвета.'
       end
-    elsif @profile.update(profile_params)
+    elsif @profile.update!(profile_params)
       respond_to do |format|
-        format.html { redirect_to user_profile_path(current_user) } # для обычных запросов
-        format.turbo_stream # для Turbo Stream запроса
+        format.html { redirect_to user_profile_path(current_user) } 
+        format.turbo_stream 
       end
     else
       render :edit, alert: 'Ошибка при обновлении профиля.'

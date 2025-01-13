@@ -36,6 +36,7 @@
       </tbody>
     </table>
   </div>
+
   <h3 class="mt-4 text-xl font-semibold text-gray-900">Организация и логистика</h3>
   <% if @event.logistic.present? %>
     <p class="mt-2 text-gray-700"><strong>Организаторы:</strong> <%= @event.logistic.organizers %></p>
@@ -47,10 +48,11 @@
   <% end %>
 
   <div class="mt-4 flex justify-between">
+    <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
+      <%= submit_tag 'Удалить', class: "text-blue-500 hover:underline bg-transparent border-none cursor-pointer" %>
+    <% end %>
 
-  <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
-    <%= submit_tag 'Удалить', class: "text-blue-500 hover:underline bg-transparent border-none cursor-pointer" %>
-  <% end %>
+    <%= link_to "Профиль", user_profile_path(@event.user_id), class: "text-sm/6 font-semibold pr-6", onclick: "window.location.href=this.href; return false;" %>
 
     <%= link_to 'Редактировать', edit_event_path(@event), class: "text-blue-500 hover:underline" %> |
     <%= link_to 'Назад', events_path, class: "text-blue-500 hover:underline" %>

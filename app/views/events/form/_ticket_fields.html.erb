@@ -1,27 +1,126 @@
 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Билеты</h3>
-<%= form.fields_for :tickets do |ticket_form| %>
-  <div class="field mb-4">
-    <%= ticket_form.label :ticket_type, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= ticket_form.text_field :ticket_type, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-  </div>
 
-  <div class="field mb-4">
-    <%= ticket_form.label :price, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= ticket_form.number_field :price, step: 0.01, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-  </div>
+<div id="tickets-container">
+  <%= form.fields_for :tickets do |ticket_form| %>
+    <div class="ticket-form mb-4 border border-gray-300 dark:border-gray-600 rounded-lg p-4 bg-white dark:bg-gray-800">
+      <%= ticket_form.hidden_field :_destroy, value: false, class: "destroy-flag" %>
 
-  <div class="field mb-4">
-    <%= ticket_form.label :currency, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= ticket_form.text_field :currency, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-  </div>
+      <div class="flex space-x-4 mb-3">
+        <div class="flex-1">
+          <%= render Ui::InputFieldComponent.new(
+            form: ticket_form,
+             field_name: :ticket_type, 
+             label: "Тип билета") 
+          %>
+        </div>
+        <div class="flex-1">
+          <%= render Ui::InputFieldComponent.new(
+            form: ticket_form, 
+            field_name: :price, 
+            label: "Цена", 
+            type: "number", 
+            step: 0.01) 
+          %>
+        </div>
+      </div>
 
-  <div class="field mb-4">
-    <%= ticket_form.label :payment_method, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= ticket_form.text_field :payment_method, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-  </div>
+      <div class="flex space-x-4 mb-3">
+        <div class="flex-1">
+          <%= render Ui::InputFieldComponent.new(form: ticket_form, field_name: :currency, label: "Валюта") %>
+        </div>
+        <div class="flex-1">
+          <%= render Ui::InputFieldComponent.new(form: ticket_form, field_name: :payment_method, label: "Метод оплаты") %>
+        </div>
+      </div>
 
-  <div class="field mb-4">
-    <%= ticket_form.label :discount_code, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= ticket_form.text_field :discount_code, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-  </div>
-<% end %>
+      <!-- Discount Code -->
+      <div class="mb-3">
+        <%= render Ui::InputFieldComponent.new(form: ticket_form, field_name: :discount_code, label: "Код скидки") %>
+      </div>
+
+      <!-- Remove Ticket Button -->
+      <button type="button" class=" remove-ticket bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg px-4 py-1">
+        Удалить
+      </button>
+    </div>
+  <% end %>
+</div>
+
+<!-- Button to Add Ticket -->
+<button type="button" class="add-ticket bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-lg px-6 py-3 mt-4 mx-auto block">
+  Добавить билет
+</button>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const maxTickets = 4;
+  const minTickets = 1;
+  const ticketsContainer = document.querySelector("#tickets-container");
+  const addTicketButton = document.querySelector(".add-ticket");
+
+  function updateRemoveButtons() {
+    const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
+    ticketForms.forEach((form, index) => {
+      const removeButton = form.querySelector(".remove-ticket");
+      if (ticketForms.length <= minTickets) {
+        removeButton.style.display = "none";  // Скрываем кнопку "Удалить", если только один билет
+      } else {
+        removeButton.style.display = "inline-block";  // Показываем кнопку "Удалить", если больше одного билета
+      }
+    });
+  }
+
+  function updateAddButton() {
+    const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
+    if (ticketForms.length >= maxTickets) {
+      addTicketButton.style.display = "none";  // Скрываем кнопку "Добавить", если максимальное количество
+    } else {
+      addTicketButton.style.display = "inline-block";  // Показываем кнопку "Добавить", если количество меньше максимума
+    }
+  }
+
+  addTicketButton.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
+    if (ticketForms.length >= maxTickets) {
+      alert(`Вы можете добавить максимум ${maxTickets} билета.`);
+      return;
+    }
+
+    const firstTicketForm = ticketForms[0];
+    const clonedForm = firstTicketForm.cloneNode(true);
+
+    clonedForm.querySelectorAll("input").forEach((input) => {
+      if (input.type !== "hidden") input.value = "";
+      const name = input.name;
+      if (name) {
+        input.name = name.replace(/\[\d+\]/, `[${ticketForms.length}]`);
+      }
+    });
+
+    clonedForm.querySelector(".destroy-flag").value = "false";
+    ticketsContainer.appendChild(clonedForm);
+    updateRemoveButtons();
+    updateAddButton();
+  });
+
+  ticketsContainer.addEventListener("click", function (event) {
+    if (event.target.classList.contains("remove-ticket")) {
+      const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
+      if (ticketForms.length > minTickets) {
+        const form = event.target.closest(".ticket-form");
+        form.querySelector(".destroy-flag").value = "1";
+        form.remove();
+        updateRemoveButtons();
+        updateAddButton();
+      } else {
+        alert("Вы не можете удалить последний билет.");
+      }
+    }
+  });
+
+  updateRemoveButtons();
+  updateAddButton();
+});
+</script>

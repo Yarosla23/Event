@@ -1,39 +1,82 @@
-<div class="field mb-4">
-  <%= form.label :name, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-  <%= form.text_field :name, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-</div>
+<div class="grid grid-cols-2 gap-4">
+  <div class="field mb-4">
 
-<div class="field mb-4">
-  <%= form.label :description, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-  <%= form.text_area :description, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-</div>
+    <%= form.label :name, "Название мероприятия", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.text_field :name, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <% if form.object.errors[:name].any? %>
+      <div class="text-sm text-red-500">
+        <%= form.object.errors[:name].join(', ') %>
+      </div>
+    <% end %>
+  </div>
 
-<div class="field mb-4">
-  <%= form.label :event_type, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-  <%= form.text_field :event_type, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-</div>
+  <div class="field mb-4">
+    <%= form.label :description, "Описание", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.text_area :description, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <% if form.object.errors[:description].any? %>
+      <div class="text-sm text-red-500">
+        <%= form.object.errors[:description].join(', ') %>
+      </div>
+    <% end %>
+  </div>
 
-<div class="field mb-4">
-  <%= form.label :start_time, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-  <%= form.datetime_select :start_time, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-</div>
+ <div class="field mb-4">
+    <%= form.label :start_time, "Время начала", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.text_field :start_time, type: "datetime-local", value: form.object.start_time&.strftime("%Y-%m-%dT%H:%M"), class: "block w-full p-2.5 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <% if form.object.errors[:start_time].any? %>
+      <div class="text-sm text-red-500">
+        <%= form.object.errors[:start_time].join(', ') %>
+      </div>
+    <% end %>
+  </div>
 
-<div class="field mb-4">
-  <%= form.label :end_time, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-  <%= form.datetime_select :end_time, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-</div>
+  <div class="field mb-4">
+    <%= form.label :end_time, "Время окончания", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.text_field :end_time, type: "datetime-local", value: form.object.end_time&.strftime("%Y-%m-%dT%H:%M"), class: "block w-full p-2.5 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <% if form.object.errors[:end_time].any? %>
+      <div class="text-sm text-red-500">
+        <%= form.object.errors[:end_time].join(', ') %>
+      </div>
+    <% end %>
+  </div>
 
-<div class="field mb-4">
-  <%= form.label :location, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-  <%= form.text_field :location, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-</div>
+  <div class="field mb-4">
+    <%= form.label :event_type, "Тип мероприятия", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.text_field :event_type, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <% if form.object.errors[:event_type].any? %>
+      <div class="text-sm text-red-500">
+        <%= form.object.errors[:event_type].join(', ') %>
+      </div>
+    <% end %>
+  </div>
 
-<div class="field mb-4">
-  <%= form.label :location_link, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-  <%= form.text_field :location_link, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-</div>
+  <div class="field mb-4">
+    <%= form.label :location, "Местоположение", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.text_field :location, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <% if form.object.errors[:location].any? %>
+      <div class="text-sm text-red-500">
+        <%= form.object.errors[:location].join(', ') %>
+      </div>
+    <% end %>
+  </div>
 
-<div class="field mb-4">
-  <%= form.label :event_format, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-  <%= form.text_field :event_format, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  <div class="field mb-4">
+    <%= form.label :location_link, "Ссылка на локацию", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.text_field :location_link, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <% if form.object.errors[:location_link].any? %>
+      <div class="text-sm text-red-500">
+        <%= form.object.errors[:location_link].join(', ') %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="field mb-4">
+    <%= form.label :event_format, "Формат мероприятия", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.text_field :event_format, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <% if form.object.errors[:event_format].any? %>
+      <div class="text-sm text-red-500">
+        <%= form.object.errors[:event_format].join(', ') %>
+      </div>
+    <% end %>
+  </div>
 </div>

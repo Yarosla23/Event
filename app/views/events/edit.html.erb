@@ -1,8 +1,6 @@
-<!-- app/views/events/edit.html.erb -->
-
 <h1>Редактирование мероприятия</h1>
 
-<%= form_with model: @event, local: true do |form| %>
+<%= form_with model: @event, data: { turbo: false }, local: true do |form| %>
   <% if @event.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
@@ -22,4 +20,7 @@
   <div class="actions">
     <%= form.submit "Обновить мероприятие" %>
   </div>
+      <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
+      <%= submit_tag 'Удалить', class: "text-blue-500 hover:underline bg-transparent border-none cursor-pointer" %>
+    <% end %>
 <% end %>

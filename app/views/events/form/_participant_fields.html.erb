@@ -1,27 +1,46 @@
-<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Информация о участниках</h3>
-<%= form.fields_for :participant do |participant_form| %>
-  <div class="field mb-4">
-    <%= participant_form.label :min_participants, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= participant_form.number_field :min_participants, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-  </div>
+<div class="p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Информация о участниках</h3>
+  <%= form.fields_for :participant do |participant_form| %>
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div>
+        <%= participant_form.label :min_participants, "Минимальное количество участников", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+        <%= participant_form.number_field :min_participants, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+        <% if participant_form.object.errors[:min_participants].any? %>
+          <div class="text-sm text-red-500">
+            <%= participant_form.object.errors[:min_participants].join(', ') %>
+          </div>
+        <% end %>
+      </div>
+      <div>
+        <%= participant_form.label :max_participants, "Максимальное количество участников", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+        <%= participant_form.number_field :max_participants, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+        <% if participant_form.object.errors[:max_participants].any? %>
+          <div class="text-sm text-red-500">
+            <%= participant_form.object.errors[:max_participants].join(', ') %>
+          </div>
+        <% end %>
+      </div>
+    </div>
 
-  <div class="field mb-4">
-    <%= participant_form.label :max_participants, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= participant_form.number_field :max_participants, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-  </div>
+    <div class="mb-6">
+      <%= participant_form.label :participant_type, "Тип мероприятия", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <%= participant_form.select :participant_type, ['Вебинар', 'Конференция', 'Тренинг', 'Семинар'], { include_blank: 'Выберите тип мероприятия' }, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+      <% if participant_form.object.errors[:participant_type].any? %>
+        <div class="text-sm text-red-500">
+          <%= participant_form.object.errors[:participant_type].join(', ') %>
+        </div>
+      <% end %>
+    </div>
 
-  <div class="field mb-4">
-    <%= participant_form.label :participant_type, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= participant_form.text_field :participant_type, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-  </div>
-
-  <div class="field mb-4">
-    <%= participant_form.label :is_private, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= participant_form.check_box :is_private, class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-  </div>
-
-  <div class="field mb-4">
-    <%= participant_form.label :is_paid, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= participant_form.check_box :is_paid, class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-  </div>
-<% end %>
+    <div class="grid grid-cols-2 gap-4 items-center mb-4">
+      <div class="flex items-center space-x-2">
+        <%= participant_form.check_box :is_private, class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+        <%= participant_form.label :is_private, "Приватное мероприятие", class: "text-sm font-medium text-gray-900 dark:text-white" %>
+      </div>
+      <div class="flex items-center space-x-2">
+        <%= participant_form.check_box :is_paid, class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+        <%= participant_form.label :is_paid, "Платное", class: "text-sm font-medium text-gray-900 dark:text-white" %>
+      </div>
+    </div>
+  <% end %>
+</div>

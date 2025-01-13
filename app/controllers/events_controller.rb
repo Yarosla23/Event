@@ -2,21 +2,26 @@ class EventsController < ApplicationController
   before_action :set_event, only: %i[show edit update destroy]
 
   def index
-    @events = Event.includes(:participant, :logistic, :tickets)
+    @events = Event.includes(:participant, :logistic, :tickets) 
+  end
+
+  def my_events
+    @events = current_user.events.includes(:participant, :logistic, :tickets) 
+    render :index 
   end
 
   def show
   end
 
   def new
-    @event = Event.new
+    @event = current_user.events.build
     @event.build_participant unless @event.participant
     @event.build_logistic unless @event.logistic
     @event.tickets.build if @event.tickets.empty?
   end
 
   def create
-    @event = Event.new(event_params)
+    @event = current_user.events.build(event_params)
 
     if @event.save
       redirect_to @event, notice: 'Мероприятие успешно создано.'
@@ -41,21 +46,23 @@ class EventsController < ApplicationController
     end
   end
 
-
   def destroy
-    binding.irb
+
     if @event.destroy
       flash[:notice] = "Событие успешно удалено."
-      redirect_to events_path # Или другая страница
+      redirect_to events_path
     else
       flash[:alert] = "Не удалось удалить событие."
       redirect_back fallback_location: events_path
     end
   end
+
   private
 
   def set_event
     @event = Event.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to events_path, alert: 'Событие не найдено или у вас нет прав для его просмотра.'
   end
 
   def event_params

@@ -175,6 +175,13 @@ body {
   line-height: inherit;
   /* 2 */
 }
+.alert.alert-danger {
+  display: block !important;
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+}
 
 @keyframes fade-in {
   0% {
@@ -190,6 +197,8 @@ body {
 .animate-fade-in {
   animation: fade-in 0.8s ease-out forwards;
 }
+
+
 
 /*
 1. Add the correct height in Firefox.
