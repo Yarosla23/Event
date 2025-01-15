@@ -47,6 +47,13 @@
     <p class="mt-2 text-gray-700">Информация о логистике отсутствует.</p>
   <% end %>
 
+   <% if @event.event_rule.present? %>
+    <p class="mt-2 text-gray-700"><strong>Правила:</strong> <%= @event.event_rule.rules %></p>
+
+  <% else %>
+    <p class="mt-2 text-gray-700">Нет правил</p>
+  <% end %>
+
   <div class="mt-4 flex justify-between">
     <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
       <%= submit_tag 'Удалить', class: "text-blue-500 hover:underline bg-transparent border-none cursor-pointer" %>

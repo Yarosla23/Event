@@ -1,37 +1,35 @@
-<h2 class="text-center text-4xl font-bold mb-4 text-gray-200">Вход</h2>
-
-<div class="max-w-lg mx-auto p-8 rounded-xl shadow-lg text-white opacity-0 animate-fade-in" style="animation-delay: 0.15s;">
+<div class="max-w-lg mx-auto p-10 mt-10 rounded-xl shadow-2xl bg-blue-600">
+  <h2 class="text-center text-4xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent ">
+  Вход
+</h2>
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
-
     <div class="mb-6">
-      <%= f.label "Почта", class: "block text-lg font-semibold text-gray-300 mb-2" %>
+      <%= f.label "Почта", class: "block text-lg font-medium text-gray-300 mb-2" %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email",
-          class: "mt-1 block w-full text-lg rounded-lg border-gray-700 bg-gray-900 text-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 #{'border-red-500' if f.object.errors[:email].any?}",
-          style: "background-color: #2D2D3A; color: white;" %>
+          class: "w-full p-3 text-lg rounded-lg border-2 bg-gray-800 text-gray-100 border-gray-700 focus:ring focus:ring-blue-500 focus:outline-none focus:border-blue-500 #{'border-red-500' if f.object.errors[:email].any?}" %>
       <% if f.object.errors[:email].any? %>
-        <div class="text-red-500 text-sm mt-2">
+        <p class="text-red-500 text-sm mt-2">
           <%= f.object.errors[:email].join(', ') %>
-        </div>
+        </p>
       <% end %>
     </div>
 
     <div class="mb-6">
-      <%= f.label "Пароль", class: "block text-lg font-semibold text-gray-300 mb-2" %>
+      <%= f.label "Пароль", class: "block text-lg font-medium text-gray-300 mb-2" %>
       <%= f.password_field :password, autocomplete: "current-password",
-          class: "mt-1 block w-full text-lg rounded-lg border-gray-700 bg-gray-900 text-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 #{'border-red-500' if f.object.errors[:password].any?}",
-          style: "background-color: #2D2D3A; color: white;" %>
+          class: "w-full p-3 text-lg rounded-lg border-2 bg-gray-800 text-gray-100 border-gray-700 focus:ring focus:ring-blue-500 focus:outline-none focus:border-blue-500 #{'border-red-500' if f.object.errors[:password].any?}" %>
       <% if f.object.errors[:password].any? %>
-        <div class="text-red-500 text-sm mt-2">
+        <p class="text-red-500 text-sm mt-2">
           <%= f.object.errors[:password].join(', ') %>
-        </div>
+        </p>
       <% end %>
     </div>
 
     <% if devise_mapping.rememberable? %>
-      <div class="mb-6 flex items-center">
+      <div class="flex items-center mb-6">
         <%= f.check_box :remember_me, class: "h-4 w-4 text-blue-500 border-gray-600 rounded focus:ring focus:ring-blue-500 focus:ring-opacity-50" %>
-        <%= f.label "Запомнить меня", class: "ml-2 text-gray-300 text-sm" %>
+        <%= f.label "Запомнить меня", class: "ml-2 text-sm text-gray-400" %>
       </div>
     <% end %>
 
@@ -41,7 +39,7 @@
     </div>
   <% end %>
 
-  <div class="mt-8 text-center text-white">
+  <div class="mt-6 text-center text-sm text-gray-400">
     <%= render "devise/shared/links" %>
   </div>
 </div>

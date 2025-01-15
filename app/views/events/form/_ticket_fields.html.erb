@@ -33,12 +33,10 @@
         </div>
       </div>
 
-      <!-- Discount Code -->
       <div class="mb-3">
         <%= render Ui::InputFieldComponent.new(form: ticket_form, field_name: :discount_code, label: "Код скидки") %>
       </div>
 
-      <!-- Remove Ticket Button -->
       <button type="button" class=" remove-ticket bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg px-4 py-1">
         Удалить
       </button>
@@ -46,9 +44,8 @@
   <% end %>
 </div>
 
-<!-- Button to Add Ticket -->
-<button type="button" class="add-ticket bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-lg px-6 py-3 mt-4 mx-auto block">
-  Добавить билет
+<button type="button" class="add-ticket bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-lg px-6 py-3 mx-auto block">
+    Добавить билет
 </button>
 
 <script>
@@ -63,9 +60,9 @@ document.addEventListener("DOMContentLoaded", function () {
     ticketForms.forEach((form, index) => {
       const removeButton = form.querySelector(".remove-ticket");
       if (ticketForms.length <= minTickets) {
-        removeButton.style.display = "none";  // Скрываем кнопку "Удалить", если только один билет
+        removeButton.style.display = "none";
       } else {
-        removeButton.style.display = "inline-block";  // Показываем кнопку "Удалить", если больше одного билета
+        removeButton.style.display = "inline-block";
       }
     });
   }
@@ -73,9 +70,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateAddButton() {
     const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
     if (ticketForms.length >= maxTickets) {
-      addTicketButton.style.display = "none";  // Скрываем кнопку "Добавить", если максимальное количество
+      addTicketButton.style.display = "none";
     } else {
-      addTicketButton.style.display = "inline-block";  // Показываем кнопку "Добавить", если количество меньше максимума
+      addTicketButton.style.display = "inline-block";
     }
   }
 

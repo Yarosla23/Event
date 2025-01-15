@@ -1,26 +1,19 @@
 <h1>Редактирование мероприятия</h1>
 
 <%= form_with model: @event, data: { turbo: false }, local: true do |form| %>
-  <% if @event.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
-      <ul>
-        <% @event.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
   <%= render 'events/form/event_form_fields', form: form %>
   <%= render 'events/form/participant_fields', form: form %>
   <%= render 'events/form/ticket_fields', form: form %>
   <%= render 'events/form/logistics_fields', form: form %>
+  <%= render 'events/form/rules_fields', form: form %>
 
   <div class="actions">
     <%= form.submit "Обновить мероприятие" %>
   </div>
-      <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
-      <%= submit_tag 'Удалить', class: "text-blue-500 hover:underline bg-transparent border-none cursor-pointer" %>
-    <% end %>
+<% end %>
+
+<%= form_with model: @event, method: :delete, local: true do |form| %>
+  <div class="actions">
+    <%= form.submit "Удалить мероприятие", class: "delete-button" %>
+  </div>
 <% end %>
