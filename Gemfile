@@ -27,7 +27,7 @@ gem 'whenever', require: false
 gem 'sidekiq'
 gem 'sidekiq-cron'
 
-
+gem 'cocoon'
 gem 'chart-js-rails'
 gem 'jbuilder'
 

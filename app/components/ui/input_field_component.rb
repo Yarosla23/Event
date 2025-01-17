@@ -23,6 +23,10 @@ module Ui
     def input_field
       input_classes = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 
+      if @type == "text_area"
+        input_classes += " !whitespace-pre-wrap !resize-none"
+      end
+
       input_classes += " #{@input_class}" unless @input_class.empty?
 
       @form.send(@type.to_sym, @field_name, 

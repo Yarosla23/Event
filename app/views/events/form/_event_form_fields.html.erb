@@ -1,75 +1,81 @@
-<div class="p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 my-6 ">
-  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Основная информация об мероприятии</h3>
-    <div class="grid grid-cols-2 gap-4">
+<div class="p-2 md:p-3  bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 my-3 md:my-6">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-4">Основная информация об мероприятии</h3>
+  <div class="columns-1 md:columns-2 gap-6">
 
-      <div class="field mb-4">
-        <%= render Ui::InputFieldComponent.new(
-          form: form,
-          field_name: :name, 
-          label: "Название мероприятия") 
-        %>
-      </div>
-
-      <div class="field mb-4">
-        <%= render Ui::InputFieldComponent.new(
-          form: form,
-          field_name: :event_type,
-          label: "Тип мероприятия",
-        ) %>
-      </div>
-
-      <div class="field mb-4">
-        <%= form.label :start_time, "Время начала", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-        <%= form.text_field :start_time, type: "datetime-local", value: form.object.start_time&.strftime("%Y-%m-%dT%H:%M"), class: "block w-full p-2.5 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-        <% if form.object.errors[:start_time].any? %>
-          <div class="text-sm text-red-500">
-            <%= form.object.errors[:start_time].join(', ') %>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="field mb-4">
-        <%= form.label :end_time, "Время окончания", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-        <%= form.text_field :end_time, type: "datetime-local", value: form.object.end_time&.strftime("%Y-%m-%dT%H:%M"), class: "block w-full p-2.5 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
-        <% if form.object.errors[:end_time].any? %>
-          <div class="text-sm text-red-500">
-            <%= form.object.errors[:end_time].join(', ') %>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="field mb-4">
-        <%= render Ui::InputFieldComponent.new(
-          form: form,
-          field_name: :location,
-          label: "Местоположение",
-        ) %>
-      </div>
-
-      <div class="field mb-4">
-        <%= render Ui::InputFieldComponent.new(
-          form: form,
-          field_name: :location_link,
-          label: "Ссылка на локацию",
-        ) %>
-      </div>
-
-      <div class="field mb-4">
-        <%= render Ui::InputFieldComponent.new(
-          form: form,
-          field_name: :event_format,
-          label: "Формат мероприятия",
-        ) %>
-      </div>
-
-      <div class="field mb-4">
-        <%= render Ui::InputFieldComponent.new(
-          form: form,
-          field_name: :description,
-          label: "Описание",
-          type: "text_area"
-        ) %>
-      </div>
+    <!-- Колонка 1 -->
+    <div class="field mb-4">
+      <%= render Ui::InputFieldComponent.new(
+        form: form,
+        field_name: :name, 
+        label: "Название мероприятия") 
+      %>
     </div>
+
+    <div class="field mb-4">
+      <%= render Ui::SelectFieldComponent.new(
+        form: form,
+        field_name: :event_type,
+        label: "Тип мероприятия",
+        options: Event::TYPES,
+        include_blank: 'Выберите тип мероприятия',
+        input_class: "custom-class"
+      ) %>
+    </div>
+    
+    <div class="field mx-3 mb-4">
+      <%= form.label :start_time, "Время начала", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <%= form.text_field :start_time, type: "datetime-local", value: form.object.start_time&.strftime("%Y-%m-%dT%H:%M"), class: "block w-full p-2.5 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+      <% if form.object.errors[:start_time].any? %>
+        <div class="text-sm text-red-500">
+          <%= form.object.errors[:start_time].join(', ') %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="field mx-3 mb-4">
+      <%= form.label :end_time, "Время окончания", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <%= form.text_field :end_time, type: "datetime-local", value: form.object.end_time&.strftime("%Y-%m-%dT%H:%M"), class: "block w-full p-2.5 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+      <% if form.object.errors[:end_time].any? %>
+        <div class="text-sm text-red-500">
+          <%= form.object.errors[:end_time].join(', ') %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Колонка 2 -->
+    <div class="field mb-4">
+      <%= render Ui::InputFieldComponent.new(
+        form: form,
+        field_name: :location,
+        label: "Местоположение",
+      ) %>
+    </div>
+
+    <div class="field mb-4">
+      <%= render Ui::InputFieldComponent.new(
+        form: form,
+        field_name: :location_link,
+        label: "Ссылка на локацию",
+      ) %>
+    </div>
+
+    <div class="field mb-4">
+      <%= render Ui::InputFieldComponent.new(
+        form: form,
+        field_name: :event_format,
+        label: "Формат мероприятия",
+      ) %>
+    </div>
+
+<div class="field mb-4">
+  <%= render Ui::InputFieldComponent.new(
+    form: form,
+    field_name: :description,
+    label: "Описание",
+    type: "text_area",
+    input_class: "whitespace-pre-wrap "
+  ) %>
+</div>
+
   </div>
 </div>

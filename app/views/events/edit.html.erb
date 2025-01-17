@@ -1,4 +1,6 @@
-<h1>Редактирование мероприятия</h1>
+<h1 class="text-center text-2xl font-bold md:text-4xl my-2 md:my-6">Редактирование мероприятия</h1>
+
+<div class="w-full md:w-2/3 mx-auto p-2 md:p-6">
 
 <%= form_with model: @event, data: { turbo: false }, local: true do |form| %>
   <%= render 'events/form/event_form_fields', form: form %>
@@ -17,3 +19,4 @@
     <%= form.submit "Удалить мероприятие", class: "delete-button" %>
   </div>
 <% end %>
+</div>

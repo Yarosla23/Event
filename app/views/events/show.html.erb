@@ -1,67 +1,70 @@
-<div class="max-w-4xl mx-auto p-4 bg-white shadow-lg rounded-lg">
-  <h1 class="text-2xl font-bold text-gray-900"><%= @event.name %></h1>
-  
-  <p class="mt-2 text-gray-700"><strong>Описание:</strong> <%= @event.description %></p>
-  <p class="mt-2 text-gray-700"><strong>Тип:</strong> <%= @event.event_type %></p>
-  <p class="mt-2 text-gray-700"><strong>Дата начала:</strong> <%= @event.start_time %></p>
-  <p class="mt-2 text-gray-700"><strong>Дата окончания:</strong> <%= @event.end_time %></p>
-  <p class="mt-2 text-gray-700"><strong>Местоположение:</strong> <%= @event.location %></p>
-  <p class="mt-2 text-gray-700"><strong>Ссылка на карту:</strong> <%= @event.location_link %></p>
+<div class="w-4/6 mx-auto m-4 p-6 bg-gradient-to-r from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-3xl">
+    <!-- Заголовок и описание -->
+    <h1 class="text-3xl text-center mb-5 font-bold text-gray-800 dark:text-gray-100 leading-tight"><%= @event.name %></h1>
 
-  <h3 class="mt-4 text-xl font-semibold text-gray-900">Участники</h3>
-  <p class="mt-2 text-gray-700"><strong>Минимальное количество участников:</strong> <%= @event.participant&.min_participants || "" %></p>
-  <p class="mt-2 text-gray-700"><strong>Максимальное количество участников:</strong> <%= @event.participant&.max_participants || "" %></p>
-  <p class="mt-2 text-gray-700"><strong>Тип участников:</strong> <%= @event.participant&.participant_type %></p>
-
-  <h3 class="mt-4 text-xl font-semibold text-gray-900">Билеты</h3>
-  <div class="overflow-x-auto mt-2">
-    <table class="min-w-full table-auto">
-      <thead>
-        <tr class="bg-gray-200">
-          <th class="px-4 py-2 text-left text-gray-900">Тип билета</th>
-          <th class="px-4 py-2 text-left text-gray-900">Цена</th>
-          <th class="px-4 py-2 text-left text-gray-900">Валюта</th>
-          <th class="px-4 py-2 text-left text-gray-900">Метод оплаты</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @event.tickets.each do |ticket| %>
-          <tr class="border-t">
-            <td class="px-4 py-2 text-gray-700"><%= ticket.ticket_type %></td>
-            <td class="px-4 py-2 text-gray-700"><%= ticket.price %></td>
-            <td class="px-4 py-2 text-gray-700"><%= ticket.currency %></td>
-            <td class="px-4 py-2 text-gray-700"><%= ticket.payment_method %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <div class="flex flex-col md:flex-row gap-6">
+    <div class="relative md:w-2/3">
+      <img src="https://via.placeholder.com/1200x400" alt="Изображение мероприятия" class="w-full h-64 object-cover rounded-lg shadow-md">
+    </div>
+ <div class=" bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 md:w-1/3">
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Информация об участниках</h3>
+    <p class="text-gray-700 dark:text-gray-300"><strong>Мин. участников:</strong> <%= @event.participant&.min_participants || "—" %></p>
+    <p class="text-gray-700 dark:text-gray-300"><strong>Макс. участников:</strong> <%= @event.participant&.max_participants || "—" %></p>
+    <p class="text-gray-700 dark:text-gray-300"><strong>Для кого мероприятие?</strong> <%= @event.participant&.participant_type || "—" %></p>
   </div>
 
-  <h3 class="mt-4 text-xl font-semibold text-gray-900">Организация и логистика</h3>
-  <% if @event.logistic.present? %>
-    <p class="mt-2 text-gray-700"><strong>Организаторы:</strong> <%= @event.logistic.organizers %></p>
-    <p class="mt-2 text-gray-700"><strong>Контактная информация:</strong> <%= @event.logistic.contact_info %></p>
-    <p class="mt-2 text-gray-700"><strong>Технические требования:</strong> <%= @event.logistic.technical_requirements %></p>
-    <p class="mt-2 text-gray-700"><strong>Специальные инструкции:</strong> <%= @event.logistic.special_instructions %></p>
-  <% else %>
-    <p class="mt-2 text-gray-700">Информация о логистике отсутствует.</p>
-  <% end %>
+  </div>
 
-   <% if @event.event_rule.present? %>
-    <p class="mt-2 text-gray-700"><strong>Правила:</strong> <%= @event.event_rule.rules %></p>
+  <!-- Участники -->
+ 
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 ">
+     <p class="mt-2 text-gray-600 dark:text-gray-300 text-lg whitespace-pre-wrap"><%= @event.description %></p>
+      <p class="text-gray-700 dark:text-gray-300"><strong>Тип:</strong> <%= @event.event_type %></p>
+      <p class="text-gray-700 dark:text-gray-300"><strong>Дата начала:</strong> <%= @event.start_time.strftime('%d %B %Y %H:%M') %></p>
+      <p class="text-gray-700 dark:text-gray-300"><strong>Дата окончания:</strong> <%= @event.end_time.strftime('%d %B %Y %H:%M') %></p>
+      <p class="text-gray-700 dark:text-gray-300"><strong>Местоположение:</strong> <%= @event.location %></p>
+      <p class="text-gray-700 dark:text-gray-300"><strong>Ссылка на карту: </strong> <a href="<%= @event.location_link %>" class="text-blue-500 hover:underline dark:text-blue-400" target="_blank">Посмотреть на карте</a></p>
+    </div>
+  <!-- Билеты -->
+  <div class="mt-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">Билеты на мероприятие</h3>
 
-  <% else %>
-    <p class="mt-2 text-gray-700">Нет правил</p>
-  <% end %>
+    <div class="flex flex-wrap gap-6">
+      <% @event.tickets.each do |ticket| %>
+        <div class="w-full sm:w-1/2 lg:w-1/3 bg-gray-200 dark:bg-gray-700 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="text-2xl font-semibold text-gray-800 dark:text-gray-100"><%= ticket.ticket_type %></h4>
+            <span class="text-xl font-semibold text-gray-800 dark:text-gray-100"><%= ticket.price %> <%= ticket.currency %></span>
+          </div>
+          <p class="text-lg text-gray-700 dark:text-gray-300 mb-2"><strong>Метод оплаты:</strong> <%= ticket.payment_method %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
 
-  <div class="mt-4 flex justify-between">
-    <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
-      <%= submit_tag 'Удалить', class: "text-blue-500 hover:underline bg-transparent border-none cursor-pointer" %>
+  <!-- Логистика -->
+  <div class="mt-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Организация и логистика</h3>
+    <% if @event.logistic.present? %>
+      <p class="text-gray-700 dark:text-gray-300"><strong>Организаторы:</strong> <%= @event.logistic.organizers %></p>
+      <p class="text-gray-700 dark:text-gray-300"><strong>Контакты:</strong> <%= @event.logistic.contact_info %></p>
+      <p class="text-gray-700 dark:text-gray-300"><strong>Технические требования:</strong> <%= @event.logistic.technical_requirements %></p>
+      <p class="text-gray-700 dark:text-gray-300"><strong>Инструкции:</strong> <%= @event.logistic.special_instructions %></p>
+    <% else %>
+      <p class="text-gray-700 dark:text-gray-300">Информация о логистике отсутствует.</p>
     <% end %>
+  </div>
 
-    <%= link_to "Профиль", user_profile_path(@event.user_id), class: "text-sm/6 font-semibold pr-6", onclick: "window.location.href=this.href; return false;" %>
 
-    <%= link_to 'Редактировать', edit_event_path(@event), class: "text-blue-500 hover:underline" %> |
-    <%= link_to 'Назад', events_path, class: "text-blue-500 hover:underline" %>
+
+  <!-- Управление -->
+  <div class="mt-6 flex justify-between items-center">
+    <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
+      <%= submit_tag 'Удалить', class: "px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition" %>
+    <% end %>
+    <div class="space-x-4">
+      <%= link_to 'Редактировать', edit_event_path(@event), class: "px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition" %>
+      <%= link_to 'Назад', events_path, class: "px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 transition" %>
+    </div>
   </div>
 </div>

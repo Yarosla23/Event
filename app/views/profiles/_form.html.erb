@@ -1,5 +1,5 @@
 <%= form_with(model: @profile, url: user_profile_path(@user), class: "contents",data: { turbo: false }) do |form| %>
-  <div class="grid gap-6 mb-6 md:grid-cols-2">
+  <div class="grid gap-6 mb-6 px-4 md:grid-cols-2">
     <%= form.hidden_field :cover_color, value: @profile.cover_color || '#4f46e5' %>
 
     <div>
@@ -39,14 +39,16 @@
         class: "ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
     </div>
   </div>
-  <div class="mb-6">
+  <div class="mb-6 px-4">
     <%= form.label :options, "Описание", class:"block mb-2 text-sm font-medium text-gray-900 dark:text-white"%>
     <%= form.text_area :options, placeholder: "Расскажите о себе", class:"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
   </div> 
 
-  <div class="my-5">
+  <div class="my-5 px-4">
     <div class="relative">
       <% if @profile.avatar.present? %>
+            <h1 class="mb-3"> Ваше фото</h1>
+
         <img src="<%= @profile.avatar_url %>" alt="Avatar" class="w-32 h-32 object-cover rounded-lg mb-3" id="current-avatar">
       <% else %>
         <p>Изображение не загружено</p>
@@ -64,7 +66,7 @@
   </div>
 
 
-  <div class="flex items-start mb-6">
+  <div class="flex items-start mb-6 px-4">
       <div class="flex items-center h-5">
       <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"  />
       </div>
