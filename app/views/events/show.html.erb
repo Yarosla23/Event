@@ -1,61 +1,56 @@
-<div class="w-4/6 mx-auto m-4 p-6 bg-gradient-to-r from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-3xl">
-    <!-- Заголовок и описание -->
-    <h1 class="text-3xl text-center mb-5 font-bold text-gray-800 dark:text-gray-100 leading-tight"><%= @event.name %></h1>
+<div class="w-7/8 md:w-[73%] mx-auto m-4 p-6 bg-blue-200 dark:bg-gray-800 shadow-lg rounded-3xl">
 
-  <div class="flex flex-col md:flex-row gap-6">
-    <div class="relative md:w-2/3">
-      <img src="https://via.placeholder.com/1200x400" alt="Изображение мероприятия" class="w-full h-64 object-cover rounded-lg shadow-md">
-    </div>
- <div class=" bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 md:w-1/3">
-    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Информация об участниках</h3>
-    <p class="text-gray-700 dark:text-gray-300"><strong>Мин. участников:</strong> <%= @event.participant&.min_participants || "—" %></p>
-    <p class="text-gray-700 dark:text-gray-300"><strong>Макс. участников:</strong> <%= @event.participant&.max_participants || "—" %></p>
-    <p class="text-gray-700 dark:text-gray-300"><strong>Для кого мероприятие?</strong> <%= @event.participant&.participant_type || "—" %></p>
+  <h1 class="text-4xl text-center mt-2 mb-10 font-bold text-blue-800 dark:text-gray-100 leading-tight "><%= @event.name %></h1>
+
+<div class="flex flex-col xl:flex-row gap-6">
+  <div class="relative md:w-2/3 mx-4">
+    <%= render 'events/show/slider', tickets: @event.tickets %>
   </div>
 
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 max-w-lg mx-auto">
+    <%= render 'events/show/info', tickets: @event.tickets %>
+  </div>
+</div>
+
+<div class="flex flex-col lg:flex-row gap-6 mt-6">
+  <div class="flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 lg:w-2/3">
+    <p class="mt-2 text-gray-600 dark:text-gray-300 text-lg whitespace-pre-wrap">
+      <%= @event.description %>
+    </p>
   </div>
 
-  <!-- Участники -->
- 
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 ">
-     <p class="mt-2 text-gray-600 dark:text-gray-300 text-lg whitespace-pre-wrap"><%= @event.description %></p>
-      <p class="text-gray-700 dark:text-gray-300"><strong>Тип:</strong> <%= @event.event_type %></p>
-      <p class="text-gray-700 dark:text-gray-300"><strong>Дата начала:</strong> <%= @event.start_time.strftime('%d %B %Y %H:%M') %></p>
-      <p class="text-gray-700 dark:text-gray-300"><strong>Дата окончания:</strong> <%= @event.end_time.strftime('%d %B %Y %H:%M') %></p>
-      <p class="text-gray-700 dark:text-gray-300"><strong>Местоположение:</strong> <%= @event.location %></p>
-      <p class="text-gray-700 dark:text-gray-300"><strong>Ссылка на карту: </strong> <a href="<%= @event.location_link %>" class="text-blue-500 hover:underline dark:text-blue-400" target="_blank">Посмотреть на карте</a></p>
-    </div>
-  <!-- Билеты -->
-  <div class="mt-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
-    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">Билеты на мероприятие</h3>
-
-    <div class="flex flex-wrap gap-6">
-      <% @event.tickets.each do |ticket| %>
-        <div class="w-full sm:w-1/2 lg:w-1/3 bg-gray-200 dark:bg-gray-700 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200">
-          <div class="flex justify-between items-center mb-4">
-            <h4 class="text-2xl font-semibold text-gray-800 dark:text-gray-100"><%= ticket.ticket_type %></h4>
-            <span class="text-xl font-semibold text-gray-800 dark:text-gray-100"><%= ticket.price %> <%= ticket.currency %></span>
-          </div>
-          <p class="text-lg text-gray-700 dark:text-gray-300 mb-2"><strong>Метод оплаты:</strong> <%= ticket.payment_method %></p>
-        </div>
-      <% end %>
-    </div>
+  <div class="flex-2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 space-y-4 lg:w-1/3">
+    <% [["Организаторы", @event.logistic.organizers, "M15 17h5l-1 4h-4l-1-4zM4 6l1-4h4l1 4H5zM12 6l1-4h4l1 4h-6z"], 
+        ["Контакты", @event.logistic.contact_info, "M21 21l-2-2a8 8 0 10-12 0l-2 2M14 10h2a2 2 0 110 4h-2a2 2 0 110-4zm-4 0h2a2 2 0 110 4H10a2 2 0 110-4z"]].each do |title, content, icon_path| %>
+      <div class="flex items-center space-x-2">
+        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= icon_path %>" />
+        </svg>
+        <p class="text-gray-700 dark:text-gray-300 font-medium"><strong><%= title %>:</strong></p>
+      </div>
+      <p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap text-sm leading-relaxed">
+        <%= content %>
+      </p>
+    <% end %>
   </div>
+</div>
+
+
+  <%= render 'events/show/ticket', tickets: @event.tickets %>
+
 
   <!-- Логистика -->
   <div class="mt-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
-    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Организация и логистика</h3>
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Наличие техники и  инструкции</h3>
     <% if @event.logistic.present? %>
-      <p class="text-gray-700 dark:text-gray-300"><strong>Организаторы:</strong> <%= @event.logistic.organizers %></p>
-      <p class="text-gray-700 dark:text-gray-300"><strong>Контакты:</strong> <%= @event.logistic.contact_info %></p>
+
       <p class="text-gray-700 dark:text-gray-300"><strong>Технические требования:</strong> <%= @event.logistic.technical_requirements %></p>
       <p class="text-gray-700 dark:text-gray-300"><strong>Инструкции:</strong> <%= @event.logistic.special_instructions %></p>
     <% else %>
       <p class="text-gray-700 dark:text-gray-300">Информация о логистике отсутствует.</p>
     <% end %>
   </div>
-
-
+      <p class="text-gray-700 dark:text-gray-300"><strong>Инструкции:</strong> <%= @event.event_rule.rules %></p>
 
   <!-- Управление -->
   <div class="mt-6 flex justify-between items-center">

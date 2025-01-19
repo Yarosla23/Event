@@ -26,11 +26,29 @@
 
       <div class="flex space-x-4 mb-3">
         <div class="flex-1">
-          <%= render Ui::InputFieldComponent.new(form: ticket_form, field_name: :currency, label: "Валюта") %>
+          <%= render Ui::SelectFieldComponent.new(
+            form: ticket_form,
+            field_name: :currency,
+            label: "Валюта",
+            options: Ticket::CURRENCY_TYPES,
+            include_blank: 'Выберите валюту',
+            input_class: "custom-class"
+          ) %>
         </div>
+
         <div class="flex-1">
-          <%= render Ui::InputFieldComponent.new(form: ticket_form, field_name: :payment_method, label: "Метод оплаты") %>
+<%= render Ui::MultiSelectFieldComponent.new(
+    form: ticket_form,
+    field_name: :payment_method,  # Field name in the model
+    label: "Метод оплаты",        # Label for the field
+    options: Ticket::PAYMENT_METHODS, # Options for the select
+    include_blank: 'Выберите тип оплаты', # Blank option in the list
+    input_class: "custom-class"    # Additional class for styles
+) %>
+
+
         </div>
+        
       </div>
 
       <div class="mb-3">
@@ -49,7 +67,8 @@
 </button>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener('turbo:load', () => {
+  
   const maxTickets = 4;
   const minTickets = 1;
   const ticketsContainer = document.querySelector("#tickets-container");
@@ -76,31 +95,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  addTicketButton.addEventListener("click", function (event) {
-    event.preventDefault();
+ addTicketButton.addEventListener("click", function (event) {
+  event.preventDefault();
 
-    const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
-    if (ticketForms.length >= maxTickets) {
-      alert(`Вы можете добавить максимум ${maxTickets} билета.`);
-      return;
+  const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
+  if (ticketForms.length >= maxTickets) {
+    alert(`Вы можете добавить максимум ${maxTickets} билета.`);
+    return;
+  }
+
+  const firstTicketForm = ticketForms[0];
+  const clonedForm = firstTicketForm.cloneNode(true);
+
+  clonedForm.querySelectorAll("input").forEach((input) => {
+    if (input.type !== "hidden") input.value = "";
+    const name = input.name;
+    if (name) {
+      input.name = name.replace(/\[\d+\]/, `[${ticketForms.length}]`);
     }
-
-    const firstTicketForm = ticketForms[0];
-    const clonedForm = firstTicketForm.cloneNode(true);
-
-    clonedForm.querySelectorAll("input").forEach((input) => {
-      if (input.type !== "hidden") input.value = "";
-      const name = input.name;
-      if (name) {
-        input.name = name.replace(/\[\d+\]/, `[${ticketForms.length}]`);
-      }
-    });
-
-    clonedForm.querySelector(".destroy-flag").value = "false";
-    ticketsContainer.appendChild(clonedForm);
-    updateRemoveButtons();
-    updateAddButton();
   });
+
+  // Для поля payment_method нужно установить значение
+  const multiSelectField = clonedForm.querySelector('select[name*="payment_method"]');
+  if (multiSelectField) {
+    multiSelectField.value = "";  // Установите значение для клонированной формы, если оно пустое
+  }
+
+  clonedForm.querySelector(".destroy-flag").value = "false";
+  ticketsContainer.appendChild(clonedForm);
+  updateRemoveButtons();
+  updateAddButton();
+});
 
   ticketsContainer.addEventListener("click", function (event) {
     if (event.target.classList.contains("remove-ticket")) {

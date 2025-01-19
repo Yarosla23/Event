@@ -12,7 +12,7 @@ module HabitTrecker
     config.load_defaults 7.0
     config.time_zone = 'Moscow'
     config.active_job.queue_adapter = :sidekiq
-    
+    config.i18n.default_locale = :ru
     config.eager_load_paths += %W(#{config.root}/app/components)
 
 

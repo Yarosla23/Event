@@ -1,7 +1,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "./bubbles";
-//= require cocoon
 
 function setupThemeToggle() {
   const themeToggleButton = document.getElementById('theme-toggle');
