@@ -51,9 +51,9 @@ class VenuesController < ApplicationController
 
   def destroy
     if @venue.destroy
-      redirect_to venues_path, notice: "Площадка успешно удалена."
+      redirect_to venues_path, notice: 'Площадка успешно удалена.'
     else
-      redirect_back fallback_location: venues_path, alert: "Не удалось удалить площадку."
+      redirect_back fallback_location: venues_path, alert: 'Не удалось удалить площадку.'
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_19_184610) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_22_190210) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -142,6 +142,21 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_19_184610) do
     t.index ["venue_id"], name: "index_reviews_on_venue_id"
   end
 
+  create_table "taggings", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_taggings_on_event_id"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tickets", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.string "ticket_type"
@@ -190,5 +205,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_19_184610) do
   add_foreign_key "policies", "venues"
   add_foreign_key "prices", "venues"
   add_foreign_key "reviews", "venues"
+  add_foreign_key "taggings", "events"
+  add_foreign_key "taggings", "tags"
   add_foreign_key "tickets", "events"
 end

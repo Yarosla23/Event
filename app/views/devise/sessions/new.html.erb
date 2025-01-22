@@ -1,7 +1,8 @@
-<div class="max-w-lg mx-auto p-10 mt-10 rounded-xl shadow-2xl bg-blue-600">
-  <h2 class="text-center text-4xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent ">
-  Вход
-</h2>
+<div class="max-w-lg mx-auto p-10 mt-10 rounded-xl shadow-2xl bg-blue-500 bg-cover bg-center"
+     style="background-image: url('путь_к_вашему_изображению.jpg');">
+  <h2 class="text-center text-4xl font-extrabold mb-6">
+    Вход
+  </h2>
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
     <div class="mb-6">

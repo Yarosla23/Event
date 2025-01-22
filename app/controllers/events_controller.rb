@@ -46,6 +46,7 @@ class EventsController < ApplicationController
   end
 
   def update
+
     if @event.update(event_params)
       redirect_to @event, notice: 'Мероприятие было успешно обновлено.'
     else
