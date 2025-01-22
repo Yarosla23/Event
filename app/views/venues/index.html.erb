@@ -86,8 +86,6 @@
         <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-4"><%= venue.name %></h5>
         <p class="text-gray-700 dark:text-gray-400 mb-3"><%= truncate(venue.description, length: 100) %></p>
         <div class="text-sm text-gray-600 dark:text-gray-400 mb-3">
-          <p><strong>Начало:</strong> <%= l(venue.start_time, format: :custom) %></p>
-          <p><strong>Окончание:</strong> <%= l(venue.end_time, format: :custom) %></p>
         </div>
         <div class="flex justify-between items-center">
           <%= link_to 'Подробнее', venue_path(venue), class: 'text-blue-500 hover:underline' %>

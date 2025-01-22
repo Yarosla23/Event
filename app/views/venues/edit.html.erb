@@ -2,19 +2,19 @@
 
 <div class="w-full md:w-2/3 mx-auto p-2 md:p-6">
 
-<%= form_with model: @event, data: { turbo: false }, local: true do |form| %>
-  <%= render 'events/form/event_form_fields', form: form %>
-  <%= render 'events/form/participant_fields', form: form %>
-  <%= render 'events/form/ticket_fields', form: form %>
-  <%= render 'events/form/logistics_fields', form: form %>
-  <%= render 'events/form/rules_fields', form: form %>
+<%= form_with model: @venue, data: { turbo: false }, local: true do |form| %>
+  <%= render 'venues/form/venue_form_fields', form: form %>
+  <%= render 'venues/form/participant_fields', form: form %>
+  <%= render 'venues/form/ticket_fields', form: form %>
+  <%= render 'venues/form/logistics_fields', form: form %>
+  <%= render 'venues/form/rules_fields', form: form %>
 
   <div class="actions">
     <%= form.submit "Обновить мероприятие" %>
   </div>
 <% end %>
 
-<%= form_with model: @event, method: :delete, local: true do |form| %>
+<%= form_with model: @venue, method: :delete, local: true do |form| %>
   <div class="actions">
     <%= form.submit "Удалить мероприятие", class: "delete-button" %>
   </div>

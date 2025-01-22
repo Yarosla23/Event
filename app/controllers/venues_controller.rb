@@ -2,10 +2,11 @@ class VenuesController < ApplicationController
   before_action :set_venue, only: %i[show edit update destroy]
 
   def index
-    @venues = Venue.includes(:reviews, :amenities, :event_types, :prices, :policies)
+    @venues = Venue.includes(:reviews, :amenities)
+    # @venues = Venue.includes(:reviews, :amenities, :event_types, :prices, :policies)
 
     @venues = @venues.where('venue_type LIKE ?', "%#{params[:venue_type]}%") if params[:venue_type].present?
-    @venues = @venues.where('city LIKE ?', "%#{params[:city]}%") if params[:city].present?
+    @venues = @venues.where('max_participants LIKE ?', "%#{params[:max_participants]}%") if params[:max_participants].present?
     @venues = @venues.where('address LIKE ?', "%#{params[:address]}%") if params[:address].present?
 
     if params[:search].present?
@@ -68,16 +69,15 @@ class VenuesController < ApplicationController
   def build_associations
     @venue.build_price unless @venue.price
     @venue.build_policy unless @venue.policy
-    @venue.amenities.build if @venue.amenities.empty?
     @venue.event_types.build if @venue.event_types.empty?
   end
 
   def venue_params
     params.require(:venue).permit(
-      :name, :venue_type, :description, :address, :city, :district, :phone, :email, :website,
+      :name, :venue_type, :description, :address, :district, :phone, :email, :website,
+      :area, :max_participants, :details,
       price_attributes: [:id, :amount, :currency, :min_duration, :_destroy],
       policy_attributes: [:id, :smoking_allowed, :alcohol_allowed, :noise_restrictions, :_destroy],
-      amenities_attributes: [:id, :name, :_destroy],
       event_types_attributes: [:id, :name, :_destroy]
     )
   end

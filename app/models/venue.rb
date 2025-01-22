@@ -14,7 +14,7 @@ class Venue < ApplicationRecord
   accepts_nested_attributes_for :event_types, allow_destroy: true
   accepts_nested_attributes_for :reviews, allow_destroy: true
   
-  validates :name, :venue_type, :description, :address, :city, :phone, :email, presence: true
+  validates :name, :venue_type, :description, :address, :phone, :email, presence: true
   validates :phone, format: { with: /\A\+?[0-9]+\z/, message: "должен содержать только цифры" }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 

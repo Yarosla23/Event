@@ -186,11 +186,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_22_190210) do
     t.string "venue_type"
     t.text "description"
     t.string "address"
-    t.string "city"
-    t.string "district"
     t.string "phone"
     t.string "email"
     t.string "website"
+    t.integer "area"
+    t.integer "max_participants"
+    t.string "details"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

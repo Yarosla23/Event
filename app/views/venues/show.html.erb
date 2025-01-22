@@ -1,27 +1,27 @@
 <div class="w-7/8 md:w-[73%] mx-auto m-4 p-6 bg-blue-200 dark:bg-gray-800 shadow-lg rounded-3xl">
 
-  <h1 class="text-4xl text-center mt-2 mb-10 font-bold text-blue-800 dark:text-gray-100 leading-tight "><%= @event.name %></h1>
+  <h1 class="text-4xl text-center mt-2 mb-10 font-bold text-blue-800 dark:text-gray-100 leading-tight "><%= @venue.name %></h1>
 
 <div class="flex flex-col xl:flex-row gap-6">
   <div class="relative md:w-2/3 mx-4">
-    <%= render 'events/show/slider', tickets: @event.tickets %>
+    <%= render 'venues/show/slider' %>
   </div>
 
   <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 max-w-lg mx-auto">
-    <%= render 'events/show/info', tickets: @event.tickets %>
+    <%= render 'venues/show/info' %>
   </div>
 </div>
 
 <div class="flex flex-col lg:flex-row gap-6 mt-6">
   <div class="flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 lg:w-2/3">
     <p class="mt-2 text-gray-600 dark:text-gray-300 text-lg whitespace-pre-line">
-      <%= @event.description %>
+      <%= @venue.description %>
     </p>
   </div>
 
   <div class="flex-2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 space-y-2 lg:w-1/3">
-    <% [["Организаторы", @event.logistic.organizers, "M15 17h5l-1 4h-4l-1-4zM4 6l1-4h4l1 4H5zM12 6l1-4h4l1 4h-6z"], 
-        ["Контакты", @event.logistic.contact_info, "M21 21l-2-2a8 8 0 10-12 0l-2 2M14 10h2a2 2 0 110 4h-2a2 2 0 110-4zm-4 0h2a2 2 0 110 4H10a2 2 0 110-4z"]].each do |title, content, icon_path| %>
+    <% [["Организаторы"," @venue.logistic.organizers", "M15 17h5l-1 4h-4l-1-4zM4 6l1-4h4l1 4H5zM12 6l1-4h4l1 4h-6z"], 
+        ["Контакты", "@venue.logistic.contact_info", "M21 21l-2-2a8 8 0 10-12 0l-2 2M14 10h2a2 2 0 110 4h-2a2 2 0 110-4zm-4 0h2a2 2 0 110 4H10a2 2 0 110-4z"]].each do |title, content, icon_path| %>
       <div class="flex items-center space-x-2">
         <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= icon_path %>" />
@@ -38,8 +38,8 @@
   <!-- Логистика -->
   <div class="mt-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
     <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Наличие техники</h3>
-    <% if @event.logistic.present? %>
-      <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line"> <%= @event.logistic.technical_requirements %></p>
+    <% if @venue.details.present? %>
+      <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line"> <%= @venue.details %></p>
     <% else %>
       <p class="text-gray-700 dark:text-gray-300">Информация о логистике отсутствует.</p>
     <% end %>
@@ -47,22 +47,22 @@
 
   <div class="mt-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
     <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 ">Инструкции и правила</h3>
-      <% if @event.event_rule.rules? %>
-    <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line"><%= @event.event_rule.rules %></p>
+      <% if @venue.details? %>
+    <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line"><%= @venue.details %></p>
       <% else %>
       <p class="text-gray-700 dark:text-gray-300">Информация о правилах и инструкциях отсутствует.</p>
     <% end %>
   </div>
 
-  <%= render 'events/show/ticket', tickets: @event.tickets %>
+  <%# <%= render 'venues/show/ticket', tickets: @venue.tickets %>
 
   <div class="mt-6 flex justify-between items-center">
-    <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
+    <%= form_with url: venue_path(@venue), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
       <%= submit_tag 'Удалить', class: "px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition" %>
     <% end %>
     <div class="space-x-4">
-      <%= link_to 'Редактировать', edit_event_path(@event), class: "px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition" %>
-      <%= link_to 'Назад', events_path, class: "px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 transition" %>
+      <%= link_to 'Редактировать', edit_venue_path(@venue), class: "px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition" %>
+      <%= link_to 'Назад', venues_path, class: "px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 transition" %>
     </div>
   </div>
 </div>
