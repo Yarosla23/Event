@@ -6,7 +6,11 @@ Rails.application.routes.draw do
     omniauth_callbacks: 'users/omniauth_callbacks' 
   }
   resources :events
-  resources :venues 
+  
+  resources :venues do
+    resources :reviews, only: :create
+  end
+  
   resources :users do
     member do
       get :my_events

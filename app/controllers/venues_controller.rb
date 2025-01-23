@@ -20,6 +20,7 @@ class VenuesController < ApplicationController
   end
 
   def show
+    @reviews = @venue.reviews.order(created_at: :desc)
   end
 
   def new
@@ -70,6 +71,8 @@ class VenuesController < ApplicationController
     @venue.build_price unless @venue.price
     @venue.build_policy unless @venue.policy
     @venue.event_types.build if @venue.event_types.empty?
+    @venue.build_information unless @venue.information
+
   end
 
   def venue_params
@@ -78,7 +81,9 @@ class VenuesController < ApplicationController
       :area, :max_participants, :details,
       price_attributes: [:id, :amount, :currency, :min_duration, :_destroy],
       policy_attributes: [:id, :smoking_allowed, :alcohol_allowed, :noise_restrictions, :_destroy],
-      event_types_attributes: [:id, :name, :_destroy]
+      event_types_attributes: [:id, :name, :_destroy],
+      information_attributes: [:id, :document,:description, :calendar, :_destroy],
+
     )
   end
 end

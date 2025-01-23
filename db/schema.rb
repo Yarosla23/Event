@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_22_190210) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_23_184255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,6 +69,16 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_22_190210) do
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "information", force: :cascade do |t|
+    t.bigint "venue_id", null: false
+    t.text "document"
+    t.text "description"
+    t.string "calendar"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["venue_id"], name: "index_information_on_venue_id"
   end
 
   create_table "logistics", force: :cascade do |t|
@@ -135,10 +145,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_22_190210) do
 
   create_table "reviews", force: :cascade do |t|
     t.bigint "venue_id", null: false
+    t.bigint "user_id", null: false
     t.text "content"
     t.integer "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_reviews_on_user_id"
     t.index ["venue_id"], name: "index_reviews_on_venue_id"
   end
 
@@ -201,10 +213,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_22_190210) do
   add_foreign_key "event_rules", "events"
   add_foreign_key "event_types", "venues"
   add_foreign_key "events", "users"
+  add_foreign_key "information", "venues"
   add_foreign_key "logistics", "events"
   add_foreign_key "participants", "events"
   add_foreign_key "policies", "venues"
   add_foreign_key "prices", "venues"
+  add_foreign_key "reviews", "users"
   add_foreign_key "reviews", "venues"
   add_foreign_key "taggings", "events"
   add_foreign_key "taggings", "tags"

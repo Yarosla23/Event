@@ -1,6 +1,7 @@
 class Review < ApplicationRecord
   belongs_to :venue
+  belongs_to :user
 
-  validates :content, :rating, presence: true
-  validates :rating, inclusion: { in: 1..5, message: "должен быть между 1 и 5" }
+  validates :content, presence: true, length: { maximum: 1000 }
+  validates :rating, presence: true, inclusion: { in: 1..5 } 
 end

@@ -15,7 +15,6 @@ class ProfilesController < ApplicationController
   end
 
   def create
-    binding.irb
     @profile = @user.build_profile(profile_params)
 
     if @profile.save!

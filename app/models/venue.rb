@@ -2,6 +2,7 @@ class Venue < ApplicationRecord
   has_one :price, dependent: :destroy
   has_one :policy, dependent: :destroy
   has_one :location, dependent: :destroy
+  has_one :information, dependent: :destroy
 
   has_many :amenities, dependent: :destroy
   has_many :event_types, dependent: :destroy
@@ -13,6 +14,7 @@ class Venue < ApplicationRecord
   accepts_nested_attributes_for :amenities, allow_destroy: true
   accepts_nested_attributes_for :event_types, allow_destroy: true
   accepts_nested_attributes_for :reviews, allow_destroy: true
+  accepts_nested_attributes_for :information, allow_destroy: true
   
   validates :name, :venue_type, :description, :address, :phone, :email, presence: true
   validates :phone, format: { with: /\A\+?[0-9]+\z/, message: "должен содержать только цифры" }
@@ -22,4 +24,7 @@ class Venue < ApplicationRecord
   # def available_dates
   #   # Логика для обработки доступных дат
   # end
+  def average_rating
+    reviews.average(:rating)&.round(2) || 0
+  end
 end
