@@ -12,14 +12,13 @@
     </div>
 
     <div class="field mb-4">
-      <%= render Ui::SelectFieldComponent.new(
-        form: form,
-        field_name: :event_type,
-        label: "Тип мероприятия",
-        options: Event::TYPES,
-        include_blank: 'Выберите тип мероприятия',
-        input_class: "custom-class"
-      ) %>
+    <%= render Ui::MultiselectComponent.new(
+      form: form, 
+      tags: Event::TYPES, 
+      selected_tags: @event.tags, 
+      label: "Тип мероприятия") 
+    %>
+
     </div>
     
     <div class="field mx-3 mb-4">
@@ -66,102 +65,23 @@
         label: "Формат мероприятия",
       ) %>
     </div>
-
-<div class="field mb-4">
-  <%= render Ui::InputFieldComponent.new(
-    form: form,
-    field_name: :description,
-    label: "Описание",
-    type: "text_area",
-    input_class: "whitespace-pre-wrap "
-  ) %>
-</div>
-<div class="field mb-4">
-  <div class="relative inline-block w-full">
+    
+    <div class="field mb-4">
+      <%= render Ui::InputFieldComponent.new(
+        form: form,
+        field_name: :description,
+        label: "Описание",
+        type: "text_area",
+        input_class: "whitespace-pre-wrap "
+      ) %>
+    </div>
+ 
     <div 
-      class="multiselect-container w-full border border-gray-300 rounded-lg cursor-pointer p-2 hover:bg-gray-50"
       onclick="toggleDropdown()">
-      <span id="selected-tags" class="text-gray-700">
-        <%= @selected_tags.any? ? @selected_tags.join(", ") : "Выберите типы мероприятий" %>
-      </span>
-      <svg class="w-5 h-5 absolute top-3 right-3 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg class="w-5 h-5 absolute top-3 right-3 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
       </svg>
     </div>
-    <div id="dropdown" class="hidden absolute z-10 bg-white border border-gray-300 rounded-lg shadow-lg w-full mt-1">
-      <div class="max-h-48 overflow-y-auto">
-        <% Event::TYPES.each do |key| %>
-          <div 
-            data-key="<%= key %>"
-            class="dropdown-item px-4 py-2 hover:bg-gray-100 cursor-pointer <%= 'text-blue-500 font-semibold' if @selected_tags.include?(key) %>">
-            <span class="text-gray-700">
-              <%= key %>
-            </span>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
 
-  <%= form.hidden_field :tags, id: "hidden-tags", value: @selected_tags.join(",") %>
+  </div>
 </div>
-  </div>
-  </div>
-
-<script>
-  document.addEventListener('turbo:load', () => {
-    const dropdown = document.getElementById("dropdown");
-    const dropdownItems = document.querySelectorAll(".dropdown-item");
-    const hiddenField = document.getElementById("hidden-tags");
-    const selectedTagsDisplay = document.getElementById("selected-tags");
-
-    // Функция для обновления отображения выбранных тегов
-    function updateSelectedTagsDisplay() {
-      const selectedTags = hiddenField.value ? hiddenField.value.split(",") : [];
-      if (selectedTags.length > 0) {
-        selectedTagsDisplay.textContent = selectedTags.join(", ");
-      } else {
-        selectedTagsDisplay.textContent = "Выберите типы мероприятий";
-      }
-    }
-
-    window.toggleDropdown = () => {
-      dropdown.classList.toggle("hidden");
-    };
-
-    // Обработка выбора элементов
-    dropdownItems.forEach(item => {
-      item.addEventListener("click", () => {
-        const key = item.getAttribute("data-key");
-        let selectedTags = hiddenField.value ? hiddenField.value.split(",") : [];
-
-        if (selectedTags.includes(key)) {
-          selectedTags = selectedTags.filter(tag => tag !== key); // Удалить из выбранных
-          item.querySelector("span").classList.remove("text-blue-500", "font-semibold");
-          item.querySelector("span").classList.add("text-gray-700");
-        } else {
-          selectedTags.push(key); // Добавить к выбранным
-          item.querySelector("span").classList.add("text-blue-500", "font-semibold");
-          item.querySelector("span").classList.remove("text-gray-700");
-        }
-
-        hiddenField.value = selectedTags.join(",");
-        updateSelectedTagsDisplay();
-      });
-    });
-
-    // Обновление отображения при загрузке страницы
-    updateSelectedTagsDisplay();
-  });
-</script>
-
-<style>
-  .dropdown-item span {
-    transition: color 0.2s, font-weight 0.2s;
-  }
-
-  .dropdown-item span.text-blue-500 {
-    color: #3b82f6; /* Голубой цвет */
-    font-weight: bold;
-  }
-</style>

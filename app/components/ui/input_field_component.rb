@@ -16,7 +16,7 @@ module Ui
         if @type == "radio"
           render_radio_buttons
         else
-          label_tag = tag.label(@label, for: @field_name, class: "block text-sm mb-2 font-medium text-gray-700 dark:text-white")
+          label_tag = tag.label(@label, for: @field_name, class: "block text-sm mb-2 font-medium ")
           input = input_field
           error_tag = error_message
           label_tag + input + error_tag
