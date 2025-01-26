@@ -17,10 +17,12 @@
     <%= render "layouts/header" %>
 
     <main class="flex-grow">
+      <div id="notifications" class="fixed  right-0 z-50 space-y-2">
+      <%= render "layouts/flash" %>
+    </div>
       <%= yield %>
     </main>
     
     <%= render "layouts/footer" %>
-
   </body>
 </html>

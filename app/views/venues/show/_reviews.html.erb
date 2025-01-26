@@ -12,12 +12,11 @@
           <%= review.user.email[0] %> 
         </div>
       <% end %>
-
       <p class="ml-4 font-semibold text-lg">
-        <%= link_to review.user.profile.last_name, user_profile_path(review.user) %>
+        <%= link_to review.user.profile.last_name, user_profile_path(review.user_id) %>
       </p>
       <p class="ml-2 font-semibold text-lg">
-        <%= link_to review.user.profile.first_name, user_profile_path(review.user) %>
+        <%= link_to review.user.profile.first_name, user_profile_path(review.user_id) %>
       </p>
 
       <p class="ml-auto text-sm text-gray-500">

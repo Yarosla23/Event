@@ -42,11 +42,15 @@ class EventsController < ApplicationController
   end
 
   def edit
+    @selected_tags = @event.tags || []
     build_associations
   end
 
   def update
-
+    if params[:event][:tags].is_a?(String)
+      @event.tags = params[:event][:tags].split(',').map(&:strip)
+    end
+  
     if @event.update(event_params)
       redirect_to @event, notice: 'Мероприятие было успешно обновлено.'
     else
@@ -80,7 +84,7 @@ class EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :name, :description, :event_type, :start_time, :end_time, :location, :location_link, :event_format, event_photos_attributes: [:id, :photo, :_destroy],
+      :name, :description, :event_type, :start_time, :end_time, :location, :location_link, :event_format, tags: [], event_photos_attributes: [:id, :photo, :_destroy],
       event_rule_attributes: [:id, :rules, :consent, :_destroy],
       participant_attributes: [:id, :min_participants, :max_participants, :participant_type, :is_private, :is_paid, :_destroy],
       logistic_attributes: [:id, :organizers, :contact_info, :technical_requirements, :special_instructions, :_destroy],

@@ -1,11 +1,8 @@
 class ProfilesController < ApplicationController
   before_action :set_user, only: [:new, :create, :show, :edit]
 
-
   def show
-    @user = current_user
     @profile = @user.profile || @user.build_profile
-    @days_registered = @user.days_registered
 
     render :show
   end
@@ -16,37 +13,41 @@ class ProfilesController < ApplicationController
 
   def create
     @profile = @user.build_profile(profile_params)
-
-    if @profile.save!
+    
+    if @profile.valid? && @profile.save!
+      binding.irb
       redirect_to user_profile_path(@user), notice: 'Профиль был создан.'
     else
-      render :new, alert: 'Ошибочка.'
+      flash.now[:alert] = 'Ошибка создания профиля, проверьте введенные данные'
+      render :new
     end
   end
 
   def edit
-    @profile = @user.profile
+
+    @profile = current_user.profile
   end
 
   def update
-    binding.irb
-    
     @profile = current_user.profile
-  
+    
     if params[:cover_color]
       logger.debug "Received cover_color: #{params[:cover_color]}"
       if @profile.update_cover_color(params[:cover_color])
-        redirect_to user_profile_path(current_user), notice: 'Цвет обложки успешно обновлен.'
+        redirect_to user_profile_path(current_user), notice: "Цвет обложки успешно обновлен"
       else
-        redirect_to user_profile_path(current_user), alert: 'Ошибка: недопустимый формат цвета.'
+        redirect_to user_profile_path(current_user), alert: "Ошибка: недопустимый формат цвета"
       end
-    elsif @profile.update!(profile_params)
+    elsif @profile.update(profile_params)
       respond_to do |format|
-        format.html { redirect_to user_profile_path(current_user) } 
+        format.html { redirect_to user_profile_path(current_user), notice: "Ваш профиль был успешно обновлен"
+      } 
         format.turbo_stream 
       end
     else
-      render :edit, alert: 'Ошибка при обновлении профиля.'
+      @user = current_user
+      flash.now[:alert] = 'Ошибка при обновлении профиля.'
+      render :edit
     end
   end
   
@@ -63,5 +64,4 @@ class ProfilesController < ApplicationController
       :first_name, :last_name, :middle_name, :birthday_date, :phone, :city, :gender, :options, :avatar, :cover_color
     )
   end
-  
 end

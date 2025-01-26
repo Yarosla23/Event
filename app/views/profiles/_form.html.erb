@@ -1,83 +1,106 @@
-<%= form_with(model: @profile, url: user_profile_path(@user), class: "contents",data: { turbo: false }) do |form| %>
-  <div class="grid gap-6 mb-6 px-4 md:grid-cols-2">
+<%= form_with(model: @profile, url: user_profile_path(@user), class: "contents ",data: { turbo: false }) do |form| %>
+  <div class="grid gap-6 mb-6  md:grid-cols-2">
     <%= form.hidden_field :cover_color, value: @profile.cover_color || '#4f46e5' %>
-
-    <div>
-      <%= form.label :last_name, "Фамилия", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-      <%= form.text_field :last_name, placeholder: "Иванов", class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
-    </div>
-    <div>
-      <%= form.label :first_name, "Имя", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-      <%= form.text_field :first_name, placeholder: "Иван", class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
-    </div>
-    <div>
-      <%= form.label :middle_name, "Отчество", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-      <%= form.text_field :middle_name, placeholder: "Иванович", class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
-    </div>
-    <div>
-      <%= form.label :birthday_date,"День рождение", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-      <%= form.date_field :birthday_date, class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
-    </div>  
-    <div>
-      <%= form.label :phone, "Номер телефона", class:"block mb-2 text-sm font-medium text-gray-900 dark:text-white"%>
-      <%= form.text_field :phone, placeholder: "+711-111-11-111", class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
-    </div>
-    <div>
-        <%= form.label :city, "Город", class:"block mb-2 text-sm font-medium text-gray-900 dark:text-white"%>
-        <%= form.text_field :city, placeholder: "Москва", class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
-    </div>
-    <div class="flex items-center ps-4 py-4 border border-gray-200 rounded dark:border-gray-700 mt-2">
-      <%= form.radio_button :gender, "male", id: "gender_male", 
-        class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" %>
-      <%= form.label :gender, "Мужской пол", for: "gender_male", 
-        class: "ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
-    </div>
-    <div class="flex items-center ps-4 py-4 border border-gray-200 rounded dark:border-gray-700 mt-2">
-      <%= form.radio_button :gender, "female", id: "gender_female", 
-        class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" %>
-      <%= form.label :gender, "Женский пол", for: "gender_female", 
-        class: "ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
-    </div>
-  </div>
-  <div class="mb-6 px-4">
-    <%= form.label :options, "Описание", class:"block mb-2 text-sm font-medium text-gray-900 dark:text-white"%>
-    <%= form.text_area :options, placeholder: "Расскажите о себе", class:"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
-  </div> 
-
-  <div class="my-5 px-4">
-    <div class="relative">
-      <% if @profile.avatar.present? %>
-            <h1 class="mb-3"> Ваше фото</h1>
-
-        <img src="<%= @profile.avatar_url %>" alt="Avatar" class="w-32 h-32 object-cover rounded-lg mb-3" id="current-avatar">
-      <% else %>
-        <p>Изображение не загружено</p>
-      <% end %>
-
-      <%= form.file_field :avatar, class: "hidden", id: "avatar-upload" %>
-      <label for="avatar-upload" class="cursor-pointer block py-2 px-4 bg-[#2D2D3A] text-white rounded-md w-1/4 text-center transition duration-200">
-        Выберите изображение
-      </label>
       
-      <div class="mt-3" id="image-preview-container">
+    <%= render Ui::InputFieldComponent.new(
+      form: form,
+      field_name: :last_name,
+      label: "Фамилия",
+      placeholder: "Иванов",
+      input_class: "whitespace-pre-wrap "
+    ) %>
 
-      </div>
+    <%= render Ui::InputFieldComponent.new(
+      form: form,
+      field_name: :first_name,
+      label: "Имя",
+      placeholder: "Иван",
+    ) %>
+
+    <%= render Ui::InputFieldComponent.new(
+      form: form,
+      field_name: :middle_name,
+      label: "Отчество",
+      placeholder: "Иванович",
+    ) %>
+
+    <div class="field mx-3 ">
+      <%= form.label :birthday_date, "День рождение", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <%= form.date_field :birthday_date, value: form.object.birthday_date&.strftime("%Y-%m-%d"), class: " bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+      <% if form.object.errors[:birthday_date].any? %>
+        <div class="text-sm text-red-500">
+          <%= form.object.errors[:birthday_date].join(', ') %>
+        </div>
+      <% end %>
+    </div>
+
+    <%= render Ui::InputFieldComponent.new(
+      form: form,
+      field_name: :phone,
+      label: "Номер телефона",
+      placeholder: "+711-111-11-111",
+    ) %>
+
+    <%= render Ui::InputFieldComponent.new(
+      form: form,
+      field_name: :city,
+      label: "Город",
+      placeholder: "Москва",
+    ) %>
+
+    <%= render Ui::InputFieldComponent.new(
+      form: form,
+      field_name: :options,
+      label: "Описание",
+      placeholder: "Расскажите о себе",
+      type: "text_area"
+    ) %>
+    
+    <div  class="field mx-4 ">
+      <p class="field mb-2 text-gray-900   dark:text-white" > Пол </p>
+      <%= render Ui::InputFieldComponent.new(
+        form: form,
+        field_name: :gender,
+        label: "Пол",
+        type: "radio",
+        options: { values: [["male", "Мужской пол"], ["female", "Женский пол"]] }
+      ) %>
     </div>
   </div>
-
 
   <div class="flex items-start mb-6 px-4">
       <div class="flex items-center h-5">
-      <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"  />
+      <input id="remember" type="checkbox" value="true" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"  />
       </div>
       <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Активность профиля</label>
   </div>
 
-  <div class="mt-6 flex items-center justify-end gap-x-6">
-   <%= form.submit class:"rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"%>
-  </div>
-<% end %>
 
+  <div class="my-5 px-4">
+    <div class="relative">
+      
+      <% if @profile.avatar.present? %>
+        <h1 class="mb-3 text-lg sm:text-xl">Ваше фото</h1>
+        <img src="<%= @profile.avatar_url %>" alt="Avatar" class="w-60 h-60 object-cover rounded-lg mb-3 mx-auto sm:w-60 sm:h-60" id="current-avatar">
+      <% else %>
+        <p class="text-center">Изображение не загружено</p>
+      <% end %>
+      
+      <%= form.file_field :avatar, class: "hidden", id: "avatar-upload" %>
+      <label for="avatar-upload" class="cursor-pointer block py-2 px-4 bg-[#2D2D3A] text-white rounded-md w-/2 md:w-1/4  text-center transition duration-200 mx-auto">
+        Выберите изображение
+      </label>
+
+      <div class="mt-3" id="image-preview-container">
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4 flex items-center justify-end gap-x-6">
+    <%= form.submit @profile.new_record? ? "Создать профиль" : "Обновить профиль", class: "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+  </div>
+
+<% end %>
 <script>
   document.getElementById('avatar-upload').addEventListener('change', function(event) {
     const file = event.target.files[0];

@@ -11,6 +11,7 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-telegram'
+gem 'pundit'
 
 gem 'pg'
 gem 'dotenv-rails'
