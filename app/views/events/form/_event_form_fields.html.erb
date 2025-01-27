@@ -11,14 +11,13 @@
       %>
     </div>
 
-    <div class="field mb-4">
-    <%= render Ui::MultiselectComponent.new(
-      form: form, 
-      tags: Event::TYPES, 
-      selected_tags: @event.tags, 
-      label: "Тип мероприятия") 
-    %>
-
+    <div class="field px-2 mb-4">
+      <%= render Ui::MultiselectComponent.new(
+        form: form, 
+        tags: Event::TYPES, 
+        selected_tags: @event.tags, 
+        label: "Тип мероприятия") 
+      %>
     </div>
     
     <div class="field mx-3 mb-4">
@@ -75,13 +74,13 @@
         input_class: "whitespace-pre-wrap "
       ) %>
     </div>
- 
-    <div 
-      onclick="toggleDropdown()">
-      <svg class="w-5 h-5 absolute top-3 right-3 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  </div>
+  <div class="relative hidden w-full">
+      <svg class="w-5 h-5 hidden absolute top-3 right-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
       </svg>
-    </div>
-
+      <div class="max-h-48 overflow-y-auto">
+      </div>
   </div>
+  
 </div>

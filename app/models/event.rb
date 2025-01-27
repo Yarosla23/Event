@@ -29,8 +29,9 @@ class Event < ApplicationRecord
   
   validates :user_id, :name, :start_time, :end_time, :location, presence: true
 
-  validates :event_type, presence: true, inclusion: { in:  TYPES, message: "%{value} is not a valid participant type" }
- 
+  validates :tags, presence: true
+  validate :tags_must_be_valid
+  
   validates :name, length: { maximum: 100 }
   validates :description, length: { maximum: 2000 }, allow_nil: true
   validates :location, length: { maximum: 255 }, allow_nil: true
@@ -40,6 +41,13 @@ class Event < ApplicationRecord
   validate :start_time_before_end_time
 
   private
+
+  def tags_must_be_valid
+    invalid_tags = tags - TYPES
+    if invalid_tags.any?
+      errors.add(:tags, "#{invalid_tags.join(', ')} значения нет в списке")
+    end
+  end
 
   def start_time_before_end_time
     if start_time && end_time && start_time >= end_time

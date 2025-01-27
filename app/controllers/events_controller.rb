@@ -4,14 +4,17 @@ class EventsController < ApplicationController
   def index
     @events = Event.includes(:participant, :logistic, :tickets, :event_rule)
 
-    @events = @events.where('event_type LIKE ?', "%#{params[:event_type]}%") if params[:event_type].present?
     @events = @events.where('start_time >= ?', params[:start_time]) if params[:start_time].present?
     @events = @events.where('location LIKE ?', "%#{params[:location]}%") if params[:location].present?
 
+    if params[:tags].present?
+      tags = params[:tags].split(',').map(&:strip) # Преобразуем строку в массив
+      @events = @events.where('tags @> ARRAY[?]::text[]', tags) # Используем PostgreSQL array-оператор
+    end
     if params[:search].present?
       @events = @events.where('name LIKE ? OR description LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%")
     end
-
+    @events = @events.order(created_at: :desc)
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -33,6 +36,8 @@ class EventsController < ApplicationController
 
   def create
     @event = current_user.events.build(event_params)
+    @event.tags = params[:event][:tags].split(',').map(&:strip)
+
     if @event.save
       redirect_to @event, notice: 'Мероприятие успешно создано.'
     else
@@ -47,10 +52,7 @@ class EventsController < ApplicationController
   end
 
   def update
-    if params[:event][:tags].is_a?(String)
       @event.tags = params[:event][:tags].split(',').map(&:strip)
-    end
-  
     if @event.update(event_params)
       redirect_to @event, notice: 'Мероприятие было успешно обновлено.'
     else

@@ -3,7 +3,7 @@
   <%= link_to '+', new_event_path, class: 'bg-blue-500 text-center text-white px-4 py-2 text-xl rounded-full hover:bg-blue-600 transition' %>
 </div>
 
-<div class="flex items-center justify-between max-w-md mx-auto mb-4 gap-4">
+<div class="flex items-center justify-between max-w-md mx-6 lg:mx-auto mb-4 gap-4">
   <%= form_with(url: events_path, method: :get, local: false, class: 'flex-grow', data: { turbo_frame: 'events-list' }) do %>
     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
     <div class="relative flex items-center">
@@ -21,18 +21,21 @@
   </button>
 </div>
 
-
 <div 
   id="filters" 
-  class="hidden mb-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg  inset-0 max-w-5xl mx-auto"
+  class="hidden mb-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg inset-0 max-w-5xl mx-6 lg:mx-auto"
 >
   <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Фильтры</h2>
-  <%= form_with(url: events_path, method: :get, local: false, class: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6', data: { turbo_frame: 'events-list' }) do %>
-    <div>
-      <%= label_tag :event_type, 'Тип мероприятия', class: 'block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1' %>
-      <%= select_tag :event_type, options_for_select(['', 'Концерт', 'Семинар', 'Воркшоп'], params[:event_type]), class: 'w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
+  <%= form_with(url: events_path, method: :get, local: false, class: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6', data: { turbo_frame: 'events-list' }) do |form| %>
+        <div class="form-group">
+      <%= render Ui::MultiselectComponent.new(
+        form: form, 
+        tags: Event::TYPES, 
+        selected_tags: params[:event_types] || [], 
+        label: "Тип мероприятия"
+      ) %>
     </div>
-
+    
     <div>
       <%= label_tag :start_time, 'Дата начала', class: 'block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1' %>
       <%= date_field_tag :start_time, params[:start_time], class: 'w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
@@ -50,49 +53,59 @@
   <% end %>
 </div>
 
-
-<div 
-  id="filters" 
-  class="hidden mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg"
->
-  <%= form_with(url: events_path, method: :get, local: false, class: 'grid grid-cols-1 md:grid-cols-3 gap-4 w-full md:w-2/3', data: { turbo_frame: 'events-list' }) do %>
-    <div>
-      <%= label_tag :event_type, 'Тип мероприятия' %>
-      <%= select_tag :event_type, options_for_select(['', 'Концерт', 'Семинар', 'Воркшоп'], params[:event_type]), class: 'w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-white' %>
-    </div>
-
-    <div>
-      <%= label_tag :start_time, 'Дата начала' %>
-      <%= date_field_tag :start_time, params[:start_time], class: 'w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-white' %>
-    </div>
-
-    <div>
-      <%= label_tag :location, 'Местоположение' %>
-      <%= text_field_tag :location, params[:location], class: 'w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-white' %>
-    </div>
-
-    <div class="flex items-center justify-between">
-      <%= submit_tag 'Применить фильтры', class: 'bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition' %>
-      <%= link_to 'Сбросить фильтры', events_path, class: 'bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-600 transition' %>
-    </div>
-  <% end %>
-</div>
-
-<div id="events-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8 px-4 md:px-16">
+<div id="events-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 py-8 lg:w-[70%] mx-auto">
   <% @events.each_with_index do |event, index| %>
-    <%= link_to event_path(event), class: "flex flex-col sm:flex-row bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105 duration-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700" do %>
-      <img class="object-cover w-full sm:w-48 h-48 sm:h-auto rounded-t-lg sm:rounded-none sm:rounded-l-lg" src="https://via.placeholder.com/150" alt="Изображение мероприятия">
-      <div class="flex flex-col justify-between p-6 w-full">
-        <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-4"><%= event.name %></h5>
-        <p class="text-gray-700 dark:text-gray-400 mb-3"><%= truncate(event.description, length: 100) %></p>
-        <div class="text-sm text-gray-600 dark:text-gray-400 mb-3">
-          <p><strong>Начало:</strong> <%= l(event.start_time, format: :custom) %></p>
-          <p><strong>Окончание:</strong> <%= l(event.end_time, format: :custom) %></p>
+    <%= link_to event_path(event), class: "flex flex-col bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition-transform hover:scale-105 hover:bg-blue-50 duration-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700" do %>
+      <%= image_tag "party2.png", 
+      class: "object-cover w-full h-56 rounded-t-2xl", 
+      alt: "Изображение мероприятия" %>
+
+      <div class="flex flex-col justify-between p-5">
+        <h5 class="text-xl font-semibold text-gray-900 dark:text-white mb-3  flex items-center">
+          <%= event.name %>
+          
+          <!-- Приватность: значок замка, если приватное -->
+          <span class="ml-2">
+            <% if event.participant.is_private %>
+              <%= inline_svg('icons/lock.svg', class: 'w-6 h-6 text-indigo-600  dark:text-indigo-400') %>
+            <% end %>
+          </span>
+
+          <span class="ml-2">
+            <% if event.participant.is_paid %>
+              <%= inline_svg('icons/dollar.svg', class: 'w-6 h-6 text-green-600 ') %>
+            <% end %>
+          </span>
+
+        </h5>
+
+        <p class="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed line-clamp-3">
+          <%= truncate(event.description, length: 300) %>
+        </p>
+        <div class="mb-4">
+          <p class="flex items-center text-lg font-semibold text-white">
+            <span class="px-3 py-1 rounded-full bg-pink-400 dark:bg-pink-500">
+              <%= l(event.start_time, format: :custom) %>
+            </span>
+            <span class="mx-2 text-gray-500 dark:text-gray-400">—</span>
+            <span class="px-3 py-1 rounded-full bg-pink-400 dark:bg-pink-500">
+              <%= l(event.end_time, format: :custom) %>
+            </span>
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <% event.tags.each do |tag| %>
+            <span class="bg-blue-600 text-white rounded-full py-1 px-3 text-xs">
+              <%= tag %>
+            </span>
+          <% end %>
         </div>
       </div>
     <% end %>
   <% end %>
 </div>
+
 
 
 <script>
