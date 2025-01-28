@@ -14,6 +14,19 @@ class EventsController < ApplicationController
     if params[:search].present?
       @events = @events.where('name LIKE ? OR description LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%")
     end
+    if params[:participant_type].present?
+      @events = @events.joins(:participant).where(participant: { participant_type: params[:participant_type] })
+    end
+  
+    if params[:is_private].present?
+      is_private = ActiveRecord::Type::Boolean.new.cast(params[:is_private]) # Преобразуем в булево значение
+      @events = @events.joins(:participant).where(participant: { is_private: is_private })
+    end
+  
+    if params[:is_paid].present?
+      is_paid = ActiveRecord::Type::Boolean.new.cast(params[:is_paid]) # Преобразуем в булево значение
+      @events = @events.joins(:participant).where(participant: { is_paid: is_paid })
+    end
     @events = @events.order(created_at: :desc)
     respond_to do |format|
       format.html
@@ -52,7 +65,7 @@ class EventsController < ApplicationController
   end
 
   def update
-      @event.tags = params[:event][:tags].split(',').map(&:strip)
+    @event.tags = params[:event][:tags].split(',').map(&:strip)
     if @event.update(event_params)
       redirect_to @event, notice: 'Мероприятие было успешно обновлено.'
     else

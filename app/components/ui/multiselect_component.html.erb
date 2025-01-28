@@ -7,7 +7,7 @@
       class="multiselect-container w-full border border-gray-600 dark:border-gray-400 rounded-lg cursor-pointer p-2 hover:bg-gray-300 dark:hover:bg-blue-800"
       onclick="toggleDropdown()">
       <span id="selected-tags" class="text-gray-800 dark:text-gray-200">
-        <%= @selected_tags.any? ? @selected_tags.join(", ") : "Выберите типы мероприятий" %>
+        <%= @selected_values.any? ? @selected_values.join(", ") : "Выберите типы мероприятий" %>
       </span>
       <svg class="w-5 h-5 absolute top-3 right-3 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -15,10 +15,10 @@
     </div>
     <div id="dropdown" class="hidden absolute z-10 bg-gray-100 dark:bg-gray-700 border border-gray-600 dark:border-gray-600 rounded-lg shadow-lg w-full mt-1">
       <div class="max-h-48 overflow-y-auto">
-        <% @tags.each do |key| %>
+        <% @value.each do |key| %>
           <div 
             data-key="<%= key %>"
-            class="dropdown-item px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer <%= 'text-blue-400 font-semibold' if @selected_tags.include?(key) %>">
+            class="dropdown-item px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer <%= 'text-blue-400 font-semibold' if @selected_values.include?(key) %>">
             <span class="text-gray-800 dark:text-gray-200">
               <%= key %>
             </span>
@@ -27,9 +27,9 @@
       </div>
     </div>
   </div>
-  <%= form.hidden_field :tags, id: "hidden-tags", value: @selected_tags.join(",") %>
-    <% if @errors[:tags].present? %>
-    <p class="text-red-500 text-sm mt-2 !important"><%= @errors[:tags].join(", ") %></p>
+  <%= form.hidden_field @field_name, id: "hidden-values", value: @selected_values.join(",") %>
+  <% if @errors[@field_name].present? %>
+    <p class="text-red-500 text-sm mt-2 !important"><%= @errors[@field_name].join(", ") %></p>
   <% end %>
 </div>
 
@@ -37,16 +37,16 @@
 document.addEventListener('turbo:load', () => {
   const dropdown = document.getElementById("dropdown");
   const dropdownItems = document.querySelectorAll(".dropdown-item");
-  const hiddenField = document.getElementById("hidden-tags");
-  const selectedTagsDisplay = document.getElementById("selected-tags");
+  const hiddenField = document.getElementById("hidden-values");
+  const selectedValuesDisplay = document.getElementById("selected-tags");
   const multiselectContainer = document.querySelector(".multiselect-container");
 
-  function updateSelectedTagsDisplay() {
-    const selectedTags = hiddenField.value ? hiddenField.value.split(",") : [];
-    if (selectedTags.length > 0) {
-      selectedTagsDisplay.textContent = selectedTags.join(", ");
+  function updateSelectedValuesDisplay() {
+    const selectedValues = hiddenField.value ? hiddenField.value.split(",") : [];
+    if (selectedValues.length > 0) {
+      selectedValuesDisplay.textContent = selectedValues.join(", ");
     } else {
-      selectedTagsDisplay.textContent = "Выберите типы мероприятий";
+      selectedValuesDisplay.textContent = "Выберите типы мероприятий";
     }
   }
 
@@ -58,24 +58,23 @@ document.addEventListener('turbo:load', () => {
     item.addEventListener("click", (event) => {
       event.stopPropagation(); 
       const key = item.getAttribute("data-key");
-      let selectedTags = hiddenField.value ? hiddenField.value.split(",") : [];
+      let selectedValues = hiddenField.value ? hiddenField.value.split(",") : [];
 
-      if (selectedTags.includes(key)) {
-        selectedTags = selectedTags.filter(tag => tag !== key);
+      if (selectedValues.includes(key)) {
+        selectedValues = selectedValues.filter(value => value !== key);
         item.querySelector("span").classList.remove("text-blue-400", "font-semibold");
      
       } else {
-        selectedTags.push(key);
+        selectedValues.push(key);
         item.querySelector("span").classList.add("text-blue-400", "font-semibold");
-
       }
 
-      hiddenField.value = selectedTags.join(",");
-      updateSelectedTagsDisplay();
+      hiddenField.value = selectedValues.join(",");
+      updateSelectedValuesDisplay();
     });
   });
 
-  updateSelectedTagsDisplay();
+  updateSelectedValuesDisplay();
 
   document.addEventListener("click", (event) => {
     if (!multiselectContainer.contains(event.target) && !dropdown.contains(event.target)) {
@@ -83,6 +82,7 @@ document.addEventListener('turbo:load', () => {
     }
   });
 });
+
 
 </script>
 
@@ -96,10 +96,10 @@ document.addEventListener('turbo:load', () => {
   }
 
   .dark .multiselect-container {
-    background-color: #1f2937; 
+    background-color: #374151; 
   }
   .multiselect-container {
-    background-color: #ffffff; /* Белый фон */
+    background-color: #ffffff; 
   }
 
   .dropdown-item {

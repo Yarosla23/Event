@@ -14,8 +14,9 @@
     <div class="field px-2 mb-4">
       <%= render Ui::MultiselectComponent.new(
         form: form, 
-        tags: Event::TYPES, 
-        selected_tags: @event.tags, 
+        field_name: :tags,
+        selected_values: @event.tags,
+        value: Event::TYPES, 
         label: "Тип мероприятия") 
       %>
     </div>
