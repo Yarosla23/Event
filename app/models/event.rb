@@ -8,11 +8,9 @@ class Event < ApplicationRecord
   has_many :tickets, dependent: :destroy
   has_many :event_photos, dependent: :destroy
   
-  accepts_nested_attributes_for :event_photos, allow_destroy: true
-  accepts_nested_attributes_for :participant, allow_destroy: true
-  accepts_nested_attributes_for :logistic, allow_destroy: true
-  accepts_nested_attributes_for :tickets, allow_destroy: true
-  accepts_nested_attributes_for :event_rule, allow_destroy: true
+  accepts_nested_attributes_for :event_photos, :participant,
+    :logistic,:tickets, :event_rule, 
+    allow_destroy: true
 
   TYPES = [
     'Вебинар', 'Лекция', 'Семинар', 'Тренинг', 'Воркшоп', 'Мастер-класс', 

@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_26_171430) do
-  # These are extensions that must be enabled in order to support this database
+ActiveRecord::Schema[7.0].define(version: 2025_01_29_193214) do
   enable_extension "plpgsql"
 
   create_table "amenities", force: :cascade do |t|
@@ -61,6 +60,21 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_26_171430) do
     t.bigint "user_id", null: false
     t.text "tags", default: [], array: true
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "facilities", force: :cascade do |t|
+    t.bigint "venue_id", null: false
+    t.boolean "wifi", default: false
+    t.boolean "air_conditioning", default: false
+    t.boolean "audio_visual_equipment", default: false
+    t.boolean "parking", default: false
+    t.boolean "disabled_access", default: false
+    t.boolean "kitchen", default: false
+    t.integer "toilets_count", default: 0
+    t.text "other_facilities"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["venue_id"], name: "index_facilities_on_venue_id"
   end
 
   create_table "habits", force: :cascade do |t|
@@ -144,6 +158,21 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_26_171430) do
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
+  create_table "rental_infos", force: :cascade do |t|
+    t.bigint "venue_id", null: false
+    t.decimal "price", null: false
+    t.text "discounts"
+    t.integer "min_rental_duration_hours", default: 0
+    t.text "payment_terms"
+    t.time "working_hours_start", null: false
+    t.time "working_hours_end", null: false
+    t.text "rules"
+    t.text "disclaimer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["venue_id"], name: "index_rental_infos_on_venue_id"
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.bigint "venue_id", null: false
     t.bigint "user_id", null: false
@@ -153,6 +182,19 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_26_171430) do
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_reviews_on_user_id"
     t.index ["venue_id"], name: "index_reviews_on_venue_id"
+  end
+
+  create_table "services", force: :cascade do |t|
+    t.bigint "venue_id", null: false
+    t.boolean "technical_equipment", default: false
+    t.boolean "furniture", default: false
+    t.boolean "decoration", default: false
+    t.boolean "cleaning_after_event", default: false
+    t.boolean "security", default: false
+    t.text "additional_services"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["venue_id"], name: "index_services_on_venue_id"
   end
 
   create_table "tickets", force: :cascade do |t|
@@ -180,18 +222,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_26_171430) do
   end
 
   create_table "venues", force: :cascade do |t|
-    t.string "name"
-    t.string "venue_type"
+    t.string "name", null: false
+    t.text "venue_type", default: [], array: true
     t.text "description"
-    t.string "address"
-    t.string "phone"
-    t.string "email"
+    t.string "address", null: false
+    t.string "phone", null: false
+    t.string "email", null: false
     t.string "website"
-    t.integer "area"
-    t.integer "max_participants"
+    t.integer "area", null: false
+    t.integer "max_participants", null: false
     t.string "details"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_venues_on_user_id"
   end
 
   add_foreign_key "amenities", "venues"
@@ -199,12 +243,16 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_26_171430) do
   add_foreign_key "event_rules", "events"
   add_foreign_key "event_types", "venues"
   add_foreign_key "events", "users"
+  add_foreign_key "facilities", "venues"
   add_foreign_key "information", "venues"
   add_foreign_key "logistics", "events"
   add_foreign_key "participants", "events"
   add_foreign_key "policies", "venues"
   add_foreign_key "prices", "venues"
+  add_foreign_key "rental_infos", "venues"
   add_foreign_key "reviews", "users"
   add_foreign_key "reviews", "venues"
+  add_foreign_key "services", "venues"
   add_foreign_key "tickets", "events"
+  add_foreign_key "venues", "users"
 end

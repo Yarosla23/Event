@@ -16,6 +16,7 @@
     Фильтры
   </button>
 </div>
+
 <div id="filters" class="hidden mb-6 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg inset-0 max-w-5xl mx-6 lg:mx-auto">
   <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">Фильтры</h2>
   
@@ -26,6 +27,7 @@
         field_name: :tags, 
         value: Event::TYPES, 
         selected_values: params[:tags], 
+        placeholder: "Выберите типы мероприятий",
         label: "Тип мероприятия"
       ) %>
     </div>
@@ -115,44 +117,42 @@
   <% end %>
 </div>
 
-
-
 <script>
-document.addEventListener('turbo:load', () => {
-  initFilterToggle();
-});
-
-document.addEventListener('turbo:frame-load', () => {
-  initFilterToggle();
-});
-
-function initFilterToggle() {
-  const filterToggle = document.getElementById('filter-toggle');
-  const filters = document.getElementById('filters');
-
-  if (!filterToggle || !filters) return;
-
-  const isExpanded = filterToggle.classList.contains('expanded');
-  if (isExpanded) {
-    filters.classList.remove('hidden');
-  } else {
-    filters.classList.add('hidden');
-  }
-
-  filterToggle.addEventListener('click', function () {
-    const isCurrentlyExpanded = filterToggle.classList.contains('expanded');
-    
-    if (isCurrentlyExpanded) {
-      setTimeout(() => {
-        filters.classList.add('hidden');
-        filterToggle.classList.remove('expanded');
-      }, 100); 
-    } else {
-      setTimeout(() => {
-        filters.classList.remove('hidden');
-        filterToggle.classList.add('expanded');
-      }, 100); 
-    }
+  document.addEventListener('turbo:load', () => {
+    initFilterToggle();
   });
-}
+
+  document.addEventListener('turbo:frame-load', () => {
+    initFilterToggle();
+  });
+
+  function initFilterToggle() {
+    const filterToggle = document.getElementById('filter-toggle');
+    const filters = document.getElementById('filters');
+
+    if (!filterToggle || !filters) return;
+
+    const isExpanded = filterToggle.classList.contains('expanded');
+    if (isExpanded) {
+      filters.classList.remove('hidden');
+    } else {
+      filters.classList.add('hidden');
+    }
+
+    filterToggle.addEventListener('click', function () {
+      const isCurrentlyExpanded = filterToggle.classList.contains('expanded');
+      
+      if (isCurrentlyExpanded) {
+        setTimeout(() => {
+          filters.classList.add('hidden');
+          filterToggle.classList.remove('expanded');
+        }, 100); 
+      } else {
+        setTimeout(() => {
+          filters.classList.remove('hidden');
+          filterToggle.classList.add('expanded');
+        }, 100); 
+      }
+    });
+  }
 </script>

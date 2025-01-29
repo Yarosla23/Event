@@ -1,5 +1,5 @@
   <h3 class="text-xl text-center font-semibold text-gray-800 dark:text-gray-200 mb-5">
-    Информация о мероприятии
+    Информация о площадке
   </h3>
 
   <div class="text-center mb-5">
@@ -16,7 +16,7 @@
 
   <div class="mb-5">
     <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Количество участников:
+      Максимум участников:
     </h4>
     <p class="text-base font-medium text-blue-600 dark:text-blue-400">
       <%= @venue.max_participants || "—" %>
@@ -24,9 +24,11 @@
   </div>
   <div class="mb-5">
     <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Для кого:
+      Площадь:
     </h4>
     <p class="text-base font-medium text-blue-600 dark:text-blue-400">
+      <%= @venue.max_participants || "—" %>
+
     </p>
   </div>
 
@@ -44,7 +46,7 @@
       Ссылка на карту:
     </h4>
     <a href="<%= @venue.website %>" class="text-blue-600 hover:underline dark:text-blue-400 text-base font-medium flex items-center space-x-2" target="_blank">
-      <span>📍 Посмотреть на карте</span>
+      <span>📍 Сайт</span>
     </a>
   </div>
 

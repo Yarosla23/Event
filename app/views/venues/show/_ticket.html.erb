@@ -1,21 +1,57 @@
-<div class="mt-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
-  <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">Билеты на мероприятие</h3>
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Информация о зале</h3>
 
-  <div class="flex flex-wrap gap-6">
-    <% tickets.each do |ticket| %>
-      <div class="flex-1 min-w-[250px] md:min-w-[415px]  bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 hover:scale-105 transform transition-all duration-300">
-        <div class="flex justify-between items-center mb-4">
-          <h4 class="text-2xl font-bold text-white"><%= ticket.ticket_type %></h4>
-          <span class="text-xl font-semibold text-white"><%= ticket.price %> <%= ticket.currency %></span>
-        </div>
-        <p class="text-lg text-white mb-2"><strong>Метод оплаты:</strong> <%= ticket.payment_method.join(', ') %></p>
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div>
+      <span class="font-semibold text-gray-700 dark:text-gray-300">Wi-Fi</span>
+      <p class="<%= @venue.facility.wifi ? 'text-green-500' : 'text-red-500' %>">
+        <%= @venue.facility.wifi ? 'Есть' : 'Нет' %>
+      </p>
+    </div>
 
-        <div class="flex justify-end mt-4">
-          <button class="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 active:bg-blue-800 transition-all duration-300 ease-in-out transform hover:scale-105">
-            Купить
-          </button>
-        </div>
-      </div>
-    <% end %>
+    <div>
+      <span class="font-semibold text-gray-700 dark:text-gray-300">Кондиционер</span>
+      <p class="<%= @venue.facility.air_conditioning ? 'text-green-500' : 'text-red-500' %>">
+        <%= @venue.facility.air_conditioning ? 'Есть' : 'Нет' %>
+      </p>
+    </div>
+
+    <div>
+      <span class="font-semibold text-gray-700 dark:text-gray-300">Аудиовизуальное оборудование</span>
+      <p class="<%= @venue.facility.audio_visual_equipment ? 'text-green-500' : 'text-red-500' %>">
+        <%= @venue.facility.audio_visual_equipment ? 'Есть' : 'Нет' %>
+      </p>
+    </div>
+
+    <div>
+      <span class="font-semibold text-gray-700 dark:text-gray-300">Парковка</span>
+      <p class="<%= @venue.facility.parking ? 'text-green-500' : 'text-red-500' %>">
+        <%= @venue.facility.parking ? 'Есть' : 'Нет' %>
+      </p>
+    </div>
   </div>
-</div>
+
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div>
+      <span class="font-semibold text-gray-700 dark:text-gray-300">Доступ для инвалидов</span>
+      <p class="<%= @venue.facility.disabled_access ? 'text-green-500' : 'text-red-500' %>">
+        <%= @venue.facility.disabled_access ? 'Есть' : 'Нет' %>
+      </p>
+    </div>
+
+    <div>
+      <span class="font-semibold text-gray-700 dark:text-gray-300">Кухня</span>
+      <p class="<%= @venue.facility.kitchen ? 'text-green-500' : 'text-red-500' %>">
+        <%= @venue.facility.kitchen ? 'Есть' : 'Нет' %>
+      </p>
+    </div>
+
+    <div>
+      <span class="font-semibold text-gray-700 dark:text-gray-300">Количество туалетов</span>
+      <p><%= @venue.facility.toilets_count %></p>
+    </div>
+  </div>
+
+  <div class="mb-6">
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Другие удобства</span>
+    <p><%= @venue.facility.other_facilities.present? ? @venue.facility.other_facilities : 'Нет дополнительных удобств' %></p>
+  </div>

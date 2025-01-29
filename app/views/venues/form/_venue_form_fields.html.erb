@@ -6,18 +6,28 @@
       <%= render Ui::InputFieldComponent.new(
         form: form,
         field_name: :name, 
-        label: "Название площадки") 
-      %>
+        label: "Название площадки",
+        placeholder: "Введите название площадки"
+      ) %>
+    </div>
+
+    <div class="field m-4">
+      <%= render Ui::MultiselectComponent.new(
+        form: form, 
+        field_name: :venue_type, 
+        value: Venue::TYPES, 
+        selected_values: @venue.venue_type, 
+        placeholder: "Выберите типы площадки",
+        label: "Тип площадки"
+      ) %>
     </div>
 
     <div class="field mb-4">
-      <%= render Ui::SelectFieldComponent.new(
+      <%= render Ui::InputFieldComponent.new(
         form: form,
-        field_name: :venue_type,
-        label: "Тип площадки",
-        options: Event::TYPES,
-        include_blank: 'Выберите тип площадки',
-        input_class: "custom-class"
+        field_name: :website,
+        label: "Сайт",
+        placeholder: "Введите URL сайта"
       ) %>
     </div>
 
@@ -27,23 +37,16 @@
         field_name: :area,
         label: "Площадь",
         type: "number", 
-        step: 0.01
+        step: 0.01,
+        placeholder: "Введите площадь в квадратных метрах"
       ) %>
     </div>
-
-    <div class="field mb-4">
-      <%= render Ui::InputFieldComponent.new(
-        form: form,
-        field_name: :website,
-        label: "Сайт",
-      ) %>
-    </div>
-
     <div class="field mb-4">
       <%= render Ui::InputFieldComponent.new(
         form: form,
         field_name: :email,
         label: "Электронная почта",
+        placeholder: "Введите адрес электронной почты"
       ) %>
     </div>
     <div class="field mb-4">
@@ -51,18 +54,18 @@
         form: form,
         field_name: :phone,
         label: "Телефон",
+        placeholder: "Введите номер телефона"
       ) %>
     </div>
-
 
     <div class="field mb-4">
       <%= render Ui::InputFieldComponent.new(
         form: form,
         field_name: :address,
         label: "Адрес",
+        placeholder: "Введите адрес площадки"
       ) %>
     </div>
-
 
     <div class="field mb-4">
       <%= render Ui::InputFieldComponent.new(
@@ -70,27 +73,31 @@
         field_name: :max_participants,
         label: "Максимальное количество гостей",
         type: "number", 
-        step: 1
+        step: 1,
+        placeholder: "Введите максимальное число гостей"
       ) %>
     </div>
   </div>
 
-    <div class="field mb-4">
-      <%= render Ui::InputFieldComponent.new(
-        form: form,
-        field_name: :description,
-        label: "Описание",
-        type: "text_area",
-        input_class: "whitespace-pre-wrap "
-      ) %>
-    </div>
-          <div class="field mb-4">
-      <%= render Ui::InputFieldComponent.new(
-        form: form,
-        field_name: :details,
-        label: "Дополнительные возможности по размещению",
-        type: "text_area",
-        input_class: "whitespace-pre-wrap "
-      ) %>
-    </div>
+  <div class="field mb-4">
+    <%= render Ui::InputFieldComponent.new(
+      form: form,
+      field_name: :description,
+      label: "Описание",
+      type: "text_area",
+      input_class: "whitespace-pre-wrap ",
+      placeholder: "Введите описание мероприятия"
+    ) %>
+  </div>
+
+  <div class="field mb-4">
+    <%= render Ui::InputFieldComponent.new(
+      form: form,
+      field_name: :details,
+      label: "Дополнительные возможности по размещению",
+      type: "text_area",
+      input_class: "whitespace-pre-wrap ",
+      placeholder: "Укажите особенности размещения и дополнительные возможности"
+    ) %>
+  </div>
 </div>

@@ -2,8 +2,7 @@ class VenuesController < ApplicationController
   before_action :set_venue, only: %i[show edit update destroy]
 
   def index
-    @venues = Venue.includes(:reviews, :amenities)
-    # @venues = Venue.includes(:reviews, :amenities, :event_types, :prices, :policies)
+    @venues = Venue.includes(:reviews, :amenities, :event_types, :prices, :policies, :information, :services)
 
     @venues = @venues.where('venue_type LIKE ?', "%#{params[:venue_type]}%") if params[:venue_type].present?
     @venues = @venues.where('max_participants LIKE ?', "%#{params[:max_participants]}%") if params[:max_participants].present?
@@ -24,12 +23,14 @@ class VenuesController < ApplicationController
   end
 
   def new
-    @venue = Venue.new
+    @venue = current_user.venues.build
     build_associations
   end
 
   def create
-    @venue = Venue.new(venue_params)
+    @venue = current_user.venues.build(venue_params)
+    @venue.venue_type = params[:venue][:venue_type].split(',').map(&:strip) 
+
     if @venue.save
       redirect_to @venue, notice: 'Площадка успешно создана.'
     else
@@ -39,10 +40,14 @@ class VenuesController < ApplicationController
   end
 
   def edit
+    @selected_tags = @venue.venue_type || []
     build_associations
+    binding.irb
   end
 
   def update
+    @venue.venue_type = params[:venue][:venue_type].split(',').map(&:strip) 
+    binding.irb
     if @venue.update(venue_params)
       redirect_to @venue, notice: 'Площадка была успешно обновлена.'
     else
@@ -72,18 +77,22 @@ class VenuesController < ApplicationController
     @venue.build_policy unless @venue.policy
     @venue.event_types.build if @venue.event_types.empty?
     @venue.build_information unless @venue.information
-
+    @venue.build_facility unless @venue.facility
+    @venue.build_service unless @venue.service
+    @venue.build_rental_info unless @venue.rental_info
   end
 
   def venue_params
     params.require(:venue).permit(
-      :name, :venue_type, :description, :address, :district, :phone, :email, :website,
-      :area, :max_participants, :details,
+      :name, :description, :address, :district, :phone, :email, :website,
+      :area, :max_participants, :detail, venue_type: [],
       price_attributes: [:id, :amount, :currency, :min_duration, :_destroy],
       policy_attributes: [:id, :smoking_allowed, :alcohol_allowed, :noise_restrictions, :_destroy],
       event_types_attributes: [:id, :name, :_destroy],
-      information_attributes: [:id, :document,:description, :calendar, :_destroy],
-
+      information_attributes: [:id, :document, :description, :calendar, :_destroy],
+      service_attributes: [:id, :technical_equipment, :furniture, :decoration, :cleaning_after_event, :security, :other_services, :_destroy],
+      amenities_attributes: [:id, :name, :_destroy],
+      facility_attributes: [:wifi, :air_conditioning, :audio_visual_equipment, :parking, :disabled_access, :kitchen, :toilets_count, :other_facilities, :_destroy]
     )
   end
 end
