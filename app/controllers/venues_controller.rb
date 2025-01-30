@@ -28,6 +28,7 @@ class VenuesController < ApplicationController
   end
 
   def create
+    binding.irb
     @venue = current_user.venues.build(venue_params)
     @venue.venue_type = params[:venue][:venue_type].split(',').map(&:strip)
 

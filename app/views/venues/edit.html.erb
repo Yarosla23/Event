@@ -3,9 +3,11 @@
 <div class="w-full md:w-2/3 mx-auto p-2 md:p-6">
 
 <%= form_with model: @venue, data: { turbo: false }, local: true do |form| %>
-  <%= render 'venues/form/venue_form_fields', form: form %>
-  <%= render 'venues/form/facility_fields', form: form %>
-  <%= render 'venues/form/logistics_fields', form: form %>
+  <%= render 'venues/form/venue', form: form %>
+  <%= render 'venues/form/facility', form: form %>
+  <%= render 'venues/form/information', form: form %>
+  <%= render 'venues/form/service', form: form %>
+  <%= render 'venues/form/rental_info', form: form %>
 
   <div class="actions">
     <%= form.submit "Обновить мероприятие" %>

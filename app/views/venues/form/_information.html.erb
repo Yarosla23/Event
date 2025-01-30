@@ -1,0 +1,52 @@
+<div class="p-2 bg-white dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 mt-6">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Вспомогательная информация</h3>
+  <%= form.fields_for :information do |f| %>
+    <%= render Ui::InputFieldComponent.new(
+      form: f,
+      field_name: :document,
+      label: "Документы и лицензии",
+      type: "text_area",
+      placeholder: "Укажите наличие лицензий и сертификатов"
+    ) %>
+    <%= render Ui::InputFieldComponent.new(
+      form: f,
+      field_name: :description,
+      label: "Дополнительная информация",
+      type: "text_area",
+      placeholder: "Введите пожелания и примечания"
+    ) %>
+    <%= render Ui::InputFieldComponent.new(
+      form: f,
+      field_name: :calendar,
+      label: "Календарь",
+      placeholder: "Введите ссылку на календарь"
+    ) %>
+  
+      <%= render Ui::CheckboxFieldComponent.new(
+      form: f,
+      field_name: :alcohol_allowed,
+      label: "Можно с алкоголем",
+      input_class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    ) %>
+        <%= render Ui::CheckboxFieldComponent.new(
+      form: f,
+      field_name: :smoking_allowed,
+      label: "Можно курить",
+      input_class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    ) %>
+        <%= render Ui::CheckboxFieldComponent.new(
+      form: f,
+      field_name: :noise_restrictions,
+      label: "Разрешены ли вечеринки",
+      input_class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    ) %>
+
+    <%= render Ui::InputFieldComponent.new(
+      form: f,
+      field_name: :restrictions,
+      label: "Другие ограничения ",
+      type: "text_area",
+      placeholder: "Введите ограничения"
+    ) %>
+  <% end %>
+</div>

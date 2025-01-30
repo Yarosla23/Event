@@ -95,6 +95,8 @@ class EventsController < ApplicationController
     @event.build_logistic unless @event.logistic
     @event.tickets.build if @event.tickets.empty?
     @event.build_event_rule unless @event.event_rule
+    @event.build_service unless @event.service
+
   end
 
   def event_params
