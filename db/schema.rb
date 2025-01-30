@@ -11,15 +11,8 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2025_01_29_193214) do
+  # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "amenities", force: :cascade do |t|
-    t.bigint "venue_id", null: false
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["venue_id"], name: "index_amenities_on_venue_id"
-  end
 
   create_table "event_photos", force: :cascade do |t|
     t.bigint "event_id", null: false
@@ -36,14 +29,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_29_193214) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_event_rules_on_event_id"
-  end
-
-  create_table "event_types", force: :cascade do |t|
-    t.bigint "venue_id", null: false
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["venue_id"], name: "index_event_types_on_venue_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -77,20 +62,16 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_29_193214) do
     t.index ["venue_id"], name: "index_facilities_on_venue_id"
   end
 
-  create_table "habits", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.string "tags"
-    t.string "image"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "information", force: :cascade do |t|
     t.bigint "venue_id", null: false
     t.text "document"
     t.text "description"
+    t.boolean "smoking_allowed"
+    t.boolean "alcohol_allowed"
+    t.boolean "noise_restrictions"
     t.string "calendar"
+    t.text "event_types", default: [], array: true
+    t.text "restrictions"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["venue_id"], name: "index_information_on_venue_id"
@@ -117,26 +98,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_29_193214) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_participants_on_event_id"
-  end
-
-  create_table "policies", force: :cascade do |t|
-    t.bigint "venue_id", null: false
-    t.boolean "smoking_allowed"
-    t.boolean "alcohol_allowed"
-    t.boolean "noise_restrictions"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["venue_id"], name: "index_policies_on_venue_id"
-  end
-
-  create_table "prices", force: :cascade do |t|
-    t.bigint "venue_id", null: false
-    t.decimal "amount"
-    t.string "currency"
-    t.integer "min_duration"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["venue_id"], name: "index_prices_on_venue_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -238,17 +199,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_29_193214) do
     t.index ["user_id"], name: "index_venues_on_user_id"
   end
 
-  add_foreign_key "amenities", "venues"
   add_foreign_key "event_photos", "events"
   add_foreign_key "event_rules", "events"
-  add_foreign_key "event_types", "venues"
   add_foreign_key "events", "users"
   add_foreign_key "facilities", "venues"
   add_foreign_key "information", "venues"
   add_foreign_key "logistics", "events"
   add_foreign_key "participants", "events"
-  add_foreign_key "policies", "venues"
-  add_foreign_key "prices", "venues"
   add_foreign_key "rental_infos", "venues"
   add_foreign_key "reviews", "users"
   add_foreign_key "reviews", "venues"

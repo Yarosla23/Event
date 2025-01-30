@@ -1,7 +1,7 @@
-class Current < ActiveSupport::CurrentAttributes
-  attribute :user
+# class Current < ActiveSupport::CurrentAttributes
+#   attribute :user
 
-  def user=(user)
-    super
-  end
-end
+#   def user=(user)
+#     super
+#   end
+# ends

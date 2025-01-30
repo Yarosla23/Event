@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
-  
   belongs_to :user
+  
   has_one :participant, dependent: :destroy
   has_one :logistic, dependent: :destroy
   has_one :event_rule, dependent: :destroy

@@ -4,8 +4,13 @@ class CreateInformation < ActiveRecord::Migration[7.0]
       t.references :venue, null: false, foreign_key: true
       t.text :document
       t.text :description
+      t.boolean :smoking_allowed
+      t.boolean :alcohol_allowed
+      t.boolean :noise_restrictions
       t.string :calendar
-
+      t.text :event_types, default: [], array: true
+      t.text :restrictions 
+      
       t.timestamps
     end
   end

@@ -1,11 +1,10 @@
-
 <div class="flex justify-center items-center gap-4 my-6">
   <h1 class="text-4xl font-bold text-gray-800 dark:text-white">Аренда площадки</h1>
   <%= link_to '+', new_venue_path, class: 'bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition' %>
 </div>
 
-<div class="flex items-center justify-between max-w-md mx-auto mb-4 gap-4">
-  <%= form_with(url: events_path, method: :get, local: false, class: 'flex-grow', data: { turbo_frame: 'events-list' }) do %>
+<div class="flex items-center justify-between max-w-md mx-6 lg:mx-auto mb-4 gap-4">
+  <%= form_with(url: venues_path, method: :get, local: false, class: 'flex-grow', data: { turbo_frame: 'venues-list' }) do %>
     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
     <div class="relative flex items-center">
       <%= text_field_tag :search, params[:search], class: 'block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'Поиск по мероприятиям...', style: 'background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23bbb%22 width=%2220%22 height=%2220%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z%22/%3E%3C/svg%3E"); background-position: 10px center; background-repeat: no-repeat; background-size: 20px; padding-left: 30px;' %>
@@ -13,105 +12,147 @@
     </div>
   <% end %>
 
-  <button 
-    id="filter-toggle" 
-    class="bg-indigo-800 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-    data-expanded="false"
-  >
+  <button id="filter-toggle" class="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-4 py-2 rounded-md hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition cursor-pointer" data-expanded="false">
     Фильтры
   </button>
 </div>
 
-
-<div 
-  id="filters" 
-  class="hidden mb-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg  inset-0 max-w-5xl mx-auto"
->
-  <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Фильтры</h2>
-  <%= form_with(url: events_path, method: :get, local: false, class: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6', data: { turbo_frame: 'events-list' }) do %>
-    <div>
-      <%= label_tag :event_type, 'Тип мероприятия', class: 'block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1' %>
-      <%= select_tag :event_type, options_for_select(['', 'Концерт', 'Семинар', 'Воркшоп'], params[:event_type]), class: 'w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
+<div id="filters" class="hidden mb-6 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg inset-0 max-w-5xl mx-6 lg:mx-auto">
+  <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">Фильтры</h2>
+  
+  <%= form_with(url: venues_path, method: :get, local: false, class: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4', data: { turbo_frame: 'venues-list' }) do |form| %>
+    <div class="form-group">
+      <%= render Ui::MultiselectComponent.new(
+        form: form, 
+        field_name: :tags, 
+        value: Event::TYPES, 
+        selected_values: params[:tags], 
+        placeholder: "Выберите типы мероприятий",
+        label: "Тип мероприятия"
+      ) %>
     </div>
 
-    <div>
-      <%= label_tag :start_time, 'Дата начала', class: 'block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1' %>
-      <%= date_field_tag :start_time, params[:start_time], class: 'w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
+    <div class="space-y-1">
+      <%= label_tag :start_time, 'Дата начала', class: 'block text-sm font-medium text-gray-900 dark:text-white mb-1' %>
+      <%= date_field_tag :start_time, params[:start_time], class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
     </div>
 
-    <div>
-      <%= label_tag :location, 'Местоположение', class: 'block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1' %>
-      <%= text_field_tag :location, params[:location], class: 'w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
+    <div class="space-y-1">
+      <%= label_tag :location, 'Местоположение', class: 'block text-sm font-medium text-gray-900 dark:text-white' %>
+      <%= text_field_tag :location, params[:location], class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
     </div>
 
-    <div class="flex items-center justify-end md:col-span-3">
-      <%= submit_tag 'Применить', class: 'bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition' %>
-      <%= link_to 'Сбросить', events_path, class: 'ml-4 bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-600 transition' %>
-    </div>
-  <% end %>
-</div>
-
-
-<div 
-  id="filters" 
-  class="hidden mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg"
->
-  <%= form_with(url: events_path, method: :get, local: false, class: 'grid grid-cols-1 md:grid-cols-3 gap-4 w-full md:w-2/3', data: { turbo_frame: 'events-list' }) do %>
-    <div>
-      <%= label_tag :event_type, 'Тип мероприятия' %>
-      <%= select_tag :event_type, options_for_select(['', 'Концерт', 'Семинар', 'Воркшоп'], params[:event_type]), class: 'w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-white' %>
+    <div class="space-y-1">
+      <%= label_tag :participant_type, 'Тип участника', class: 'block text-sm font-medium text-gray-900 dark:text-white' %>
+      <%= select_tag :participant_type, options_for_select([['Все', ''], ['Тип 1', 'type_1'], ['Тип 2', 'type_2']], selected: params[:participant_type]), class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
     </div>
 
-    <div>
-      <%= label_tag :start_time, 'Дата начала' %>
-      <%= date_field_tag :start_time, params[:start_time], class: 'w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-white' %>
+    <div class="space-y-1">
+      <%= label_tag :is_private, 'Приватное?', class: 'block text-sm font-medium text-gray-900 dark:text-white' %>
+      <%= select_tag :is_private, options_for_select([['Все', ''], ['Да', 'true'], ['Нет', 'false']], selected: params[:is_private]), class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
     </div>
 
-    <div>
-      <%= label_tag :location, 'Местоположение' %>
-      <%= text_field_tag :location, params[:location], class: 'w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-white' %>
+    <div class="space-y-1">
+      <%= label_tag :is_paid, 'Платное?', class: 'block text-sm font-medium text-gray-900 dark:text-white' %>
+      <%= select_tag :is_paid, options_for_select([['Все', ''], ['Да', 'true'], ['Нет', 'false']], selected: params[:is_paid]), class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
     </div>
 
-    <div class="flex items-center justify-between">
-      <%= submit_tag 'Применить фильтры', class: 'bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition' %>
-      <%= link_to 'Сбросить фильтры', events_path, class: 'bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-600 transition' %>
+    <div class="flex justify-center gap-4 mt-4 col-span-full">
+      <%= submit_tag 'Применить', class: 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-6 py-2 rounded-md hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition cursor-pointer' %>
+      <%= link_to 'Сбросить', venues_path, class: 'bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-2 rounded-md hover:from-gray-700 hover:to-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 transition cursor-pointer' %>
     </div>
   <% end %>
 </div>
 
-<div id="events-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8 px-4 md:px-16">
+
+<div id="venues-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 py-8 lg:w-[70%] mx-auto">
   <% @venues.each_with_index do |venue, index| %>
-    <div class="flex flex-col sm:flex-row bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105 duration-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-      <img class="object-cover w-full sm:w-48 h-48 sm:h-auto rounded-t-lg sm:rounded-none sm:rounded-l-lg" src="https://via.placeholder.com/150" alt="Изображение мероприятия">
-      <div class="flex flex-col justify-between p-6 w-full">
-        <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-4"><%= venue.name %></h5>
-        <p class="text-gray-700 dark:text-gray-400 mb-3"><%= truncate(venue.description, length: 100) %></p>
-        <div class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+    <%= link_to venue_path(venue), class: "flex flex-col bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition-transform hover:scale-105 hover:bg-blue-50 duration-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700" do %>
+      <%= image_tag "party2.png", 
+      class: "object-cover w-full h-56 rounded-t-2xl", 
+      alt: "Изображение мероприятия" %>
+
+      <div class="flex flex-col justify-between p-5">
+        <h5 class="text-xl font-semibold text-gray-900 dark:text-white mb-3  flex items-center">
+          <%= venue.name %>
+          
+          <span class="ml-2">
+            <% if venue.participant.is_private %>
+              <%= inline_svg('icons/lock.svg', class: 'w-6 h-6 text-indigo-600  dark:text-indigo-400') %>
+            <% end %>
+          </span>
+
+          <span class="ml-2">
+            <% if venue.participant.is_paid %>
+              <%= inline_svg('icons/dollar.svg', class: 'w-6 h-6 text-green-600 ') %>
+            <% end %>
+          </span>
+
+        </h5>
+
+        <p class="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed line-clamp-3">
+          <%= truncate(venue.description, length: 300) %>
+        </p>
+        <div class="mb-4">
+          <p class="flex items-center text-lg font-semibold text-white">
+            <span class="px-3 py-1 rounded-full bg-pink-400 dark:bg-pink-500">
+              <%= l(venue.start_time, format: :custom) %>
+            </span>
+            <span class="mx-2 text-gray-500 dark:text-gray-400">—</span>
+            <span class="px-3 py-1 rounded-full bg-pink-400 dark:bg-pink-500">
+              <%= l(venue.end_time, format: :custom) %>
+            </span>
+          </p>
         </div>
-        <div class="flex justify-between items-center">
-          <%= link_to 'Подробнее', venue_path(venue), class: 'text-blue-500 hover:underline' %>
-          <%= link_to 'Редактировать', edit_venue_path(venue), class: 'text-gray-500 hover:text-blue-500' %>
+
+        <div class="flex flex-wrap gap-2">
+          <% venue.tags.each do |tag| %>
+            <span class="bg-blue-600 text-white rounded-full py-1 px-3 text-xs">
+              <%= tag %>
+            </span>
+          <% end %>
         </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
-</div> 
+</div>
 
 <script>
- document.addEventListener('turbo:load', () => {
+  document.addEventListener('turbo:load', () => {
+    initFilterToggle();
+  });
+
+  document.addEventListener('turbo:frame-load', () => {
+    initFilterToggle();
+  });
+
+  function initFilterToggle() {
     const filterToggle = document.getElementById('filter-toggle');
     const filters = document.getElementById('filters');
 
-    filterToggle.addEventListener('click', function () {
-      const isExpanded = filterToggle.getAttribute('data-expanded') === 'true';
+    if (!filterToggle || !filters) return;
 
-      if (isExpanded) {
-        filters.classList.add('hidden');
-        filterToggle.setAttribute('data-expanded', 'false');
+    const isExpanded = filterToggle.classList.contains('expanded');
+    if (isExpanded) {
+      filters.classList.remove('hidden');
+    } else {
+      filters.classList.add('hidden');
+    }
+
+    filterToggle.addEventListener('click', function () {
+      const isCurrentlyExpanded = filterToggle.classList.contains('expanded');
+      
+      if (isCurrentlyExpanded) {
+        setTimeout(() => {
+          filters.classList.add('hidden');
+          filterToggle.classList.remove('expanded');
+        }, 100); 
       } else {
-        filters.classList.remove('hidden');
-        filterToggle.setAttribute('data-expanded', 'true');
+        setTimeout(() => {
+          filters.classList.remove('hidden');
+          filterToggle.classList.add('expanded');
+        }, 100); 
       }
     });
-  });
+  }
 </script>

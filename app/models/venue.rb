@@ -1,21 +1,14 @@
 class Venue < ApplicationRecord
   belongs_to :user
 
-  has_one :price, dependent: :destroy
-  has_one :policy, dependent: :destroy
-  has_one :location, dependent: :destroy
   has_one :information, dependent: :destroy
   has_one :facility, dependent: :destroy
   has_one :service, dependent: :destroy
   has_one :rental_info, dependent: :destroy
 
-  has_many :amenities, dependent: :destroy
-  has_many :event_types, dependent: :destroy
   has_many :reviews, dependent: :destroy
   
-  accepts_nested_attributes_for :price, :policy,
-     :location, :amenities, :event_types, 
-     :reviews, :information, 
+  accepts_nested_attributes_for :reviews, :information, 
      :rental_info, :facility, :service,
      allow_destroy: true
 
