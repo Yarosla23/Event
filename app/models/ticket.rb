@@ -8,9 +8,9 @@ class Ticket < ApplicationRecord
     'Оплата картой', 'Наличные', 'Перевод через банк', "CБП"
   ]
 
-  validates :ticket_type, presence: true, inclusion: { in: ['Standard', 'VIP', 'Early Bird'], message: "%{value} is not a valid ticket type" }
+  validates :ticket_type, presence: true
   validates :price, presence: true, numericality: { greater_than: 0 }
   validates :currency, presence: true, inclusion: { in: CURRENCY_TYPES, message: "%{value}, не может быть использована"  }
   validates :payment_method, presence: true, inclusion: { in: PAYMENT_METHODS, message: "%{value} is not a valid payment method" }
-  validates :discount_code, allow_nil: true, format: { with: /\A[a-zA-Z0-9]+\z/, message: "only allows alphanumeric characters" }
+  # validates :discount_code, allow_nil: true, format: { with: /\A[a-zA-Z0-9]+\z/, message: "only allows alphanumeric characters" }
 end

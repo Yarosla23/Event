@@ -1,13 +1,13 @@
 <div class="p-2 md:p-3  bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 my-3 md:my-6">
   <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-4">Основная информация об мероприятии</h3>
   <div class="columns-1 md:columns-2 gap-6">
-
     <div class="field mb-4">
       <%= render Ui::InputFieldComponent.new(
         form: form,
         field_name: :name, 
-        label: "Название мероприятия") 
-      %>
+        label: "Название мероприятия",
+        placeholder: "Введите название мероприятия"
+      )%>
     </div>
 
     <div class="field mx-3 mb-4">
@@ -26,6 +26,7 @@
         form: form,
         field_name: :location,
         label: "Местоположение",
+        placeholder: "Город, улица, дом"
       ) %>
     </div>
 
@@ -56,6 +57,7 @@
         form: form,
         field_name: :location_link,
         label: "Ссылка на локацию",
+        placeholder: "В формате https://link.com"
       ) %>
     </div>
   </div>
@@ -65,6 +67,7 @@
       form: form,
       field_name: :event_format,
       label: "Формат мероприятия",
+      placeholder: "Очный, дистанционный, гибридный"
     ) %>
   </div>
   
@@ -74,15 +77,16 @@
       field_name: :description,
       label: "Описание",
       type: "text_area",
-      input_class: "whitespace-pre-wrap "
+      input_class: "whitespace-pre-wrap ",
+      placeholder: "Введите главное описание"
     ) %>
   </div>
 
   <div class="relative hidden w-full">
-      <svg class="w-5 h-5 hidden absolute top-3 right-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-      </svg>
-      <div class="max-h-48 overflow-y-auto">
-      </div>
+    <svg class="w-5 h-5 hidden absolute top-3 right-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+    <div class="max-h-48 overflow-y-auto">
+    </div>
   </div>
 </div>

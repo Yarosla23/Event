@@ -1,5 +1,4 @@
 <h3 class="text-lg font-semibold text-gray-900 dark:text-white ml-4">Билеты</h3>
-
 <div id="tickets-container">
   <%= form.fields_for :tickets do |ticket_form| %>
     <div class="ticket-form mb-4 border border-gray-300 dark:border-gray-600 rounded-lg p-4 bg-white dark:bg-gray-800">
@@ -9,18 +8,19 @@
         <div class="flex-1">
           <%= render Ui::InputFieldComponent.new(
             form: ticket_form,
-             field_name: :ticket_type, 
-             label: "Тип билета") 
-          %>
+            field_name: :ticket_type, 
+            label: "Тип билета",
+            placeholder: "Стандартный, VIP и т.д."
+          )%>
         </div>
         <div class="flex-1">
           <%= render Ui::InputFieldComponent.new(
             form: ticket_form, 
             field_name: :price, 
             label: "Цена", 
-            type: "number", 
-            step: 0.01) 
-          %>
+            type: "number",
+            placeholder: "Введите цену"
+          )%>
         </div>
       </div>
 
@@ -37,23 +37,25 @@
         </div>
 
         <div class="flex-1">
-<%= render Ui::MultiSelectFieldComponent.new(
-    form: ticket_form,
-    field_name: :payment_method,  # Field name in the model
-    label: "Метод оплаты",        # Label for the field
-    options: Ticket::PAYMENT_METHODS, # Options for the select
-    include_blank: 'Выберите тип оплаты', # Blank option in the list
-    input_class: "custom-class"    # Additional class for styles
-) %>
-
-
+          <%= render Ui::MultiSelectFieldComponent.new(
+              form: ticket_form,
+              field_name: :payment_method, 
+              label: "Метод оплаты",
+              options: Ticket::PAYMENT_METHODS,
+              include_blank: 'Выберите тип оплаты', 
+              input_class: "custom-class"
+          ) %>
         </div>
-        
       </div>
 
-      <div class="mb-3">
-        <%= render Ui::InputFieldComponent.new(form: ticket_form, field_name: :discount_code, label: "Код скидки") %>
-      </div>
+      <%# <div class="mb-3">
+        <%= render Ui::InputFieldComponent.new(
+          form: ticket_form,
+          field_name: :discount_code,
+          label: "Код скидки",
+          placeholder: "Введите цену"
+        ) 
+      </div> %>
 
       <button type="button" class=" remove-ticket bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg px-4 py-1">
         Удалить
@@ -117,7 +119,7 @@
 
   const multiSelectField = clonedForm.querySelector('select[name*="payment_method"]');
   if (multiSelectField) {
-    multiSelectField.value = "";  // Установите значение для клонированной формы, если оно пустое
+    multiSelectField.value = "";
   }
 
   clonedForm.querySelector(".destroy-flag").value = "false";

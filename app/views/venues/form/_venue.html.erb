@@ -1,7 +1,6 @@
-<div class="p-2 md:p-3  bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 my-3 md:my-6">
+<div class="p-2 md:p-3  bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 ">
   <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-4">Основная информация об мероприятии</h3>
   <div class="columns-1 md:columns-2 gap-6">
-
     <div class="field mb-4">
       <%= render Ui::InputFieldComponent.new(
         form: form,
@@ -11,7 +10,7 @@
       ) %>
     </div>
 
-    <div class="field m-4">
+    <div class="field m-1 mb-4">
       <%= render Ui::MultiselectComponent.new(
         form: form, 
         field_name: :venue_type, 
@@ -41,6 +40,7 @@
         placeholder: "Введите площадь в квадратных метрах"
       ) %>
     </div>
+
     <div class="field mb-4">
       <%= render Ui::InputFieldComponent.new(
         form: form,
@@ -49,6 +49,7 @@
         placeholder: "Введите адрес электронной почты"
       ) %>
     </div>
+
     <div class="field mb-4">
       <%= render Ui::InputFieldComponent.new(
         form: form,
@@ -90,7 +91,7 @@
     ) %>
   </div>
 
-  <div class="field mb-4">
+  <div class="field ">
     <%= render Ui::InputFieldComponent.new(
       form: form,
       field_name: :details,

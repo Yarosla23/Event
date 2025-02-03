@@ -33,7 +33,8 @@ class Event < ApplicationRecord
   validates :name, length: { maximum: 100 }
   validates :description, length: { maximum: 2000 }, allow_nil: true
   validates :location, length: { maximum: 255 }, allow_nil: true
-  validates :location_link, length: { maximum: 255 }, allow_nil: true
+  validates :location_link, format: { with: URI::DEFAULT_PARSER.make_regexp, message: "должна быть ссылка" }, allow_blank: true
+
   validates :event_format, length: { maximum: 100 }, allow_nil: true
 
   validate :start_time_before_end_time

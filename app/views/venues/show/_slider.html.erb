@@ -1,51 +1,47 @@
-  <div class="overflow-hidden">
-    <div class="flex transition-transform duration-500" id="slider" style="transform: translateX(0);">
-      <div class="w-full flex-shrink-0">
-        <%= image_tag "party2.png", class: "w-full h-100 object-cover rounded-lg shadow-md", alt: "Изображение мероприятия" %>
-      </div>
-      <div class="w-full flex-shrink-0">
-        <%= image_tag "party.jpg", class: "w-full h-100 object-cover rounded-lg shadow-md", alt: "Изображение мероприятия" %>
-      </div>
-      <div class="w-full flex-shrink-0">
-        <%= image_tag "party2.png", class: "w-full h-100 object-cover rounded-lg shadow-md", alt: "Изображение мероприятия" %>
-      </div>
-      <div class="w-full flex-shrink-0">
-        <%= image_tag "party2.png", class: "w-full h-100 object-cover rounded-lg shadow-md", alt: "Изображение мероприятия" %>
-      </div>
+<div class="overflow-hidden relative" id="slider-container">
+  <div class="flex transition-transform duration-500" id="slider" style="transform: translateX(0);">
+    <div class="w-full flex-shrink-0">
+      <%= image_tag "palmira.jpg", class: "w-full h-100 object-cover rounded-lg shadow-md cursor-pointer slide", alt: "Изображение мероприятия" %>
+    </div>
+    <div class="w-full flex-shrink-0">
+      <%= image_tag "party.jpg", class: "w-full h-100 object-cover rounded-lg shadow-md cursor-pointer slide", alt: "Изображение мероприятия" %>
+    </div>
+    <div class="w-full flex-shrink-0">
+      <%= image_tag "palmira.jpg", class: "w-full h-100 object-cover rounded-lg shadow-md cursor-pointer slide", alt: "Изображение мероприятия" %>
     </div>
   </div>
-
   <button class="absolute top-1/2 left-2 transform -translate-y-1/2 text-white hover:bg-gray-600 hover:bg-opacity-70 px-2 py-1 rounded-full disabled:opacity-0" id="prevBtn">
     &#10094;
   </button>
-  <button class="absolute top-1/2 right-2 transform -translate-y-1/2 text-white hover:bg-gray-600 hover:bg-opacity-70  px-2 py-1 rounded-full disabled:opacity-0" id="nextBtn">
+  <button class="absolute top-1/2 right-2 transform -translate-y-1/2 text-white hover:bg-gray-600 hover:bg-opacity-70 px-2 py-1 rounded-full disabled:opacity-0" id="nextBtn">
     &#10095;
   </button>
-
-  <button class="absolute bottom-4 right-4 text-white bg-gray-600 bg-opacity-70 hover:bg-opacity-90 p-2 rounded-lg" id="fullscreenBtn">
-    Полный экран
+  <button class="absolute bottom-4 right-4 text-white bg-gray-600 bg-opacity-70 hover:bg-opacity-90 p-2 rounded-lg hidden" id="exitFullscreenBtn">
+    Выход
   </button>
+</div>
 
-  <div class="flex gap-2 mt-4 overflow-x-auto" id="thumbnails" style="max-width: 480px;">
-    <div class="w-20 cursor-pointer">
-      <%= image_tag "party2.png", class: "w-full h-20 object-cover rounded-lg border-2 border-transparent hover:border-gray-400 thumbnail", alt: "Миниатюра 1", 'data-index': 0 %>
-    </div>
-    <div class="w-20 cursor-pointer">
-      <%= image_tag "party.jpg", class: "w-full h-20 object-cover rounded-lg border-2 border-transparent hover:border-gray-400 thumbnail", alt: "Миниатюра 2", 'data-index': 1 %>
-    </div>
-    <div class="w-20 cursor-pointer">
-      <%= image_tag "party2.png", class: "w-full h-20 object-cover rounded-lg border-2 border-transparent hover:border-gray-400 thumbnail", alt: "Миниатюра 3", 'data-index': 2 %>
-    </div>
+<div class="flex gap-2 mt-4 overflow-x-auto" id="thumbnails" style="max-width: 480px;">
+  <div class="w-20 cursor-pointer">
+    <%= image_tag "palmira.jpg", class: "w-full h-20 object-cover rounded-lg border-2 border-transparent hover:border-gray-400 thumbnail", alt: "Миниатюра 1", 'data-index': 0 %>
   </div>
+  <div class="w-20 cursor-pointer">
+    <%= image_tag "party.jpg", class: "w-full h-20 object-cover rounded-lg border-2 border-transparent hover:border-gray-400 thumbnail", alt: "Миниатюра 2", 'data-index': 1 %>
+  </div>
+  <div class="w-20 cursor-pointer">
+    <%= image_tag "palmira.jpg", class: "w-full h-20 object-cover rounded-lg border-2 border-transparent hover:border-gray-400 thumbnail", alt: "Миниатюра 3", 'data-index': 2 %>
+  </div>
+</div>
 
 <script>
   document.addEventListener('turbo:load', () => {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const exitFullscreenBtn = document.getElementById('exitFullscreenBtn');
     const thumbnails = document.querySelectorAll('.thumbnail');
     const slider = document.getElementById('slider');
-    const slides = document.querySelectorAll('#slider > div');
+    const slides = document.querySelectorAll('.slide');
+    const sliderContainer = document.getElementById('slider-container');
     let currentIndex = 0;
 
     function updateSlider() {
@@ -81,16 +77,18 @@
       });
     });
 
-    fullscreenBtn.addEventListener('click', () => {
-      const fullscreenElement = slider.parentElement;
-      if (fullscreenElement.requestFullscreen) {
-        fullscreenElement.requestFullscreen();
-      } else if (fullscreenElement.mozRequestFullScreen) {
-        fullscreenElement.mozRequestFullScreen();
-      } else if (fullscreenElement.webkitRequestFullscreen) {
-        fullscreenElement.webkitRequestFullscreen();
-      } else if (fullscreenElement.msRequestFullscreen) {
-        fullscreenElement.msRequestFullscreen();
+    slides.forEach((slide, index) => {
+      slide.addEventListener('click', () => {
+        currentIndex = index;
+        sliderContainer.requestFullscreen();
+        exitFullscreenBtn.classList.remove('hidden');
+      });
+    });
+
+    exitFullscreenBtn.addEventListener('click', () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+        exitFullscreenBtn.classList.add('hidden');
       }
     });
 
@@ -102,6 +100,9 @@
         } else if (event.key === 'ArrowRight' && currentIndex < slides.length - 1) {
           currentIndex++;
           updateSlider();
+        } else if (event.key === 'Escape') {
+          document.exitFullscreen();
+          exitFullscreenBtn.classList.add('hidden');
         }
       }
     });

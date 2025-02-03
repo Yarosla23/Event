@@ -48,6 +48,7 @@ class EventsController < ApplicationController
   end
 
   def create
+
     @event = current_user.events.build(event_params)
     @event.tags = params[:event][:tags].split(',').map(&:strip)
 
@@ -95,17 +96,16 @@ class EventsController < ApplicationController
     @event.build_logistic unless @event.logistic
     @event.tickets.build if @event.tickets.empty?
     @event.build_event_rule unless @event.event_rule
-    @event.build_service unless @event.service
 
   end
 
   def event_params
     params.require(:event).permit(
       :name, :description, :event_type, :start_time, :end_time, :location, :location_link, :event_format, tags: [], event_photos_attributes: [:id, :photo, :_destroy],
-      event_rule_attributes: [:id, :rules, :consent, :_destroy],
-      participant_attributes: [:id, :min_participants, :max_participants, :participant_type, :is_private, :is_paid, :_destroy],
-      logistic_attributes: [:id, :organizers, :contact_info, :technical_requirements, :special_instructions, :_destroy],
-      tickets_attributes: [:id, :ticket_type, :price, :currency, :discount_code, :_destroy, payment_method: []]
+      event_rule_attributes: [:rules, :consent, :_destroy],
+      participant_attributes: [:min_participants, :max_participants, :participant_type, :is_private, :is_paid, :_destroy],
+      logistic_attributes: [:organizers, :contact_info, :technical_requirements, :special_instructions, :_destroy],
+      tickets_attributes: [:ticket_type, :price, :currency, :discount_code, :_destroy, payment_method: []]
     )
   end
 end

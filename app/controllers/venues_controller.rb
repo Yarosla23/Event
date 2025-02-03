@@ -2,7 +2,7 @@ class VenuesController < ApplicationController
   before_action :set_venue, only: %i[show edit update destroy]
 
   def index
-    @venues = Venue.includes(:reviews, :information, :services, :facilities, :rental_infos)
+    @venues = Venue.includes(:reviews, :information, :service, :facility, :rental_info)
 
     @venues = @venues.where('venue_type LIKE ?', "%#{params[:venue_type]}%") if params[:venue_type].present?
     @venues = @venues.where('max_participants LIKE ?', "%#{params[:max_participants]}%") if params[:max_participants].present?
@@ -28,7 +28,6 @@ class VenuesController < ApplicationController
   end
 
   def create
-    binding.irb
     @venue = current_user.venues.build(venue_params)
     @venue.venue_type = params[:venue][:venue_type].split(',').map(&:strip)
 

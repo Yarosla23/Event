@@ -1,59 +1,55 @@
-  <h3 class="text-xl text-center font-semibold text-gray-800 dark:text-gray-200 mb-5">
-    Информация о площадке
+<section class="rounded-2xl">
+  <h3 class="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-8">
+    Главная информация
   </h3>
 
-  <div class="text-center mb-5">
-    <p class="text-gray-700 dark:text-gray-300 flex justify-center items-center space-x-3">
-      <span class="font-bold text-base text-white bg-yellow-500 dark:bg-yellow-600 px-4 py-2 rounded-full shadow transform hover:scale-105 transition duration-300 ease-in-out">
+  <div class="m-6 p-6 bg-gradient-to-r from-green-500 to-green-700 dark:from-green-700 dark:to-green-900 rounded-2xl text-center shadow-lg">
+    <p class="text-5xl font-extrabold text-white"> <%= @venue.rental_info.price || "—" %> ₽ </p>
+  </div>
 
-      </span>
-      <span class="text-gray-500 dark:text-gray-400">—</span>
-      <span class="font-bold text-base text-white bg-yellow-500 dark:bg-yellow-600 px-4 py-2 rounded-full shadow transform hover:scale-105 transition duration-300 ease-in-out">
+  <div class="grid grid-cols-2 gap-6 text-gray-900 dark:text-gray-300 text-lg mb-6">
+    <p><span class="font-semibold">Макс. чел.:</span> <span class="text-green-600 dark:text-green-400"> <%= @venue.max_participants || "—" %> </span></p>
+    <p><span class="font-semibold">Площадь:</span> <span class="text-green-600 dark:text-green-400"> <%= @venue.area || "—" %> м²</span></p>
+  </div>
 
-      </span>
+  <div class="flex justify-center items-center space-x-4 mb-6">
+    <span class="text-white bg-yellow-500 dark:bg-yellow-600 px-6 py-3 rounded-lg shadow-md text-lg font-semibold hover:scale-105 transition-transform">
+      <%= @venue.rental_info.working_hours_start.strftime("%H:%M") %> ч.
+    </span>
+    <span class="text-gray-500 dark:text-gray-400 text-xl">—</span>
+    <span class="text-white bg-yellow-500 dark:bg-yellow-600 px-6 py-3 rounded-lg shadow-md text-lg font-semibold hover:scale-105 transition-transform">
+      <%= @venue.rental_info.working_hours_end.strftime("%H:%M") %> ч.
+    </span>
+  </div>
+
+  <div class="mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">
+    <span class="font-semibold">Минимальная аренда:</span> <%= @venue.rental_info.min_rental_duration_hours %> ч.
+  </div>
+
+  <% if @venue.rental_info.discounts.present? %>
+    <div class="mb-6 p-4 bg-yellow-100 dark:bg-yellow-700 rounded-xl text-center shadow-md">
+      <p class="text-lg font-bold text-gray-900 dark:text-gray-200">Скидки:</p>
+      <p class="text-md text-gray-700 dark:text-gray-300 mt-1"> <%= @venue.rental_info.discounts %> </p>
+    </div>
+  <% end %>
+
+  <div class="space-y-3 text-center">
+    <p class="text-gray-900 dark:text-gray-300 font-medium flex  gap-2">
+      📞 <%= @venue.phone %>
     </p>
+    <p class="text-gray-900 dark:text-gray-300 font-medium flex  gap-2">
+      ✉️ <%= @venue.email %>
+    </p>
+    <a href="<%= @venue.website %>" class="text-lg text-blue-600 hover:underline dark:text-blue-300 block">🌐 Перейти на сайт</a>
   </div>
 
-  <div class="mb-5">
-    <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Максимум участников:
-    </h4>
-    <p class="text-base font-medium text-blue-600 dark:text-blue-400">
-      <%= @venue.max_participants || "—" %>
-    </p>
-  </div>
-  <div class="mb-5">
-    <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Площадь:
-    </h4>
-    <p class="text-base font-medium text-blue-600 dark:text-blue-400">
-      <%= @venue.max_participants || "—" %>
-
-    </p>
+  <div class="flex flex-wrap gap-2 justify-center text-lg my-4">
+    <% @venue.venue_type.each do |tag| %>
+      <span class="bg-green-600 text-white rounded-full py-2 px-4 text-sm shadow-md"> <%= tag %> </span>
+    <% end %>
   </div>
 
-  <div class="mb-5">
-    <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Адрес:
-    </h4>
-    <p class="text-base font-medium text-gray-800 dark:text-gray-300">
-      <%= @venue.address %>
-    </p>
+  <div class="mt-6 text-center p-4 bg-gray-600 text-white rounded-full text-lg shadow-md">
+    📍 <%= @venue.address %>
   </div>
-  <div class="mb-5">
-    <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Ссылка на карту:
-    </h4>
-    <a href="<%= @venue.website %>" class="text-blue-600 hover:underline dark:text-blue-400 text-base font-medium flex items-center space-x-2" target="_blank">
-      <span>📍 Сайт</span>
-    </a>
-  </div>
-
-  <div>
-    <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Тип мероприятия:
-    </h4>
-    <p class="text-base font-semibold text-white bg-green-500 dark:bg-green-600 rounded-lg px-4 py-2 shadow transform hover:scale-105 transition duration-300 ease-in-out">
-      <%= @venue.venue_type %>
-    </p>
-  </div>
+</section>

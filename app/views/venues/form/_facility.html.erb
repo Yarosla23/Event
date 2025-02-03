@@ -1,8 +1,8 @@
 
-  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Информация о месте</h3>
-
+<div class="p-2 bg-white dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 mt-6">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-4">Информация о месте</h3>
   <%= form.fields_for :facility do |facility_form| %>
-    <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="grid grid-cols-2 gap-4 m-6">
       <%= render Ui::CheckboxFieldComponent.new(
         form: facility_form,
         field_name: :wifi,
@@ -30,9 +30,7 @@
         label: "Парковка",
         input_class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
       ) %>
-    </div>
 
-    <div class="grid grid-cols-2 gap-4 mb-6">
       <%= render Ui::CheckboxFieldComponent.new(
         form: facility_form,
         field_name: :disabled_access,
@@ -46,7 +44,9 @@
         label: "Кухня",
         input_class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
       ) %>
+    </div>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <%= render Ui::InputFieldComponent.new(
         form: facility_form,
         field_name: :toilets_count,
@@ -54,9 +54,7 @@
         type: "number",
         input_class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       ) %>
-    </div>
 
-    <div class="mb-6">
       <%= render Ui::InputFieldComponent.new(
         form: facility_form,
         field_name: :other_facilities,
@@ -67,3 +65,4 @@
       ) %>
     </div>
   <% end %>
+</div>

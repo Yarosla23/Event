@@ -15,7 +15,6 @@ class ProfilesController < ApplicationController
     @profile = @user.build_profile(profile_params)
     
     if @profile.valid? && @profile.save!
-      binding.irb
       redirect_to user_profile_path(@user), notice: 'Профиль был создан.'
     else
       flash.now[:alert] = 'Ошибка создания профиля, проверьте введенные данные'

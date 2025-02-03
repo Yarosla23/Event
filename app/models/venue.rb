@@ -24,6 +24,7 @@ class Venue < ApplicationRecord
     'Стадион', 'Вилла', 'Отель', 'База отдыха', 'Хостел'
   ]
   
+  validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp, message: "должна быть ссылка" }, allow_blank: true
 
   validates :name, :venue_type, :description, :address, :phone, :email, presence: true
   validates :area, :max_participants, numericality: { only_integer: true, greater_than: 0, message: "должна быть числом больше 0 " }
