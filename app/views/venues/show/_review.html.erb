@@ -1,0 +1,31 @@
+<div class="bg-white dark:bg-gray-600 p-4 rounded-2xl shadow-lg mb-4 review-card flex flex-col justify-between">
+  <div class="flex items-center mb-2">
+    <% if avatar = review.user.profile&.avatar_url %>
+      <img src="<%= avatar %>" class="w-8 h-8 rounded-full" alt="Аватар" />
+    <% else %>
+      <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+        <%= review.user.email[0] %>
+      </div>
+    <% end %>
+    <p class="ml-4 font-semibold text-lg text-black dark:text-white">
+      <%= link_to review.user.profile.last_name, user_profile_path(review.user_id) %>
+    </p>
+    <p class="ml-2 font-semibold text-lg text-black dark:text-white">
+      <%= link_to review.user.profile.first_name, user_profile_path(review.user_id) %>
+    </p>
+    <p class="ml-auto text-sm text-gray-600 dark:text-gray-300">
+      <div class="flex items-center mb-2">
+        <% 1.upto(5) do |i| %>
+          <span class="<%= i <= review.rating ? 'text-yellow-400' : 'text-gray-500' %> text-3xl">
+            ★
+          </span>
+        <% end %>
+      </div>
+    </p>
+  </div>
+
+  <p class="text-gray-800 dark:text-gray-200 mt-2"><%= review.content %></p>
+  <div class="mt-auto flex justify-end text-sm text-gray-600 dark:text-gray-400">
+    <%= review.created_at.strftime("%d.%m.%Y") %>
+  </div>
+</div>

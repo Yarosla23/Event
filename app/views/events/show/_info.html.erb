@@ -1,63 +1,89 @@
-  <h3 class="text-xl mb-2 text-center font-semibold text-gray-700 dark:text-gray-200">
-    Информация о мероприятии
-  </h3>
+<h3 class="text-lg sm:text-xl md:text-2xl mb-2 text-center font-semibold text-gray-700 dark:text-gray-200">
+  Информация о мероприятии
+</h3>
 
-  <div class="text-center mb-5">
-    <p class="text-gray-700 dark:text-gray-300 flex justify-center items-center space-x-3">
-      <span class="font-bold text-base text-white bg-pink-400 dark:bg-pink-500 px-4 py-2 rounded-full shadow transform hover:scale-105 transition duration-300 ease-in-out">
-        <%= l(@event.start_time, format: :'custom') %>
-      </span>
-      <span class="text-gray-500 dark:text-gray-400">—</span>
-      <span class="font-bold text-base text-white bg-pink-400 dark:bg-pink-500 px-4 py-2 rounded-full shadow transform hover:scale-105 transition duration-300 ease-in-out">
-        <%= l(@event.end_time, format: :'custom') %>
-      </span>
-    </p>
-  </div>
+<div class="text-center mb-5">
+  <p class="text-gray-700 dark:text-gray-300 flex justify-center items-center space-x-3">
+    <span class="font-bold text-sm sm:text-base  text-white bg-pink-400 dark:bg-pink-500 px-4 py-2 rounded-full shadow transform hover:scale-105 transition duration-300 ease-in-out">
+      <%= l(@event.start_time, format: :'custom') %>
+    </span>
+    <span class="text-gray-500 dark:text-gray-400">—</span>
+    <span class="font-bold text-sm sm:text-base  text-white bg-pink-400 dark:bg-pink-500 px-4 py-2 rounded-full shadow transform hover:scale-105 transition duration-300 ease-in-out">
+      <%= l(@event.end_time, format: :'custom') %>
+    </span>
+  </p>
+</div>
 
-  <div class="mb-5">
-    <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Количество участников:
-    </h4>
-    <p class="text-base font-medium text-blue-600 dark:text-blue-400">
-      от <%= @event.participant&.min_participants || "—" %> до <%= @event.participant&.max_participants || "—" %>
-    </p>
-  </div>
-  <div class="mb-5">
-    <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Для кого:
-    </h4>
-    <p class="text-base font-medium text-blue-600 dark:text-blue-400">
-      <%= @event.participant&.participant_type || "—" %>
-    </p>
-  </div>
+<div class="flex items-center space-x-4 mb-4">
+  <% if @event.participant.is_private %>
+    <span class="flex items-center bg-indigo-100 dark:bg-indigo-700 text-indigo-600 dark:text-indigo-300 px-2 py-1 rounded">
+      <%= inline_svg('icons/lock.svg', class: 'w-6 h-6') %>
+      <span class="ml-1 text-xs sm:text-sm font-medium">Приватное</span>
+    </span>
+  <% end %>
 
-  <div class="mb-5">
-    <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Адрес:
-    </h4>
-    <p class="text-base font-medium text-gray-800 dark:text-gray-300">
-      <%= @event.location %>
-    </p>
-  </div>
-  <div class="mb-5">
-    <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Ссылка на карту:
-    </h4>
-    <a href="<%= @event.location_link %>" class="text-blue-600 hover:underline dark:text-blue-400 text-base font-medium flex items-center space-x-2" target="_blank">
-      <span>📍 Посмотреть на карте</span>
-    </a>
-  </div>
-
-  <div>
-    <h4 class="text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
-      Тип мероприятия:
-    </h4>
-<div class="flex flex-wrap space-x-2">
-  <% @event.tags.each do |tag| %>
-    <span class="bg-blue-500 text-white rounded-full py-1 mb-3 px-3 text-sm">
-      <%= tag %>
+  <% if @event.participant.is_paid %>
+    <span class="flex items-center bg-green-100 text-green-700 px-2 py-1 rounded">
+      <%= inline_svg('icons/dollar.svg', class: 'w-6 h-6') %>
+      <span class="ml-1 text-xs sm:text-sm font-medium">Платно</span>
     </span>
   <% end %>
 </div>
 
+<div class="mb-5">
+  <h4 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
+    Количество участников:
+  </h4>
+  <p class="text-sm sm:text-base font-medium text-blue-600 dark:text-blue-400">
+    от <%= @event.participant&.min_participants || "—" %> до <%= @event.participant&.max_participants || "—" %>
+  </p>
+</div>
+
+<div class="mb-5">
+  <h4 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
+    Для кого:
+  </h4>
+  <p class="text-sm sm:text-base font-medium text-blue-600 dark:text-blue-400">
+    <%= @event.participant&.participant_type || "—" %>
+  </p>
+</div>
+
+<div class="mb-5">
+  <h4 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
+    Формат мероприятия:
+  </h4>
+  <p class="text-sm sm:text-base font-medium text-blue-600 dark:text-blue-400">
+    <%= @event.event_format || "—" %>
+  </p>
+</div>
+
+<div class="mb-5">
+  <h4 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
+    Адрес:
+  </h4>
+  <p class="text-sm sm:text-base font-medium text-gray-800 dark:text-gray-300">
+    <%= @event.location %>
+  </p>
+</div>
+
+<div class="mb-5">
+  <h4 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
+    Ссылка на карту:
+  </h4>
+  <a href="<%= @event.location_link %>" class="text-sm sm:text-base text-blue-600 hover:underline dark:text-blue-400 font-medium flex items-center space-x-2" target="_blank">
+    <span>📍 Посмотреть на карте</span>
+  </a>
+</div>
+
+<div>
+  <h4 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-gray-200 mb-2">
+    Тип мероприятия:
+  </h4>
+  <div class="flex flex-wrap space-x-2">
+    <% @event.tags.each do |tag| %>
+      <span class="bg-blue-500 text-white rounded-full py-1 mb-3 px-3 text-xs sm:text-sm">
+        <%= tag %>
+      </span>
+    <% end %>
   </div>
+</div>

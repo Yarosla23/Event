@@ -5,7 +5,7 @@ class ReviewsController < ApplicationController
   def create
     @review = @venue.reviews.new(review_params)
     @review.user = current_user
-
+    
     if @review.save
       redirect_to @venue, notice: 'Ваш отзыв успешно добавлен!'
     else

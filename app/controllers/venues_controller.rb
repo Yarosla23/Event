@@ -19,7 +19,7 @@ class VenuesController < ApplicationController
   end
 
   def show
-    @reviews = @venue.reviews.order(created_at: :desc)
+    @reviews = @venue.reviews.includes(user: :profile).order(created_at: :desc)
   end
 
   def new

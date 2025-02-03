@@ -21,7 +21,7 @@
   <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">Фильтры</h2>
   
   <%= form_with(url: events_path, method: :get, local: false, class: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4', data: { turbo_frame: 'events-list' }) do |form| %>
-    <div class="form-group">
+    <div class="">
       <%= render Ui::MultiselectComponent.new(
         form: form, 
         field_name: :tags, 

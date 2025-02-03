@@ -1,116 +1,70 @@
-<h2 class="text-3xl font-bold mb-4 text-center">Отзывы</h2>
+<h2 class="text-3xl font-bold mt-6 text-center text-black dark:text-white">Отзывы</h2>
 
 <div class="flex justify-center">
-  <div class="w-1/2">
-<% @reviews.first(3).each do |review| %> <!-- Показываем только 3 первых отзыва -->
-  <div class="bg-blue-100 p-4 rounded-2xl shadow-md mb-4 review-card flex flex-col justify-between">
-    <div class="flex items-center mb-2">
-      <% if avatar = review.user.profile&.avatar_url %>
-        <img src="<%= avatar %>" class="w-8 h-8 rounded-full flex items-center justify-center text-white" alt="Аватар" />
-      <% else %>
-        <div class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center text-white">
-          <%= review.user.email[0] %> 
-        </div>
-      <% end %>
-      <p class="ml-4 font-semibold text-lg">
-        <%= link_to review.user.profile.last_name, user_profile_path(review.user_id) %>
-      </p>
-      <p class="ml-2 font-semibold text-lg">
-        <%= link_to review.user.profile.first_name, user_profile_path(review.user_id) %>
-      </p>
-
-      <p class="ml-auto text-sm text-gray-500">
-        <div class="flex items-center mb-2">
-          <% 1.upto(5) do |i| %>
-            <span class="<%= i <= review.rating ? 'text-yellow-400' : 'text-gray-300' %> text-3xl">
-              ★
-            </span>
-          <% end %>
-        </div>
-      </p>
-    </div>
-
-    <p class="text-gray-700 mt-2"><%= review.content %></p>
-    <div class="mt-auto flex justify-end text-sm text-gray-500">
-      <%= review.created_at.strftime("%d.%m.%Y") %>
-    </div>
-
-  </div>
-<% end %>
-
-
-    <!-- Показываем оставшиеся отзывы с классом hidden -->
-    <div id="more_reviews" class="hidden">
-      <% @reviews.drop(3).each do |review| %> <!-- Остальные отзывы -->
-        <div class="bg-blue-100 p-4 rounded-lg shadow-md mb-4 review-card">
-          <div class="flex items-center mb-2">
-            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white">
-              <%= review.user.email[0] %>
+  <div class=" md:w-full lg:w-[40%] p-4">
+    <% if user_signed_in? && current_user.profile.present?%>
+      <%= form_with model: [venue, venue.reviews.new], data: { turbo: false } do |form| %>
+        <div class="flex items-center w-full p-6 bg-white dark:bg-gray-800 rounded-3xl shadow-md">
+          
+          <div class="flex-2 space-y-2">
+            <%= form.label :content, 'Напишите отзыв', class: 'block text-lg font-medium text-gray-900 dark:text-white mb-2' %>
+            <div class="flex space-x-1">
+              <% 1.upto(5) do |i| %>
+                <button type="button" data-value="<%= i %>" 
+                  class="star text-gray-300 hover:text-yellow-400 focus:text-yellow-400 text-3xl transition duration-150"
+                  aria-label="Рейтинг <%= i %>">
+                  ★
+                </button>
+              <% end %>
+              <input type="hidden" name="review[rating]" id="review_rating" value="0">
             </div>
-            <p class="ml-4 font-semibold text-lg"><%= review.user.email %></p>
-            <p class="ml-auto text-sm text-gray-500"><%= review.created_at.strftime("%d.%m.%Y") %></p>
           </div>
-          <div class="flex items-center mb-2">
-            <% 1.upto(5) do |i| %>
-              <span class="<%= i <= review.rating ? 'text-yellow-400' : 'text-gray-300' %> text-2xl">
-                ★
-              </span>
-            <% end %>
-            <span class="ml-2 text-sm text-gray-500"><%= review.rating %>/5</span>
+
+          <div class="flex-1 items-start space-y-4 ml-6">
+            <%= form.text_area :content, rows: 3, class: "block w-full rounded-2xl border p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 #{form.object.errors[:content].any? ? 'border-red-500' : 'border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'}" %>
           </div>
-          <p class="text-gray-700 mt-2"><%= review.content %></p>
+        </div>
+        
+        <div class="flex justify-end mt-4">
+          <%= form.submit 'Добавить', class: 'bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 transition duration-200' %>
         </div>
       <% end %>
-    </div>
-
-    <% if @venue.reviews.count > 3 %>
-      <button id="show_more_reviews" class="mt-4 text-blue-500">
-        Посмотреть все комментарии
-      </button>
+    <% else %>
+      <p class="text-black dark:text-white">Пожалуйста, <%= link_to 'войдите', new_user_session_path, class: 'text-blue-500 dark:text-blue-400' %>, чтобы оставить отзыв.</p>
     <% end %>
+
+    <div class="mt-6">
+      <% reviews.first(3).each do |review| %>
+                   <%= render "venues/show/review", review: review %>
+      <% end %>
+
+      <div id="more_reviews" class="hidden">
+        <% reviews.drop(3).each do |review| %>
+           <%= render "venues/show/review", review: review %>
+        <% end %>
+      </div>
+
+      <% if venue.reviews.count > 3 %>
+        <button id="show_more_reviews" class="mt-4 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300">
+          Посмотреть все комментарии
+        </button>
+      <% end %>
+    </div>
   </div>
 </div>
 
-<% if user_signed_in? %>
-  <h3>Добавить отзыв</h3>
-  <%= form_with model: [@venue, @venue.reviews.new], local: true do |form| %>
-    <div class="flex items-center space-x-1 rtl:space-x-reverse">
-      <% 1.upto(5) do |i| %>
-        <button type="button" data-value="<%= i %>" 
-          class="star text-gray-300 hover:text-yellow-400 focus:text-yellow-400 text-2xl transition duration-150"
-          aria-label="Рейтинг <%= i %>">
-          ★
-        </button>
-      <% end %>
-      <input type="hidden" name="review[rating]" id="review_rating" value="0">
-    </div>
-
-    <div>
-      <%= form.label :content, 'Ваш отзыв' %>
-      <%= form.text_area :content, required: true %>
-    </div>
-    <div>
-      <%= form.submit 'Добавить' %>
-    </div>
-  <% end %>
-<% else %>
-  <p>Пожалуйста, <%= link_to 'войдите', new_user_session_path %>, чтобы оставить отзыв.</p>
-<% end %>
-
 <script>
   document.addEventListener('turbo:load', () => {
-    // Логика для показа скрытых отзывов
     const showMoreButton = document.querySelector('#show_more_reviews');
     const moreReviews = document.querySelector('#more_reviews');
 
     if (showMoreButton) {
       showMoreButton.addEventListener('click', () => {
-        moreReviews.classList.remove('hidden'); // Показываем остальные отзывы
-        showMoreButton.style.display = 'none'; // Прячем кнопку "Посмотреть все комментарии"
+        moreReviews.classList.remove('hidden');
+        showMoreButton.style.display = 'none';
       });
     }
 
-    // Стрелки для оценки
     const stars = document.querySelectorAll('.star');
     const ratingInput = document.querySelector('#review_rating');
 
@@ -132,7 +86,7 @@
     }
 
     function setRating(index) {
-      ratingInput.value = index + 1; // Устанавливаем рейтинг
+      ratingInput.value = index + 1;
     }
   });
 </script>

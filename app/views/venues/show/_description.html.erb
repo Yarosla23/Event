@@ -1,0 +1,31 @@
+<div class="m-4 ">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="flex items-center space-x-4">
+      <span class="font-semibold text-gray-700 dark:text-gray-300">Количество туалетов:</span>
+      <p class="text-lg font-medium text-gray-900 dark:text-gray-100"><%= venue.facility.toilets_count %></p>
+    </div>
+  <div>
+      <div class="mt-2 text-center">
+        <a href="<%= venue.information.calendar %>" class="inline-block px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-md transition-all duration-200 ease-in-out transform hover:scale-105" target="_blank">
+          Открыть календарь
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <span class="font-semibold text-gray-700 dark:text-gray-300">Типы мероприятий:</span>
+      <div class="mt-2">
+        <p class="font-medium text-gray-900 dark:text-gray-100"><%= venue.information.event_types.present? ? venue.information.event_types.join(', ') : 'Типы отсутствую'%></p>
+      </div>
+    </div>
+
+    <div>
+      <span class="font-semibold text-gray-700 dark:text-gray-300">Запрещенные действия:</span>
+      <div class="mt-2">
+        <p class="font-medium text-gray-900 dark:text-gray-100">
+          <%= venue.information.restrictions.present? ? venue.information.restrictions : 'Нет ограничений' %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
