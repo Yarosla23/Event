@@ -1,13 +1,16 @@
 class ProfilesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_user, only: [:new, :create, :show, :edit]
 
   def show
     @profile = @user.profile || @user.build_profile
+    
+    authorize @profile
 
     render :show
   end
 
-  def new
+  def new  
     @profile = @user.build_profile
   end
 
@@ -23,12 +26,14 @@ class ProfilesController < ApplicationController
   end
 
   def edit
-
     @profile = current_user.profile
+    authorize @profile
   end
 
   def update
+    
     @profile = current_user.profile
+    authorize @profile
     
     if params[:cover_color]
       logger.debug "Received cover_color: #{params[:cover_color]}"

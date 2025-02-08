@@ -8,11 +8,25 @@ class User < ApplicationRecord
   :omniauthable, omniauth_providers: [:telegram]
   
   has_one :profile, dependent: :destroy
+  ROLES = %w[user landlord moderator admin].freeze
 
-  def days_registered
-    (Date.current - created_at.to_date).to_i
+  validates :role, inclusion: { in: ROLES }
+
+  def admin?
+    role == "admin"
   end
 
+  def moderator?
+    role == "moderator"
+  end
+
+  def landlord?
+    role == "landlord"
+  end
+
+  def user?
+    role == "user"
+  end
   private
 
   def password_present?

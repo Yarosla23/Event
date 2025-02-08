@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_event, only: %i[show edit update destroy]
-
   def index
     @events = Event.includes(:participant, :logistic, :tickets, :event_rule)
 
@@ -40,18 +40,20 @@ class EventsController < ApplicationController
   end
 
   def show
+    authorize @event
   end
 
   def new
     @event = current_user.events.build
     build_associations
+    authorize @event
   end
 
   def create
 
     @event = current_user.events.build(event_params)
     @event.tags = params[:event][:tags].split(',').map(&:strip)
-
+    authorize @event
     if @event.save
       redirect_to @event, notice: 'Мероприятие успешно создано.'
     else
@@ -63,10 +65,12 @@ class EventsController < ApplicationController
   def edit
     @selected_tags = @event.tags || []
     build_associations
+    authorize @event
   end
 
   def update
     @event.tags = params[:event][:tags].split(',').map(&:strip)
+    authorize @event
     if @event.update(event_params)
       redirect_to @event, notice: 'Мероприятие было успешно обновлено.'
     else
@@ -76,6 +80,7 @@ class EventsController < ApplicationController
   end
 
   def destroy
+    authorize @event
     if @event.destroy
       redirect_to events_path, notice: "Событие успешно удалено."
     else

@@ -1,6 +1,7 @@
 class VenuesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_venue, only: %i[show edit update destroy]
-
+  
   def index
     @venues = Venue.includes(:reviews, :information, :service, :facility, :rental_info)
 
@@ -19,17 +20,21 @@ class VenuesController < ApplicationController
   end
 
   def show
+    authorize @venue
     @reviews = @venue.reviews.includes(user: :profile).order(created_at: :desc)
   end
 
   def new
     @venue = current_user.venues.build
+    authorize @venue
+
     build_associations
   end
 
   def create
     @venue = current_user.venues.build(venue_params)
     @venue.venue_type = params[:venue][:venue_type].split(',').map(&:strip)
+    authorize @venue
 
     if @venue.save
       redirect_to @venue, notice: 'Площадка успешно создана.'
@@ -42,10 +47,14 @@ class VenuesController < ApplicationController
   def edit
     @selected_tags = @venue.venue_type || []
     build_associations
+    authorize @venue
+
   end
 
   def update
     @venue.venue_type = params[:venue][:venue_type].split(',').map(&:strip)
+    authorize @venue
+
     if @venue.update(venue_params)
       redirect_to @venue, notice: 'Площадка была успешно обновлена.'
     else
@@ -55,6 +64,8 @@ class VenuesController < ApplicationController
   end
 
   def destroy
+    authorize @venue
+
     if @venue.destroy
       redirect_to venues_path, notice: 'Площадка успешно удалена.'
     else
