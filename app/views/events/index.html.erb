@@ -1,14 +1,16 @@
 <div class="flex justify-center items-center gap-4 my-6">
   <h1 class="text-4xl font-bold text-gray-800 dark:text-white">Мероприятия</h1>
-  <%= link_to '+', new_event_path, class: 'bg-blue-500 text-center text-white px-4 py-2 text-xl rounded-full hover:bg-blue-600 transition' %>
+  <%if current_user.admin? || current_user.user? %>
+    <%= link_to '+', new_event_path, class: 'bg-blue-500 text-center text-white px-4 py-2 text-xl rounded-full hover:bg-blue-600 transition' %>
+  <% end %>
 </div>
 
-<div class="flex items-center justify-between max-w-md mx-6 lg:mx-auto mb-4 gap-4">
+<div class="flex items-center justify-between max-w-md mx-auto mb-4 gap-4">
   <%= form_with(url: events_path, method: :get, local: false, class: 'flex-grow', data: { turbo_frame: 'events-list' }) do %>
-    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Поиск</label>
     <div class="relative flex items-center">
-      <%= text_field_tag :search, params[:search], class: 'block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'Поиск по мероприятиям...', style: 'background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23bbb%22 width=%2220%22 height=%2220%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z%22/%3E%3C/svg%3E"); background-position: 10px center; background-repeat: no-repeat; background-size: 20px; padding-left: 30px;' %>
-      <button type="submit" class="text-white absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+      <%= text_field_tag :search, params[:search], class: 'block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'Начать поиск...', style: 'background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23bbb%22 width=%2220%22 height=%2220%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z%22/%3E%3C/svg%3E"); background-position: 10px center; background-repeat: no-repeat; background-size: 20px; padding-left: 30px;' %>
+      <button type="submit" class="text-white absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Поиск</button>
     </div>
   <% end %>
 
@@ -44,7 +46,7 @@
 
     <div class="space-y-1">
       <%= label_tag :participant_type, 'Тип участника', class: 'block text-sm font-medium text-gray-900 dark:text-white' %>
-      <%= select_tag :participant_type, options_for_select([['Все', ''], ['Тип 1', 'type_1'], ['Тип 2', 'type_2']], selected: params[:participant_type]), class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
+      <%= select_tag :participant_type, options_for_select(Participant::PARTICIPANT_TYPES, selected: params[:participant_type]), class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
     </div>
 
     <div class="space-y-1">
@@ -65,7 +67,7 @@
 </div>
 
 
-<div id="events-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 py-8 lg:w-[70%] mx-auto">
+<div id="events-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 py-8 2xl:w-[70%] mx-auto">
   <% @events.each_with_index do |event, index| %>
     <%= link_to event_path(event), class: "flex flex-col bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition-transform hover:scale-105 hover:bg-blue-50 duration-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700" do %>
       <%= image_tag "party2.png", 
@@ -94,7 +96,7 @@
           <%= truncate(event.description, length: 300) %>
         </p>
         <div class="mb-4">
-          <p class="flex items-center text-lg font-semibold text-white">
+          <p class="flex items-center text-sm xl:text-lg font-semibold text-white">
             <span class="px-3 py-1 rounded-full bg-pink-400 dark:bg-pink-500">
               <%= l(event.start_time, format: :custom) %>
             </span>

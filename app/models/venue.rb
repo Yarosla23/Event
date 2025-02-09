@@ -40,6 +40,6 @@ class Venue < ApplicationRecord
   end
 
   def average_rating
-    reviews.average(:rating)&.round(2) || 0
+    reviews.average(:rating)&.round(2) 
   end
 end

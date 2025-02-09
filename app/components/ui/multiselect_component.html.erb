@@ -35,6 +35,14 @@
 
 <script>
 document.addEventListener('turbo:load', () => {
+  initDropdown();
+});
+
+document.addEventListener('turbo:frame-load', () => {
+  initDropdown();
+});
+
+function initDropdown() {
   const dropdown = document.getElementById("dropdown");
   const dropdownItems = document.querySelectorAll(".dropdown-item");
   const hiddenField = document.getElementById("hidden-values");
@@ -42,13 +50,11 @@ document.addEventListener('turbo:load', () => {
   const multiselectContainer = document.querySelector(".multiselect-container");
   const placeholder = "<%= @placeholder %>";
 
+  if (!dropdown || !hiddenField || !selectedValuesDisplay || !multiselectContainer) return;
+
   function updateSelectedValuesDisplay() {
     const selectedValues = hiddenField.value ? hiddenField.value.split(",") : [];
-    if (selectedValues.length > 0) {
-      selectedValuesDisplay.textContent = selectedValues.join(", ");
-    } else {
-      selectedValuesDisplay.textContent = placeholder;
-    }
+    selectedValuesDisplay.textContent = selectedValues.length > 0 ? selectedValues.join(", ") : placeholder;
   }
 
   window.toggleDropdown = () => {
@@ -57,14 +63,13 @@ document.addEventListener('turbo:load', () => {
 
   dropdownItems.forEach(item => {
     item.addEventListener("click", (event) => {
-      event.stopPropagation(); 
+      event.stopPropagation();
       const key = item.getAttribute("data-key");
       let selectedValues = hiddenField.value ? hiddenField.value.split(",") : [];
 
       if (selectedValues.includes(key)) {
         selectedValues = selectedValues.filter(value => value !== key);
         item.querySelector("span").classList.remove("text-blue-400", "font-semibold");
-     
       } else {
         selectedValues.push(key);
         item.querySelector("span").classList.add("text-blue-400", "font-semibold");
@@ -82,9 +87,7 @@ document.addEventListener('turbo:load', () => {
       dropdown.classList.add("hidden");
     }
   });
-});
-
-
+}
 </script>
 
 <style>

@@ -2,7 +2,7 @@
 
 <div class="flex justify-center">
   <div class=" md:w-full lg:w-[40%] p-4">
-    <% if user_signed_in? && current_user.profile.present?%>
+    <% if user_signed_in? && current_user.profile.present? %>
       <%= form_with model: [venue, venue.reviews.new], data: { turbo: false } do |form| %>
         <div class="flex items-center w-full p-6 bg-white dark:bg-gray-800 rounded-3xl shadow-md">
           
@@ -30,7 +30,7 @@
         </div>
       <% end %>
     <% else %>
-      <p class="text-black dark:text-white">Пожалуйста, <%= link_to 'войдите', new_user_session_path, class: 'text-blue-500 dark:text-blue-400' %>, чтобы оставить отзыв.</p>
+      <p class="text-center text-black dark:text-white">Пожалуйста, <%= link_to 'создайте профиль', new_user_profile_path(current_user), class: 'text-blue-500 dark:text-blue-400' %>, чтобы оставить отзыв.</p>
     <% end %>
 
     <div class="mt-6">

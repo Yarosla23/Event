@@ -63,11 +63,13 @@
   <%= render 'events/show/ticket', tickets: @event.tickets %>
 
   <div class="mt-6 flex justify-between items-center">
-    <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
-      <%= submit_tag 'Удалить', class: "px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition text-sm sm:text-base" %>
+    <%if current_user.id == @event.user_id%>
+      <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
+        <%= submit_tag 'Удалить', class: "px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition text-sm sm:text-base" %>
+      <% end %>
+      <div class="space-x-4">
+        <%= link_to 'Редактировать', edit_event_path(@event), class: "px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition text-sm sm:text-base" %>
     <% end %>
-    <div class="space-x-4">
-      <%= link_to 'Редактировать', edit_event_path(@event), class: "px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition text-sm sm:text-base" %>
       <%= link_to 'Назад', events_path, class: "px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 transition text-sm sm:text-base" %>
     </div>
   </div>
