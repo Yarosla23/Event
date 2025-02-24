@@ -1,0 +1,44 @@
+<% flash.each do |key, message| %>
+  <div 
+    class="flex items-center p-4 text-white rounded-lg shadow-lg transition-opacity duration-300 opacity-100 
+           <% if key == 'notice' %>bg-green-500<% elsif key == 'alert' %>bg-red-500<% else %>bg-gray-500<% end %>"
+    data-key="<%= key %>"
+  >
+    <span class="ml-2 text-sm font-medium"><%= message %></span>
+    <button 
+      type="button" 
+      class="ml-auto -mr-1 p-1 text-white hover:text-gray-300 focus:outline-none focus:ring"
+      onclick="removeNotification(this)"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener('turbo:load', () => {
+    const notifications = document.querySelectorAll("#notifications > div");
+
+    notifications.forEach((notification) => {
+      setTimeout(() => {
+        fadeOut(notification);
+      }, 4000);
+    });
+  });
+
+  function fadeOut(element) {
+    element.style.transition = "opacity 0.5s";
+    element.style.opacity = "0";
+
+    setTimeout(() => {
+      element.remove();
+    }, 500);
+  }
+
+  function removeNotification(button) {
+    const notification = button.parentElement;
+    fadeOut(notification);
+  }
+</script>

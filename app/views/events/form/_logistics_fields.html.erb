@@ -1,0 +1,36 @@
+<div class="p-2 bg-white dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 mt-6">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-3">Организация и логистика</h3>
+  <%= form.fields_for :logistic do |logistics_form| %>
+    <%= render Ui::InputFieldComponent.new(
+      form: logistics_form,
+      field_name: :organizers,
+      label: "Организаторы",
+      type: "text_area",
+      placeholder: "Введите организаторов мероприятия"
+    ) %>
+
+    <%= render Ui::InputFieldComponent.new(
+      form: logistics_form,
+      field_name: :contact_info,
+      label: "Контактная информация",
+      type: "text_area",
+      placeholder: "Почты, сайты и т.д."
+    ) %>
+
+    <%= render Ui::InputFieldComponent.new(
+      form: logistics_form,
+      field_name: :technical_requirements,
+      label: "Технические требования",
+      type: "text_area",
+      placeholder: "Введите требования для мероприятия"
+    ) %>
+
+    <%= render Ui::InputFieldComponent.new(
+      form: logistics_form,
+      field_name: :special_instructions,
+      label: "Особые инструкции",
+      type: "text_area",
+      placeholder: "Введите инструкции для мероприятия"
+    ) %>
+  <% end %>
+</div>

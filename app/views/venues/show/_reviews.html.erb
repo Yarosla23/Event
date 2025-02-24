@@ -1,0 +1,92 @@
+<h2 class="text-3xl font-bold mt-6 text-center text-black dark:text-white">Отзывы</h2>
+
+<div class="flex justify-center">
+  <div class=" md:w-full lg:w-[40%] p-4">
+    <% if user_signed_in? && current_user.profile.present? %>
+      <%= form_with model: [venue, venue.reviews.new], data: { turbo: false } do |form| %>
+        <div class="flex items-center w-full p-6 bg-white dark:bg-gray-800 rounded-3xl shadow-md">
+          
+          <div class="flex-2 space-y-2">
+            <%= form.label :content, 'Напишите отзыв', class: 'block text-lg font-medium text-gray-900 dark:text-white mb-2' %>
+            <div class="flex space-x-1">
+              <% 1.upto(5) do |i| %>
+                <button type="button" data-value="<%= i %>" 
+                  class="star text-gray-300 hover:text-yellow-400 focus:text-yellow-400 text-3xl transition duration-150"
+                  aria-label="Рейтинг <%= i %>">
+                  ★
+                </button>
+              <% end %>
+              <input type="hidden" name="review[rating]" id="review_rating" value="0">
+            </div>
+          </div>
+
+          <div class="flex-1 items-start space-y-4 ml-6">
+            <%= form.text_area :content, rows: 3, class: "block w-full rounded-2xl border p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 #{form.object.errors[:content].any? ? 'border-red-500' : 'border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'}" %>
+          </div>
+        </div>
+        
+        <div class="flex justify-end mt-4">
+          <%= form.submit 'Добавить', class: 'bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 transition duration-200' %>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-center text-black dark:text-white">Пожалуйста, <%= link_to 'создайте профиль', new_user_profile_path(current_user), class: 'text-blue-500 dark:text-blue-400' %>, чтобы оставить отзыв.</p>
+    <% end %>
+
+    <div class="mt-6">
+      <% reviews.first(3).each do |review| %>
+                   <%= render "venues/show/review", review: review %>
+      <% end %>
+
+      <div id="more_reviews" class="hidden">
+        <% reviews.drop(3).each do |review| %>
+           <%= render "venues/show/review", review: review %>
+        <% end %>
+      </div>
+
+      <% if venue.reviews.count > 3 %>
+        <button id="show_more_reviews" class="mt-4 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300">
+          Посмотреть все комментарии
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('turbo:load', () => {
+    const showMoreButton = document.querySelector('#show_more_reviews');
+    const moreReviews = document.querySelector('#more_reviews');
+
+    if (showMoreButton) {
+      showMoreButton.addEventListener('click', () => {
+        moreReviews.classList.remove('hidden');
+        showMoreButton.style.display = 'none';
+      });
+    }
+
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.querySelector('#review_rating');
+
+    stars.forEach((star, index) => {
+      star.addEventListener('mouseover', () => {
+        highlightStars(index);
+      });
+
+      star.addEventListener('click', () => {
+        setRating(index);
+      });
+    });
+
+    function highlightStars(index) {
+      stars.forEach((star, i) => {
+        star.classList.toggle('text-yellow-400', i <= index);
+        star.classList.toggle('text-gray-300', i > index);
+      });
+    }
+
+    function setRating(index) {
+      ratingInput.value = index + 1;
+    }
+  });
+</script>

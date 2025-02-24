@@ -1,0 +1,78 @@
+<div class="relative" data-field-name="<%= @field_name %>">
+  <% if @label.present? %>
+    <%= form.label @field_name, @label, class: "block text-sm font-medium text-gray-900 dark:text-white mb-2" %>
+  <% end %>
+
+  <button type="button" class="selectButton w-full flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring focus:ring-blue-500 focus:border-blue-500">
+    <span class="selectedText"><%= @selected_values.present? ? @selected_values.join(', ') : @placeholder || 'Выберите участников' %></span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  <div class="dropdown absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg dark:bg-gray-700 dark:border-gray-600 hidden">
+    <ul class="max-h-60 overflow-auto py-1 text-gray-900 dark:text-white">
+      <% @options.each do |type| %>
+        <li class="cursor-pointer px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 participant-option" data-value="<%= type %>">
+          <%= type %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="selectedValues">
+    <%= hidden_field_tag("#{form}#{@field_name}[]", @selected_values, multiple: true) %>
+  </div>
+  
+  <% if @errors[@field_name].present? %>
+    <div class="text-red-500 text-sm mt-2 !important">
+      <%= @errors[@field_name].join(", ") %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+document.addEventListener('turbo:load', () => {
+  const selectButtons = document.querySelectorAll('.selectButton');
+
+  selectButtons.forEach(selectButton => {
+    const dropdown = selectButton.nextElementSibling;
+    const selectedText = selectButton.querySelector('.selectedText');
+    const selectedValues = selectButton.closest('.relative').querySelector('.selectedValues');
+    const fieldName = selectButton.closest('.relative').dataset.fieldName;
+
+    // Ensure selected is scoped to the current select button instance
+    let selected = <%= raw @selected_values.to_json %> || [];
+
+    selectButton.addEventListener('click', function() {
+      dropdown.classList.toggle('hidden');
+    });
+
+    dropdown.addEventListener('click', function(event) {
+      const option = event.target;
+      if (option.classList.contains('participant-option')) {
+        const value = option.getAttribute('data-value');
+
+        if (selected.includes(value)) {
+          selected = selected.filter(item => item !== value);
+          option.classList.remove('bg-blue-500', 'text-white');
+        } else {
+          selected.push(value);
+          option.classList.add('bg-blue-500', 'text-white');
+        }
+
+        selectedText.textContent = selected.length ? selected.join(', ') : '<%= @placeholder || 'Выберите участников' %>';
+
+        const hiddenInput = selectedValues.querySelector('input');
+        hiddenInput.value = selected.join(','); 
+      }
+    });
+
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.relative') && !event.target.closest('.selectButton')) {
+        dropdown.classList.add('hidden');
+      }
+    });
+  });
+});
+</script>

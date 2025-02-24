@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+}
+.day {
+  text-align: center;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+}
+.text-responsive {
+  font-size: clamp(1rem, 5vw, 5rem);
+}
+/*
+
+@layer components {я
+    @apply py-2 px-4 bg-blue-200;
+  }
+}
+
+*/

@@ -1,0 +1,92 @@
+<div class="p-2 md:p-3 bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 mb-3 md:mb-6">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-4">Основная информация об мероприятии</h3>
+  <div class="columns-1 md:columns-2 gap-6">
+    <div class="field mb-4">
+      <%= render Ui::InputFieldComponent.new(
+        form: form,
+        field_name: :name, 
+        label: "Название мероприятия",
+        placeholder: "Введите название мероприятия"
+      )%>
+    </div>
+
+    <div class="field mx-3 mb-4">
+      <%= form.label :start_time, "Время начала", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <%= form.text_field :start_time, type: "datetime-local", value: form.object.start_time&.in_time_zone("Moscow")&.strftime("%Y-%m-%dT%H:%M"), 
+        class: "block w-full p-2.5 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+      <% if form.object.errors[:start_time].any? %>
+        <div class="text-sm text-red-500">
+          <%= form.object.errors[:start_time].join(', ') %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="field mb-4">
+      <%= render Ui::InputFieldComponent.new(
+        form: form,
+        field_name: :location,
+        label: "Местоположение",
+        placeholder: "Город, улица, дом"
+      ) %>
+    </div>
+
+    <div class="field px-2 mb-4 field m-1.5">
+      <%= render Ui::MultiselectComponent.new(
+        form: form, 
+        field_name: :tags,
+        selected_values: @event.tags,
+        placeholder: "Выберите типы мероприятий",
+        value: Event::TYPES, 
+        label: "Тип мероприятия") 
+      %>
+    </div>
+
+    <div class="field mx-3 mb-4">
+      <%= form.label :end_time, "Время окончания", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <%= form.text_field :end_time, type: "datetime-local", value: form.object.end_time&.strftime("%Y-%m-%dT%H:%M"), 
+        class: "block w-full p-2.5 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+      <% if form.object.errors[:end_time].any? %>
+        <div class="text-sm text-red-500">
+          <%= form.object.errors[:end_time].join(', ') %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="field mb-4">
+      <%= render Ui::InputFieldComponent.new(
+        form: form,
+        field_name: :location_link,
+        label: "Ссылка на локацию",
+        placeholder: "В формате https://link.com"
+      ) %>
+    </div>
+  </div>
+
+  <div class="field mb-4">
+    <%= render Ui::InputFieldComponent.new(
+      form: form,
+      field_name: :event_format,
+      label: "Формат мероприятия",
+      placeholder: "Очный, дистанционный, гибридный"
+    ) %>
+  </div>
+  
+  <div class="field mb-4">
+    <%= render Ui::InputFieldComponent.new(
+      form: form,
+      field_name: :description,
+      label: "Описание",
+      type: "text_area",
+      input_class: "whitespace-pre-wrap ",
+      placeholder: "Введите главное описание"
+    ) %>
+  </div>
+
+  <div class="relative hidden w-full">
+    <svg class="w-5 h-5 hidden absolute top-3 right-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+    <div class="max-h-48 overflow-y-auto">
+    </div>
+  </div>
+</div>

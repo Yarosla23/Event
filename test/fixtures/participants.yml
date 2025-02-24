@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event: one
+  min_participants: 1
+  max_participants: 1
+  participant_type: MyString
+  is_private: false
+  is_paid: false
+
+two:
+  event: two
+  min_participants: 1
+  max_participants: 1
+  participant_type: MyString
+  is_private: false
+  is_paid: false

@@ -1,0 +1,51 @@
+<div class="p-2 bg-white dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 mt-6">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-4">Услуги, предоставляемые арендодателем</h3>
+  <%= form.fields_for :service do |f| %>
+    <div class="grid grid-cols-2 gap-4 m-6">
+      <%= render Ui::CheckboxFieldComponent.new(
+        form: f,
+        field_name: :technical_equipment,
+        label: "Техническое оборудование",
+        input_class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      ) %>
+
+      <%= render Ui::CheckboxFieldComponent.new(
+        form: f,
+        field_name: :cleaning_after_event,
+        label: "Уборка после мероприятия",
+        input_class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      ) %>
+
+      <%= render Ui::CheckboxFieldComponent.new(
+        form: f,
+        field_name: :furniture,
+        label: "Мебель",
+        input_class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      ) %>
+
+      <%= render Ui::CheckboxFieldComponent.new(
+        form: f,
+        field_name: :decoration,
+        label: "Декорации",
+        input_class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      ) %>
+      <%= render Ui::CheckboxFieldComponent.new(
+        form: f,
+        field_name: :security,
+        label: "Охрана",
+        input_class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      ) %>
+    </div>
+
+    <div class="m-2">
+      <%= render Ui::InputFieldComponent.new(
+        form: f,
+        field_name: :additional_services,
+        label: "Дополнительные услуги",
+        type: "text_area",
+        placeholder: "Введите платные/бесплатные услуги",
+        input_class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      ) %>
+    </div>
+  <% end %>
+</div>

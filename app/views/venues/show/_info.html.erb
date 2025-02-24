@@ -1,0 +1,62 @@
+<section class="rounded-2xl p-4 sm:p-6">
+
+  <div class="m-4 sm:m-4 p-4 sm:p-6 bg-gradient-to-r bg-green-500 dark:bg-green-700 rounded-2xl text-center shadow-lg">
+    <p class="text-3xl sm:text-5xl font-extrabold text-white"> <%= venue.rental_info.price || "—" %> ₽ </p>
+  </div>
+
+  <p class="font-semibold ml-4 mb-2  text-gray-500 dark:text-gray-300">Часы работы:</p> 
+
+  <div class="flex justify-center items-center space-x-4 mb-6">
+    <span class="text-white bg-yellow-500 dark:bg-yellow-600 px-5 py-2 sm:px-6 sm:py-3 rounded-lg shadow-md text-lg font-semibold hover:scale-105 transition-transform">
+      <%= venue.rental_info.working_hours_start.strftime("%H:%M") %> ч.
+    </span>
+    <span class="text-gray-500 dark:text-gray-400 text-xl">—</span>
+    <span class="text-white bg-yellow-500 dark:bg-yellow-600 px-5 py-2 sm:px-6 sm:py-3 rounded-lg shadow-md text-lg font-semibold hover:scale-105 transition-transform">
+      <%= venue.rental_info.working_hours_end.strftime("%H:%M") %> ч.
+    </span>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 sm:gap-6 text-gray-500 dark:text-gray-300 text-lg">
+    <p><span class="font-semibold ml-4 mr-2">Макс. чел.:</span> 
+      <span class="text-green-600 dark:text-green-400 font-bold"> <%= venue.max_participants || "—" %> </span>
+    </p>
+    <p><span class="font-semibold mr-2">Площадь:</span> 
+      <span class="text-green-600 dark:text-green-400 font-bold"> <%= venue.area || "—" %> м²</span>
+    </p>
+  </div>
+
+  <div class="mb-5 text-lg font-semibold text-gray-500 dark:text-gray-300 text-center">
+    <span class="font-semibold  text-gray-500 dark:text-gray-300">Минимальная аренда:</span>  
+    <span class="text-green-600 dark:text-green-400 font-bold"><%= venue.rental_info.min_rental_duration_hours %> ч.</span>
+  </div>
+
+  <% if venue.rental_info.discounts.present? %>
+    <div class="mb-5 p-4 bg-yellow-100 dark:bg-yellow-700 rounded-xl text-center shadow-md">
+      <p class="text-lg font-bold text-gray-900 dark:text-gray-200">Скидки:</p>
+      <p class="text-md text-gray-700 dark:text-gray-300 mt-1"> <%= venue.rental_info.discounts %> </p>
+    </div>
+  <% end %>
+  
+  <p class="font-semibold ml-4 mb-1  text-gray-500 dark:text-gray-300">Контакты:</p> 
+  <div class="space-y-3 text-center">
+    <p class="text-gray-900 dark:text-gray-300 font-medium gap-2">
+      📞 <%= venue.phone %>
+    </p>
+    <p class="text-gray-900 dark:text-gray-300 font-medium gap-2">
+      ✉️ <%= venue.email %>
+    </p>
+    <a href="<%= venue.website %>" class="text-lg text-blue-600 hover:underline dark:text-blue-300 block">
+      🌐 Перейти на сайт
+    </a>
+  </div>
+
+  <div class="flex flex-wrap gap-2 justify-center text-lg my-4">
+    <% venue.venue_type.each do |tag| %>
+      <span class="bg-green-600 text-white rounded-full py-2 px-4 text-sm shadow-md"> <%= tag %> </span>
+    <% end %>
+  </div>
+
+  <div class="mt-6 text-center p-4 bg-gray-600 text-white rounded-full text-lg shadow-md">
+    📍 <%= venue.address %>
+  </div>
+</section>

@@ -1,0 +1,160 @@
+<div class="flex justify-center items-center gap-4 my-6">
+  <h1 class="text-4xl font-bold text-gray-800 dark:text-white">Мероприятия</h1>
+  <%if current_user.admin? || current_user.user? %>
+    <%= link_to '+', new_event_path, class: 'bg-blue-500 text-center text-white px-4 py-2 text-xl rounded-full hover:bg-blue-600 transition' %>
+  <% end %>
+</div>
+
+<div class="flex items-center justify-between max-w-md mx-auto mb-4 gap-4">
+  <%= form_with(url: events_path, method: :get, local: false, class: 'flex-grow', data: { turbo_frame: 'events-list' }) do %>
+    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Поиск</label>
+    <div class="relative flex items-center">
+      <%= text_field_tag :search, params[:search], class: 'block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'Начать поиск...', style: 'background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23bbb%22 width=%2220%22 height=%2220%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z%22/%3E%3C/svg%3E"); background-position: 10px center; background-repeat: no-repeat; background-size: 20px; padding-left: 30px;' %>
+      <button type="submit" class="text-white absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Поиск</button>
+    </div>
+  <% end %>
+
+  <button id="filter-toggle" class="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-4 py-2 rounded-md hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition cursor-pointer" data-expanded="false">
+    Фильтры
+  </button>
+</div>
+
+<div id="filters" class="hidden mb-6 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg inset-0 max-w-5xl mx-6 lg:mx-auto">
+  <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">Фильтры</h2>
+  
+  <%= form_with(url: events_path, method: :get, local: false, class: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4', data: { turbo_frame: 'events-list' }) do |form| %>
+    <div class="">
+      <%= render Ui::MultiselectComponent.new(
+        form: form, 
+        field_name: :tags, 
+        value: Event::TYPES, 
+        selected_values: params[:tags], 
+        placeholder: "Выберите типы мероприятий",
+        label: "Тип мероприятия"
+      ) %>
+    </div>
+
+    <div class="space-y-1">
+      <%= label_tag :start_time, 'Дата начала', class: 'block text-sm font-medium text-gray-900 dark:text-white mb-1' %>
+      <%= date_field_tag :start_time, params[:start_time], class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
+    </div>
+
+    <div class="space-y-1">
+      <%= label_tag :location, 'Местоположение', class: 'block text-sm font-medium text-gray-900 dark:text-white' %>
+      <%= text_field_tag :location, params[:location], class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
+    </div>
+
+    <div class="space-y-1">
+      <%= label_tag :participant_type, 'Тип участника', class: 'block text-sm font-medium text-gray-900 dark:text-white' %>
+      <%= select_tag :participant_type, options_for_select(Participant::PARTICIPANT_TYPES, selected: params[:participant_type]), class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
+    </div>
+
+    <div class="space-y-1">
+      <%= label_tag :is_private, 'Приватное?', class: 'block text-sm font-medium text-gray-900 dark:text-white' %>
+      <%= select_tag :is_private, options_for_select([['Все', ''], ['Да', 'true'], ['Нет', 'false']], selected: params[:is_private]), class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
+    </div>
+
+    <div class="space-y-1">
+      <%= label_tag :is_paid, 'Платное?', class: 'block text-sm font-medium text-gray-900 dark:text-white' %>
+      <%= select_tag :is_paid, options_for_select([['Все', ''], ['Да', 'true'], ['Нет', 'false']], selected: params[:is_paid]), class: 'w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white' %>
+    </div>
+
+    <div class="flex justify-center gap-4 mt-4 col-span-full">
+      <%= submit_tag 'Применить', class: 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-6 py-2 rounded-md hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition cursor-pointer' %>
+      <%= link_to 'Сбросить', events_path, class: 'bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-2 rounded-md hover:from-gray-700 hover:to-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 transition cursor-pointer' %>
+    </div>
+  <% end %>
+</div>
+
+
+<div id="events-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 py-8 2xl:w-[70%] mx-auto">
+  <% @events.each_with_index do |event, index| %>
+    <%= link_to event_path(event), class: "flex flex-col bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition-transform hover:scale-105 hover:bg-blue-50 duration-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700" do %>
+      <%= image_tag "party2.png", 
+      class: "object-cover w-full h-56 rounded-t-2xl", 
+      alt: "Изображение мероприятия" %>
+
+      <div class="flex flex-col justify-between p-5">
+        <h5 class="text-xl font-semibold text-gray-900 dark:text-white mb-3  flex items-center">
+          <%= event.name %>
+          
+          <span class="ml-2">
+            <% if event.participant.is_private %>
+              <%= inline_svg('icons/lock.svg', class: 'w-6 h-6 text-indigo-600  dark:text-indigo-400') %>
+            <% end %>
+          </span>
+
+          <span class="ml-2">
+            <% if event.participant.is_paid %>
+              <%= inline_svg('icons/dollar.svg', class: 'w-6 h-6 text-green-600 ') %>
+            <% end %>
+          </span>
+
+        </h5>
+
+        <p class="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed line-clamp-3">
+          <%= truncate(event.description, length: 300) %>
+        </p>
+        <div class="mb-4">
+          <p class="flex items-center text-sm xl:text-lg font-semibold text-white">
+            <span class="px-3 py-1 rounded-full bg-pink-400 dark:bg-pink-500">
+              <%= l(event.start_time, format: :custom) %>
+            </span>
+            <span class="mx-2 text-gray-500 dark:text-gray-400">—</span>
+            <span class="px-3 py-1 rounded-full bg-pink-400 dark:bg-pink-500">
+              <%= l(event.end_time, format: :custom) %>
+            </span>
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <% event.tags.each do |tag| %>
+            <span class="bg-blue-600 text-white rounded-full py-1 px-3 text-xs">
+              <%= tag %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener('turbo:load', () => {
+    initFilterToggle();
+  });
+
+  document.addEventListener('turbo:frame-load', () => {
+    initFilterToggle();
+  });
+
+  function initFilterToggle() {
+    const filterToggle = document.getElementById('filter-toggle');
+    const filters = document.getElementById('filters');
+
+    if (!filterToggle || !filters) return;
+
+    const isExpanded = filterToggle.classList.contains('expanded');
+    if (isExpanded) {
+      filters.classList.remove('hidden');
+    } else {
+      filters.classList.add('hidden');
+    }
+
+    filterToggle.addEventListener('click', function () {
+      const isCurrentlyExpanded = filterToggle.classList.contains('expanded');
+      
+      if (isCurrentlyExpanded) {
+        setTimeout(() => {
+          filters.classList.add('hidden');
+          filterToggle.classList.remove('expanded');
+        }, 100); 
+      } else {
+        setTimeout(() => {
+          filters.classList.remove('hidden');
+          filterToggle.classList.add('expanded');
+        }, 100); 
+      }
+    });
+  }
+</script>

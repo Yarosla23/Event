@@ -1,0 +1,107 @@
+<header class="bg-blue-950 text-white ">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global">
+    <div class="flex lg:flex-1 items-center">
+      <a href="<%=root_path%>" class="text-xl -m-1.5 p-1.5">
+        Эвент знакомства
+      </a>
+    </div>
+    <div class="hidden lg:flex lg:gap-x-12">
+    <% if  current_page?(root_path) %>
+      <a href="#about" class="text-sm/6 font-semibold">О нас</a>
+      <a href="#possibilities" class="text-sm/6 font-semibold">Возможности</a>
+      <a href="#FAQs" class="text-sm/6 font-semibold">FAQs</a>
+      <% end %>
+
+
+    </div>
+    <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+      <button id="theme-toggle" class="mr-10">
+        <svg data-toggle-icon="sun" class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-11a1 1 0 0 0 1-1V1a1 1 0 0 0-2 0v2a1 1 0 0 0 1 1Zm0 12a1 1 0 0 0-1 1v2a1 1 0 1 0 2 0v-2a1 1 0 0 0-1-1ZM4.343 5.757a1 1 0 0 0 1.414-1.414L4.343 2.929a1 1 0 0 0-1.414 1.414l1.414 1.414Zm11.314 8.486a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM4 10a1 1 0 0 0-1-1H1a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1Zm15-1h-2a1 1 0 1 0 0 2h2a1 1 0 0 0 0-2ZM4.343 14.243l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414a1 1 0 0 0-1.414-1.414ZM14.95 6.05a1 1 0 0 0 .707-.293l1.414-1.414a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 .707 1.707Z"></path>
+        </svg>
+
+        <svg data-toggle-icon="moon" class="w-3.5 h-3.5 hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+          <path d="M17.8 13.75a1 1 0 0 0-.859-.5A7.488 7.488 0 0 1 10.52 2a1 1 0 0 0 0-.969A1.035 1.035 0 0 0 9.687.5h-.113a9.5 9.5 0 1 0 8.222 14.247 1 1 0 0 0 .004-.997Z"></path>
+        </svg>
+      </button>
+
+      <%= link_to "События", events_path, class:"text-sm/6 font-semibold pr-6" %>
+      <%= link_to "Аренда площадки", venues_path, class:"text-sm/6 font-semibold pr-6" %>
+
+      <% if  current_user.present? %>
+        <% if current_user.profile.present? %>
+          <%= link_to "Профиль", user_profile_path(current_user), class: "text-sm/6 font-semibold pr-6", onclick: "window.location.href=this.href; return false;" %>
+        <% else %>
+          <%= link_to "Профиль", new_user_profile_path(current_user), class: "text-sm/6 font-semibold pr-6", onclick: " window.location.href=this.href; return false;" %>
+        <% end %>
+        <%= link_to 'Выход <span aria-hidden="true">&rarr;</span>'.html_safe, destroy_user_session_path, data: { turbo_method: :delete }, class: 'text-sm/6 font-semibold' %>
+      <% else %>
+        <%= link_to 'Вход <span aria-hidden="true">&rarr;</span>'.html_safe, user_session_path, class: 'text-sm/6 font-semibold' %>
+
+      <% end %>
+    </div>
+    
+    <button id="burgerButton" class="lg:hidden p-2.5">
+        ☰
+    </button>
+  </nav>
+  
+  <div id="mobileMenu" class="lg:hidden hidden fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-blue-950 px-4 py-4 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+    <div class="flex items-center justify-between ">
+      <a href="#" class="-m-1.5 p-1.5">
+        <p>Эвент знакомства</p>
+      </a>
+      <button id="closeButton" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+        <span class="sr-only">Close menu</span>
+        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="mt-6 flow-root">
+      <div class="-my-6 divide-y divide-gray-500/10">
+        <div class="space-y-2 py-6">
+          <a href="#about>" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-blue-900">О нас</a>
+        </div>
+        <div class="space-y-2 py-6">
+          <a href="#possibilities" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-blue-900">Возможности</a>
+        </div>
+        <div class="space-y-2 py-6">
+          <a href="#FAQs" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-blue-900">FAQs</a>
+        </div>
+        <div class="py-6">
+          <% if  current_user.present? %>
+            <%= link_to 'Выход', user_session_path, method: :delete, class: '-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold hover:bg-blue-900' %>
+          <% else %>
+            <%= link_to 'Вход',  destroy_user_session_path,  class: '-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold hover:bg-blue-900' %>
+          <% end %>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+</header>
+
+
+<script>
+  function setupBurgerMenu() {
+    const burgerButton = document.getElementById('burgerButton');
+    const closeButton = document.getElementById('closeButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    if (burgerButton && closeButton && mobileMenu) {
+      burgerButton.addEventListener('click', () => {
+        mobileMenu.classList.remove('hidden'); 
+      });
+
+      closeButton.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden'); 
+      });
+    }
+  }
+
+  document.addEventListener('turbo:load', setupBurgerMenu);
+  
+</script>
+

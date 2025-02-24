@@ -1,0 +1,25 @@
+<h1 class="text-center text-2xl font-bold md:text-4xl my-2 md:my-6">Редактирование мероприятия</h1>
+
+<div class="w-full md:w-2/3 mx-auto p-2 md:p-6">
+
+<%= form_with model: @event, data: { turbo: false }, local: true do |form| %>
+  <%= render 'events/form/event_form_fields', form: form %>
+  <%= render 'events/form/participant_fields', form: form %>
+  <%= render 'events/form/ticket_fields', form: form %>
+  <%= render 'events/form/logistics_fields', form: form %>
+  <%= render 'events/form/rules_fields', form: form %>
+  
+  <div class="flex justify-between mt-4">
+
+  <div class="actions">
+    <%= form.submit "Обновить мероприятие", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" %>
+  </div>
+<% end %>
+
+<%= form_with model: @event, method: :delete, local: true do |form| %>
+  <div class="actions">
+    <%= form.submit "Удалить мероприятие", class: "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" %>
+  </div>
+<% end %>
+</div>
+</div>

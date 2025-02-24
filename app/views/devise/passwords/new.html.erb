@@ -1,0 +1,23 @@
+<h2 class="text-center text-4xl font-bold mb-8 text-gray-200">Forgot Your Password?</h2>
+
+<div class="max-w-lg mx-auto p-8 rounded-xl shadow-lg text-white">
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "space-y-6" }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div class="mb-6">
+      <%= f.label :email, class: "block text-lg font-semibold text-gray-300 mb-2" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email",
+          class: "mt-1 block w-full text-lg rounded-lg border-gray-700 bg-gray-900 text-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50",
+          style: "background-color: #2D2D3A; color: white;" %>
+    </div>
+
+    <div class="mt-8">
+      <%= f.submit "Отправить инструкцию по сбросу",
+          class: "w-full bg-gray-600 hover:bg-gray-700 text-white text-lg font-semibold py-3 px-5 rounded-lg shadow-lg transition duration-300" %>
+    </div>
+  <% end %>
+
+  <div class="mt-8 text-center text-white">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

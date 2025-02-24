@@ -1,0 +1,50 @@
+<div class="p-2 bg-white dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-4">Информация о участниках</h3>
+
+  <%= form.fields_for :participant do |participant_form| %>
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <%= render Ui::InputFieldComponent.new(
+        form: participant_form,
+        field_name: :min_participants,
+        label: "Минимальное количество участников",
+        type: "number",
+        input_class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+        placeholder: "Введите количество"
+      ) %>
+      <%= render Ui::InputFieldComponent.new(
+        form: participant_form,
+        field_name: :max_participants,
+        label: "Максимальное количество участников",
+        type: "number",
+        input_class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+        placeholder: "Введите количество"
+      ) %>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-6 pb-4">
+      <div class="flex-1">
+        <%= render Ui::SelectFieldComponent.new(
+          form: participant_form,
+          field_name: :participant_type,
+          label: "Тип участников",
+          options: Participant::PARTICIPANT_TYPES,
+          include_blank: 'Выберите тип участников',
+          input_class: "custom-class"
+        ) %>
+      </div>
+
+      <div class="flex-1 flex ml-4">
+        <div class="flex items-center space-x-4">
+          <div class=" items-center lg:pt-5">
+            <%= participant_form.check_box :is_private, class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+            <%= participant_form.label :is_private, "Приватное мероприятие", class: "pl-3 text-sm font-medium text-gray-900 dark:text-white" %>
+          </div>
+          <div class=" items-center lg:pt-5 md:pl-5">
+            <%= participant_form.check_box :is_paid, class: "h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+            <%= participant_form.label :is_paid, "Платное", class: "pl-3 text-sm font-medium text-gray-900 dark:text-white" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

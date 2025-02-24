@@ -1,0 +1,115 @@
+<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Информация о зале</h3>
+
+<div class="grid  md:grid-cols-2 lg:grid-cols-2 gap-3">
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.facility.wifi ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Wi-Fi</span>
+  </div>
+
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.facility.air_conditioning ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Кондиционер</span>
+  </div>
+
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.facility.audio_visual_equipment ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Аудио-видео оборудование</span>
+  </div>
+
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.facility.parking ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Парковка</span>
+  </div>
+
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.facility.disabled_access ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Доступ для инвалидов</span>
+  </div>
+
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.facility.kitchen ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Кухня</span>
+  </div>
+ 
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.information.smoking_allowed ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Курение разрешено</span>
+  </div>
+
+ <div class="flex items-center">
+    <div class="mr-4 ">
+      <%= venue.information.noise_restrictions ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Разрешены вечеринки</span>
+  </div>
+
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.information.alcohol_allowed ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Алкоголь разрешен</span>
+  </div>
+
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.service.technical_equipment ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Техническое оборудование</span>
+  </div>
+
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.service.furniture ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Мебель</span>
+  </div>
+
+  <div class="flex items-center">
+    <div class="mr-4">
+      <%= venue.service.decoration ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300">Декорации</span>
+  </div>
+
+  <div class="flex items-center ">
+    <div class="mr-4 mb-4 !important">
+      <%= venue.service.cleaning_after_event ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300 mb-4 !important">Уборка после мероприятия</span>
+  </div>
+
+  <div class="flex items-center ">
+    <div class="mr-4 mb-4 !important">
+      <%= venue.service.security ? content_tag(:input, nil, type: "checkbox", class: "text-green-500 rounded-full", checked: true, disabled: true) : content_tag(:span, "✘", class: "text-red-500") %>
+    </div>
+    <span class="font-semibold text-gray-700 dark:text-gray-300 mb-4 !important">Охрана</span>
+  </div>
+</div>
+
+<div class="my-4">
+  <span class=" font-semibold text-gray-700 dark:text-white mt-8">Другие удобства:</span>
+  <p class="mt-2 font-medium text-gray-900 dark:text-gray-100">
+    <%= venue.facility.other_facilities.present? ? venue.facility.other_facilities : 'Нет дополнительных удобств' %>
+  </p>
+</div>
+
+<div class="my-4">
+  <span class=" font-semibold text-gray-700 dark:text-white mt-6">Дополнительные услуги:</span>
+  <p class="mt-2 font-medium text-gray-900 dark:text-gray-100">
+    <%= venue.service.additional_services.present? ? venue.service.additional_services : 'Нет дополнительных услуг' %>
+  </p>
+</div>

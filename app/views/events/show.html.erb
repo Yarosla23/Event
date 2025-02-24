@@ -1,0 +1,76 @@
+<div class="w-7/8 md:w-[73%] mx-auto m-4 p-6 bg-blue-200 dark:bg-gray-800 shadow-2xl rounded-3xl">
+  <h1 class="text-2xl lg:text-4xl text-center mt-2 mb-6 font-bold text-blue-800 dark:text-gray-100 leading-tight ">
+    <%= @event.name %>
+  </h1>
+
+  <div class="flex flex-col xl:flex-row gap-6">
+    <div class="flex-1 xl:basis-2/3 pr-2">
+      <%= render 'events/show/slider' %>
+    </div>
+
+    <div class="flex-1 xl:basis-1/3 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+      <%= render 'events/show/info' %>
+    </div>
+  </div>
+
+  <div class="flex flex-col lg:flex-row gap-6 mt-6">
+    <div class="flex-1 bg-white dark:bg-gray-700 px-6 pb-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 lg:w-2/3">
+      <p class="mt-2 text-gray-600 dark:text-gray-300 text-sm sm:text-base lg:text-lg whitespace-pre-line">
+        <%= @event.description %>
+      </p>
+    </div>
+
+    <div class="flex-2 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 space-y-2 lg:w-1/3">
+      <% [["Организаторы", @event.logistic.organizers, "M15 17h5l-1 4h-4l-1-4zM4 6l1-4h4l1 4H5zM12 6l1-4h4l1 4h-6z"], 
+          ["Контакты", @event.logistic.contact_info, "M21 21l-2-2a8 8 0 10-12 0l-2 2M14 10h2a2 2 0 110 4h-2a2 2 0 110-4zm-4 0h2a2 2 0 110 4H10a2 2 0 110-4z"]].each do |title, content, icon_path| %>
+        <div class="flex items-center space-x-2">
+          <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= icon_path %>" />
+          </svg>
+          <p class="text-gray-700 dark:text-gray-300 font-medium text-sm sm:text-base">
+            <strong><%= title %>:</strong>
+          </p>
+        </div>
+        <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line text-xs sm:text-sm">
+          <%= content %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-6 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+    <h3 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Наличие техники</h3>
+    <% if @event.logistic.present? %>
+      <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line text-sm sm:text-base">
+        <%= @event.logistic.technical_requirements %>
+      </p>
+    <% else %>
+      <p class="text-gray-700 dark:text-gray-300 text-sm">Информация о логистике отсутствует.</p>
+    <% end %>
+  </div>
+
+  <div class="mt-6 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+    <h3 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200">Инструкции и правила</h3>
+    <% if @event.event_rule.rules? %>
+      <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line text-sm sm:text-base">
+        <%= @event.event_rule.rules %>
+      </p>
+    <% else %>
+      <p class="text-gray-700 dark:text-gray-300 text-sm">Информация о правилах и инструкциях отсутствует.</p>
+    <% end %>
+  </div>
+
+  <%= render 'events/show/ticket', tickets: @event.tickets %>
+
+  <div class="mt-6 flex justify-between items-center">
+    <%if current_user.id == @event.user_id%>
+      <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
+        <%= submit_tag 'Удалить', class: "px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition text-sm sm:text-base" %>
+      <% end %>
+      <div class="space-x-4">
+        <%= link_to 'Редактировать', edit_event_path(@event), class: "px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition text-sm sm:text-base" %>
+    <% end %>
+      <%= link_to 'Назад', events_path, class: "px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 transition text-sm sm:text-base" %>
+    </div>
+  </div>
+</div>

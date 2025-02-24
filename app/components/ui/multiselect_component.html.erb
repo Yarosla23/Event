@@ -1,0 +1,126 @@
+<div class="">
+  <% if @label %>
+    <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2"><%= @label %></label>
+  <% end %>
+  <div class="relative inline-block w-full">
+    <div 
+      class="multiselect-container w-full border border-gray-600 dark:border-gray-400 rounded-lg cursor-pointer p-2 hover:bg-gray-300 dark:hover:bg-blue-800"
+      onclick="toggleDropdown()">
+      <span id="selected-tags" class="text-gray-800 dark:text-gray-200">
+        <%= @selected_values.any? ? @selected_values.join(", ") : @placeholder %>
+      </span>
+      <svg class="w-5 h-5 absolute top-3 right-3 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+    <div id="dropdown" class="hidden absolute z-10 bg-gray-100 dark:bg-gray-700 border border-gray-600 dark:border-gray-600 rounded-lg shadow-lg w-full mt-1">
+      <div class="max-h-48 overflow-y-auto">
+        <% @value.each do |key| %>
+          <div 
+            data-key="<%= key %>"
+            class="dropdown-item px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer <%= 'text-blue-400 font-semibold' if @selected_values.include?(key) %>">
+            <span class="text-gray-800 dark:text-gray-200">
+              <%= key %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%= form.hidden_field @field_name, id: "hidden-values", value: @selected_values.join(",") %>
+  <% if @errors[@field_name].present? %>
+    <p class="text-red-500 text-sm mt-2 !important"><%= @errors[@field_name].join(", ") %></p>
+  <% end %>
+</div>
+
+<script>
+document.addEventListener('turbo:load', () => {
+  initDropdown();
+});
+
+document.addEventListener('turbo:frame-load', () => {
+  initDropdown();
+});
+
+function initDropdown() {
+  const dropdown = document.getElementById("dropdown");
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const hiddenField = document.getElementById("hidden-values");
+  const selectedValuesDisplay = document.getElementById("selected-tags");
+  const multiselectContainer = document.querySelector(".multiselect-container");
+  const placeholder = "<%= @placeholder %>";
+
+  if (!dropdown || !hiddenField || !selectedValuesDisplay || !multiselectContainer) return;
+
+  function updateSelectedValuesDisplay() {
+    const selectedValues = hiddenField.value ? hiddenField.value.split(",") : [];
+    selectedValuesDisplay.textContent = selectedValues.length > 0 ? selectedValues.join(", ") : placeholder;
+  }
+
+  window.toggleDropdown = () => {
+    dropdown.classList.toggle("hidden");
+  };
+
+  dropdownItems.forEach(item => {
+    item.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const key = item.getAttribute("data-key");
+      let selectedValues = hiddenField.value ? hiddenField.value.split(",") : [];
+
+      if (selectedValues.includes(key)) {
+        selectedValues = selectedValues.filter(value => value !== key);
+        item.querySelector("span").classList.remove("text-blue-400", "font-semibold");
+      } else {
+        selectedValues.push(key);
+        item.querySelector("span").classList.add("text-blue-400", "font-semibold");
+      }
+
+      hiddenField.value = selectedValues.join(",");
+      updateSelectedValuesDisplay();
+    });
+  });
+
+  updateSelectedValuesDisplay();
+
+  document.addEventListener("click", (event) => {
+    if (!multiselectContainer.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.classList.add("hidden");
+    }
+  });
+}
+</script>
+
+<style>
+  .dropdown-item span {
+    transition: color 0.2s, font-weight 0.2s;
+  }
+
+  .dropdown-item span.text-blue-400 {
+    color: #60a5fa; 
+  }
+
+  .dark .multiselect-container {
+    background-color: #374151; 
+  }
+  .multiselect-container {
+    background-color: #ffffff; 
+  }
+
+  .dropdown-item {
+    color: #e5e7eb; 
+  }
+
+  .dark .dropdown-item:hover {
+    background-color: #4b5563; 
+  }
+ .dropdown-item:hover {
+    background-color: #D1D5DB;
+  }
+  .text-gray-700 {
+    color: #d1d5db; 
+  }
+
+  .text-gray-200 {
+    color: #e5e7eb; 
+  }
+</style>

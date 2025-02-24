@@ -1,0 +1,12 @@
+<div class="p-2 bg-white dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700 mt-6">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-3">Правила мероприятия</h3>
+  <%= form.fields_for :event_rule do |f| %>
+    <%= render Ui::InputFieldComponent.new(
+      form: f,
+      field_name: :rules,
+      label: 'Правила мероприятия',
+      type: "text_area",
+      placeholder: "Введите правила для мероприятия"
+    ) %>
+  <% end %>
+</div>
