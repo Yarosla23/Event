@@ -2,31 +2,7 @@ class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_event, only: %i[show edit update destroy]
   def index
-    @events = Event.includes(:participant, :logistic, :tickets, :event_rule)
-    @events = @events.where('start_time >= ?', params[:start_time]) if params[:start_time].present?
-    @events = @events.where('location LIKE ?', "%#{params[:location]}%") if params[:location].present?
-
-    if params[:tags].present?
-      tags = params[:tags].split(',').map(&:strip)
-      @events = @events.where('tags @> ARRAY[?]::text[]', tags)
-    end
-    if params[:search].present?
-      @events = @events.where('name LIKE ? OR description LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%")
-    end
-    if params[:participant_type].present?
-      @events = @events.joins(:participant).where(participant: { participant_type: params[:participant_type] })
-    end
-  
-    if params[:is_private].present?
-      is_private = ActiveRecord::Type::Boolean.new.cast(params[:is_private])
-      @events = @events.joins(:participant).where(participant: { is_private: is_private })
-    end
-  
-    if params[:is_paid].present?
-      is_paid = ActiveRecord::Type::Boolean.new.cast(params[:is_paid])
-      @events = @events.joins(:participant).where(participant: { is_paid: is_paid })
-    end
-    @events = @events.order(created_at: :desc)
+    @events = EventFilter.new(params).filter
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -40,6 +16,9 @@ class EventsController < ApplicationController
 
   def show
     authorize @event
+
+    @reviewable = @event 
+    @reviews = @reviewable.reviews.includes(user: :profile).order(created_at: :desc)
   end
 
   def new

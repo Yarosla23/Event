@@ -7,7 +7,6 @@
     <span class="text-xl text-gray-700 dark:text-gray-300"><%= @venue.average_rating %></span>
   </h1>
 
-
   <div class="flex flex-col xl:flex-row gap-7">
     <div class="flex-1 xl:basis-2/3 pr-2">
       <%= render 'venues/show/slider' %>
@@ -76,5 +75,5 @@
   </div>
 </div>
 
-<%= render 'venues/show/reviews', venue: @venue, reviews: @reviews %>
+<%= render 'reviews/reviews', reviews: @reviews %>
 

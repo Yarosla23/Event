@@ -1,6 +1,11 @@
 <div class="w-7/8 md:w-[73%] mx-auto m-4 p-6 bg-blue-200 dark:bg-gray-800 shadow-2xl rounded-3xl">
-  <h1 class="text-2xl lg:text-4xl text-center mt-2 mb-6 font-bold text-blue-800 dark:text-gray-100 leading-tight ">
+
+  <h1 class="text-2xl lg:text-4xl text-center mt-2 mb-6 font-bold text-green-800 dark:text-gray-100 leading-tight flex items-center justify-center space-x-2">
     <%= @event.name %>
+    <span class="<%= @event.average_rating != nil ? 'text-yellow-400' : 'text-gray-500' %> text-3xl ml-2">
+      ★
+    </span>
+    <span class="text-xl text-gray-700 dark:text-gray-300"><%= @event.average_rating %></span>
   </h1>
 
   <div class="flex flex-col xl:flex-row gap-6">
@@ -63,7 +68,7 @@
   <%= render 'events/show/ticket', tickets: @event.tickets %>
 
   <div class="mt-6 flex justify-between items-center">
-    <%if current_user.id == @event.user_id%>
+    <%if current_user.id == @event.user_id || current_user.admin? || current_user.moderator? %>
       <%= form_with url: event_path(@event), method: :delete, data: { confirm: 'Вы уверены?' }, class: "inline-block" do %>
         <%= submit_tag 'Удалить', class: "px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition text-sm sm:text-base" %>
       <% end %>
@@ -74,3 +79,5 @@
     </div>
   </div>
 </div>
+
+<%= render 'reviews/reviews', reviews: @reviews %>

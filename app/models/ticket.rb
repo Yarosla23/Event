@@ -5,7 +5,7 @@ class Ticket < ApplicationRecord
   ]
 
   PAYMENT_METHODS = [
-    'Оплата картой', 'Наличные', 'Перевод через банк', "CБП"
+    'Полная оплата', 'Без залогов', 'Предоплата'
   ]
 
   validates :ticket_type, presence: true

@@ -12,21 +12,6 @@ class User < ApplicationRecord
   enum role: { user: 'user', landlord: 'landlord',moderator: 'moderator',admin: 'admin' }
   validates :role, inclusion: { in: ROLES }
 
-  # def admin?
-  #   role == "admin"
-  # end
-
-  # def moderator?
-  #   role == "moderator"
-  # end
-
-  # def landlord?
-  #   role == "landlord"
-  # end
-
-  # def user?
-  #   role == "user"
-  # end
   private
 
   def password_present?

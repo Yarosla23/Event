@@ -11,7 +11,9 @@ Rails.application.routes.draw do
     post 'users/sign_up/landlord', to: 'devise/registrations#new_landlord', as: :create_landlord_sign_up
   end
 
-  resources :events
+  resources :events do
+    resources :reviews, only: [:create, :destroy]
+  end
   
   resources :venues do
     resources :reviews, only: %i[create destroy]
@@ -22,6 +24,11 @@ Rails.application.routes.draw do
       get :my_events
     end
     resource :profile do
+      member do
+      get :reviews 
+    end
+
+      resources :reviews, only: [:create, :destroy]
     end
   end
 

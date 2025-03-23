@@ -21,7 +21,9 @@ class VenuesController < ApplicationController
 
   def show
     authorize @venue
-    @reviews = @venue.reviews.includes(user: :profile).order(created_at: :desc)
+
+    @reviewable = @venue
+    @reviews = @reviewable.reviews.includes(user: :profile).order(created_at: :desc)
   end
 
   def new

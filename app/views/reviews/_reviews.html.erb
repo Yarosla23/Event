@@ -1,11 +1,15 @@
 <h2 class="text-3xl font-bold mt-6 text-center text-black dark:text-white">Отзывы</h2>
 
 <div class="flex justify-center">
-  <div class=" md:w-full lg:w-[40%] p-4">
+  <div class="md:w-full lg:w-[40%] p-4">
     <% if user_signed_in? && current_user.profile.present? %>
-      <%= form_with model: [venue, venue.reviews.new], data: { turbo: false } do |form| %>
+      <% new_review = Review.new(reviewable: @reviewable) %>
+      <%= form_with model: new_review, 
+        url: (@reviewable.is_a?(Profile) ? user_profile_reviews_path(@reviewable.user) : polymorphic_path([@reviewable, :reviews])),
+        method: :post,
+        data: { turbo: false } do |form| 
+      %> 
         <div class="flex items-center w-full p-6 bg-white dark:bg-gray-800 rounded-3xl shadow-md">
-          
           <div class="flex-2 space-y-2">
             <%= form.label :content, 'Напишите отзыв', class: 'block text-lg font-medium text-gray-900 dark:text-white mb-2' %>
             <div class="flex space-x-1">
@@ -16,7 +20,7 @@
                   ★
                 </button>
               <% end %>
-              <input type="hidden" name="review[rating]" id="review_rating" value="0">
+              <%= form.hidden_field :rating, id: 'review_rating', value: '0' %>
             </div>
           </div>
 
@@ -33,35 +37,37 @@
       <p class="text-center text-black dark:text-white">Пожалуйста, <%= link_to 'создайте профиль', new_user_profile_path(current_user), class: 'text-blue-500 dark:text-blue-400' %>, чтобы оставить отзыв.</p>
     <% end %>
 
-    <div class="mt-6">
-      <% reviews.first(3).each do |review| %>
-                   <%= render "venues/show/review", review: review %>
-      <% end %>
+    <% if @reviews.present? %>
+      <div class="mt-6">
+        <% @reviews.first(3).each do |review| %>
+          <%= render "reviews/show", review: review %>
+        <% end %>
 
-      <div id="more_reviews" class="hidden">
-        <% reviews.drop(3).each do |review| %>
-           <%= render "venues/show/review", review: review %>
+        <div id="more_reviews" class="hidden">
+          <% @reviews.drop(3).each do |review| %>
+            <%= render "reviews/show", review: review %>
+          <% end %>
+        </div>
+
+        <% if @reviews.count > 3 %>
+          <button id="show_more_reviews" class="mt-4 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300">
+            Посмотреть все комментарии
+          </button>
         <% end %>
       </div>
-
-      <% if venue.reviews.count > 3 %>
-        <button id="show_more_reviews" class="mt-4 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300">
-          Посмотреть все комментарии
-        </button>
-      <% end %>
-    </div>
+    <% end %>
   </div>
 </div>
 
 <script>
-  document.addEventListener('turbo:load', () => {
+  document.addEventListener('DOMContentLoaded', () => {
     const showMoreButton = document.querySelector('#show_more_reviews');
     const moreReviews = document.querySelector('#more_reviews');
 
     if (showMoreButton) {
       showMoreButton.addEventListener('click', () => {
-        moreReviews.classList.remove('hidden');
-        showMoreButton.style.display = 'none';
+        moreReviews.classList.toggle('hidden');
+        showMoreButton.textContent = moreReviews.classList.contains('hidden') ? 'Посмотреть все комментарии' : 'Скрыть';
       });
     }
 
@@ -71,6 +77,10 @@
     stars.forEach((star, index) => {
       star.addEventListener('mouseover', () => {
         highlightStars(index);
+      });
+
+      star.addEventListener('mouseout', () => {
+        resetStars(ratingInput.value);
       });
 
       star.addEventListener('click', () => {
@@ -85,8 +95,17 @@
       });
     }
 
+    function resetStars(rating) {
+      stars.forEach((star, i) => {
+        star.classList.toggle('text-yellow-400', i < rating);
+        star.classList.toggle('text-gray-300', i >= rating);
+      });
+    }
+
     function setRating(index) {
-      ratingInput.value = index + 1;
+      const rating = index + 1;
+      ratingInput.value = rating;
+      resetStars(rating);
     }
   });
 </script>

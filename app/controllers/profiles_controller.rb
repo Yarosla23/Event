@@ -1,6 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:new, :create, :show, :edit]
+  before_action :set_user, only: [:new, :create, :show, :edit, :review]
 
   def show
     @profile = @user.profile || @user.build_profile
@@ -53,6 +53,12 @@ class ProfilesController < ApplicationController
       flash.now[:alert] = 'Ошибка при обновлении профиля.'
       render :edit
     end
+  end
+
+  def reviews
+    @profile = @user.profile || @user.build_profile
+    @reviewable = @profile
+    @reviews = @profile.reviews.includes(user: :profile).order(created_at: :desc)
   end
 
   private

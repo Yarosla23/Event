@@ -1,5 +1,7 @@
 class Profile < ApplicationRecord
   belongs_to :user
+  has_many :reviews, as: :reviewable, dependent: :destroy
+  
   mount_uploader :avatar, AvatarUploader
 
   validates :user_id, uniqueness: true, presence: true
@@ -30,5 +32,9 @@ class Profile < ApplicationRecord
       errors.add(:cover_color, 'Недопустимый формат цвета')
       false
     end
+  end
+
+  def average_rating
+    reviews.average(:rating)&.round(2) 
   end
 end

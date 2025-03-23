@@ -75,8 +75,13 @@
       alt: "Изображение мероприятия" %>
 
       <div class="flex flex-col justify-between p-5">
-        <h5 class="text-xl font-semibold text-gray-900 dark:text-white mb-3  flex items-center">
-          <%= event.name %>
+        <h5 class="text-xl font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+           <%= event.name %>
+           <span class="<%= event.average_rating != nil ? 'text-yellow-400' : 'text-gray-500' %> text-xl ml-2 mr-1">
+            ★
+          </span>
+          
+          <span class="text-base text-gray-700 dark:text-gray-300"><%= event.average_rating %></span>
           
           <span class="ml-2">
             <% if event.participant.is_private %>

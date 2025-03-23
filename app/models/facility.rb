@@ -11,5 +11,4 @@ class Facility < ApplicationRecord
   }
           
   validates :other_facilities, length: { maximum: 1500 }, allow_blank: true
-
 end
