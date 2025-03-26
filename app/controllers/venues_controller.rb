@@ -28,9 +28,9 @@ class VenuesController < ApplicationController
 
   def new
     @venue = current_user.venues.build
-    authorize @venue
-
     build_associations
+
+    authorize @venue
   end
 
   def create

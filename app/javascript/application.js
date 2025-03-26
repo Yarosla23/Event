@@ -3,36 +3,38 @@ import "controllers"
 import "./bubbles";
 
 function setupThemeToggle() {
-  const themeToggleButton = document.getElementById('theme-toggle');
-  if (!themeToggleButton) return;
+  const themeToggleButtons = document.querySelectorAll('#theme-toggle, #mobile-theme-toggle');
+  if (themeToggleButtons.length === 0) return;
 
   const savedTheme = localStorage.getItem('theme');
-  const sunIcon = document.querySelector('[data-toggle-icon="sun"]');
-  const moonIcon = document.querySelector('[data-toggle-icon="moon"]');
+  const sunIcons = document.querySelectorAll('[data-toggle-icon="sun"]');
+  const moonIcons = document.querySelectorAll('[data-toggle-icon="moon"]');
   
   if (savedTheme === 'dark') {
     document.documentElement.classList.add('dark');
-    sunIcon.classList.add('hidden');
-    moonIcon.classList.remove('hidden');
+    sunIcons.forEach(icon => icon.classList.add('hidden'));
+    moonIcons.forEach(icon => icon.classList.remove('hidden'));
   } else {
     document.documentElement.classList.remove('dark');
-    sunIcon.classList.remove('hidden');
-    moonIcon.classList.add('hidden');
+    sunIcons.forEach(icon => icon.classList.remove('hidden'));
+    moonIcons.forEach(icon => icon.classList.add('hidden'));
   }
 
-  themeToggleButton.addEventListener('click', function() {
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'dark') {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-      sunIcon.classList.remove('hidden');
-      moonIcon.classList.add('hidden');
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-      sunIcon.classList.add('hidden');
-      moonIcon.classList.remove('hidden');
-    }
+  themeToggleButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const currentTheme = localStorage.getItem('theme');
+      if (currentTheme === 'dark') {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        sunIcons.forEach(icon => icon.classList.remove('hidden'));
+        moonIcons.forEach(icon => icon.classList.add('hidden'));
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        sunIcons.forEach(icon => icon.classList.add('hidden'));
+        moonIcons.forEach(icon => icon.classList.remove('hidden'));
+      }
+    });
   });
 }
 

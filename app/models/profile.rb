@@ -1,7 +1,7 @@
 class Profile < ApplicationRecord
   belongs_to :user
   has_many :reviews, as: :reviewable, dependent: :destroy
-  
+
   mount_uploader :avatar, AvatarUploader
 
   validates :user_id, uniqueness: true, presence: true

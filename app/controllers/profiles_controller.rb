@@ -1,6 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:new, :create, :show, :edit, :review]
+  before_action :set_user, only: [:new, :create, :show, :edit, :reviews]
 
   def show
     @profile = @user.profile || @user.build_profile
@@ -10,13 +10,17 @@ class ProfilesController < ApplicationController
     render :show
   end
 
-  def new  
-    @profile = @user.build_profile
+  def new
+    if @user.profile.present?
+      redirect_to user_profile_path(@user), notice: 'У вас уже есть профиль.'
+    else
+      @profile = @user.build_profile
+    end
   end
 
   def create
     @profile = @user.build_profile(profile_params)
-    
+
     if @profile.valid? && @profile.save!
       redirect_to user_profile_path(@user), notice: 'Профиль был создан.'
     else
@@ -31,10 +35,9 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    
     @profile = current_user.profile
     authorize @profile
-    
+
     if params[:cover_color]
       logger.debug "Received cover_color: #{params[:cover_color]}"
       if @profile.update_cover_color(params[:cover_color])
@@ -45,8 +48,8 @@ class ProfilesController < ApplicationController
     elsif @profile.update(profile_params)
       respond_to do |format|
         format.html { redirect_to user_profile_path(current_user), notice: "Ваш профиль был успешно обновлен"
-      } 
-        format.turbo_stream 
+      }
+      format.turbo_stream
       end
     else
       @user = current_user

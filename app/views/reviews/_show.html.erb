@@ -29,11 +29,11 @@
 
   <div class="mt-auto flex justify-between items-center">
     <% if review.user == current_user || current_user&.admin? || current_user&.moderator? %>
-      <%= form_with model: review, method: :delete, url: [@reviewable, review], data: { confirm: 'Вы уверены, что хотите удалить этот отзыв?' }, local: true do |form| %>
-        <div class="space-x-4">
-          <%= form.submit "Удалить", class: "text-red-500 hover:text-red-800 text-sm" %>
-        </div>
-      <% end %>
+     <%= form_with model: review, method: :delete, url: user_profile_review_path(review.user, @reviewable, review), data: { confirm: 'Вы уверены, что хотите удалить этот отзыв?' }, local: true do |form| %>
+      <div class="space-x-4">
+        <%= form.submit "Удалить", class: "text-red-500 hover:text-red-800 text-sm" %>
+      </div>
+    <% end %>
     <% end %>
 
     <div class="text-sm text-gray-600 dark:text-gray-400">

@@ -23,7 +23,7 @@
 <div class="flex justify-center items-center gap-4 my-6">
   <h1 class="text-4xl font-bold text-gray-800 dark:text-white">Аренда площадки</h1>
 <% if current_user.admin? || current_user.landlord? %>
-  <% if current_user.profile.present? && current_user.landlord? %>
+  <% if current_user.profile.present? %>
     <%= link_to '+', new_venue_path, class: 'bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition' %>
   <% else %>
     <%= link_to '+', '#', class: 'bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition', data: { turbo: 'false' }, onclick: "window.location.href='#{new_user_profile_path(current_user)}'" %>
