@@ -7,7 +7,7 @@
       <%= form_with model: new_review, 
         url: (@reviewable.is_a?(Profile) ? user_profile_reviews_path(@reviewable.user) : polymorphic_path([@reviewable, :reviews])),
         method: :post,
-        data: { turbo: false } do |form| 
+        data: { turbo: "_top" } do |form| 
       %> 
         <div class="flex items-center w-full p-6 bg-white dark:bg-gray-800 rounded-3xl shadow-md">
           <div class="flex-2 space-y-2">
@@ -60,7 +60,7 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  function setupProfileDropdown () {
     const showMoreButton = document.querySelector('#show_more_reviews');
     const moreReviews = document.querySelector('#more_reviews');
 
@@ -107,5 +107,10 @@
       ratingInput.value = rating;
       resetStars(rating);
     }
-  });
+  }
+ 
+document.addEventListener('turbo:load', () => {
+  setupProfileDropdown();
+});
+
 </script>

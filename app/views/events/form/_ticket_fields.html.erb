@@ -71,62 +71,62 @@
 <script>
   document.addEventListener('turbo:load', () => {
   
-  const maxTickets = 4;
-  const minTickets = 1;
-  const ticketsContainer = document.querySelector("#tickets-container");
-  const addTicketButton = document.querySelector(".add-ticket");
+    const maxTickets = 4;
+    const minTickets = 1;
+    const ticketsContainer = document.querySelector("#tickets-container");
+    const addTicketButton = document.querySelector(".add-ticket");
 
-  function updateRemoveButtons() {
-    const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
-    ticketForms.forEach((form, index) => {
-      const removeButton = form.querySelector(".remove-ticket");
-      if (ticketForms.length <= minTickets) {
-        removeButton.style.display = "none";
+    function updateRemoveButtons() {
+      const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
+      ticketForms.forEach((form, index) => {
+        const removeButton = form.querySelector(".remove-ticket");
+        if (ticketForms.length <= minTickets) {
+          removeButton.style.display = "none";
+        } else {
+          removeButton.style.display = "inline-block";
+        }
+      });
+    }
+
+    function updateAddButton() {
+      const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
+      if (ticketForms.length >= maxTickets) {
+        addTicketButton.style.display = "none";
       } else {
-        removeButton.style.display = "inline-block";
+        addTicketButton.style.display = "inline-block";
       }
-    });
-  }
+    }
 
-  function updateAddButton() {
+  addTicketButton.addEventListener("click", function (event) {
+    event.preventDefault();
+
     const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
     if (ticketForms.length >= maxTickets) {
-      addTicketButton.style.display = "none";
-    } else {
-      addTicketButton.style.display = "inline-block";
+      alert(`Вы можете добавить максимум ${maxTickets} билета.`);
+      return;
     }
-  }
 
- addTicketButton.addEventListener("click", function (event) {
-  event.preventDefault();
+    const firstTicketForm = ticketForms[0];
+    const clonedForm = firstTicketForm.cloneNode(true);
 
-  const ticketForms = ticketsContainer.querySelectorAll(".ticket-form");
-  if (ticketForms.length >= maxTickets) {
-    alert(`Вы можете добавить максимум ${maxTickets} билета.`);
-    return;
-  }
+    clonedForm.querySelectorAll("input").forEach((input) => {
+      if (input.type !== "hidden") input.value = "";
+      const name = input.name;
+      if (name) {
+        input.name = name.replace(/\[\d+\]/, `[${ticketForms.length}]`);
+      }
+    });
 
-  const firstTicketForm = ticketForms[0];
-  const clonedForm = firstTicketForm.cloneNode(true);
-
-  clonedForm.querySelectorAll("input").forEach((input) => {
-    if (input.type !== "hidden") input.value = "";
-    const name = input.name;
-    if (name) {
-      input.name = name.replace(/\[\d+\]/, `[${ticketForms.length}]`);
+    const multiSelectField = clonedForm.querySelector('select[name*="payment_method"]');
+    if (multiSelectField) {
+      multiSelectField.value = "";
     }
+
+    clonedForm.querySelector(".destroy-flag").value = "false";
+    ticketsContainer.appendChild(clonedForm);
+    updateRemoveButtons();
+    updateAddButton();
   });
-
-  const multiSelectField = clonedForm.querySelector('select[name*="payment_method"]');
-  if (multiSelectField) {
-    multiSelectField.value = "";
-  }
-
-  clonedForm.querySelector(".destroy-flag").value = "false";
-  ticketsContainer.appendChild(clonedForm);
-  updateRemoveButtons();
-  updateAddButton();
-});
 
   ticketsContainer.addEventListener("click", function (event) {
     if (event.target.classList.contains("remove-ticket")) {
