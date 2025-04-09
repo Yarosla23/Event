@@ -92,8 +92,6 @@ GEM
       image_processing (~> 1.1)
       marcel (~> 1.0.0)
       ssrf_filter (~> 1.0)
-    chart-js-rails (0.1.7)
-      railties (> 3.1)
     chronic (0.10.2)
     cocoon (1.2.15)
     commander (5.0.0)
@@ -217,6 +215,8 @@ GEM
       timeout
     net-smtp (0.5.0)
       net-protocol
+    net_dav (0.5.1)
+      nokogiri
     nio4r (2.7.3)
     nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
@@ -422,7 +422,6 @@ DEPENDENCIES
   bootsnap
   capybara
   carrierwave
-  chart-js-rails
   cocoon
   debug
   devise
@@ -431,6 +430,7 @@ DEPENDENCIES
   importmap-rails
   inline_svg
   jbuilder
+  net_dav
   omniauth
   omniauth-google-oauth2
   omniauth-telegram

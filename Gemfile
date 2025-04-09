@@ -16,6 +16,7 @@ gem 'pundit'
 gem 'pg'
 gem 'dotenv-rails'
 gem 'inline_svg'
+gem 'net_dav'
 
 gem 'importmap-rails'
 
@@ -29,7 +30,6 @@ gem 'sidekiq'
 gem 'sidekiq-cron'
 
 gem 'cocoon'
-gem 'chart-js-rails'
 gem 'jbuilder'
 
 gem 'carrierwave'

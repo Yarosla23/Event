@@ -31,13 +31,13 @@ class YandexDiskUploader
 
     response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
       req = Net::HTTP::Get.new(uri)
-      req['Authorization'] = "OAuth c2d56a039662413db1241850b089b857"
+      req['Authorization'] = "OAuth #{@oauth_token}"
       http.request(req)
     end
-    binding.irb
 
     unless response.is_a?(Net::HTTPSuccess)
-      raise "Ошибка при получении ссылки для загрузки: #{response.body}"
+      body = response.body.force_encoding("UTF-8")
+      raise "Ошибка при получении ссылки для загрузки: #{body}"
     end
 
     response

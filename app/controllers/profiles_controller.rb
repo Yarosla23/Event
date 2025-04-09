@@ -21,7 +21,11 @@ class ProfilesController < ApplicationController
   def create
     @profile = @user.build_profile(profile_params)
 
-    if @profile.valid? && @profile.save!
+    if @profile.avatar.present?
+      @profile.avatar.store!(@profile.avatar)
+    end
+
+    if @profile.valid? && @profile.save
       redirect_to user_profile_path(@user), notice: 'Профиль был создан.'
     else
       flash.now[:alert] = 'Ошибка создания профиля, проверьте введенные данные'
