@@ -33,6 +33,8 @@ gem 'cocoon'
 gem 'jbuilder'
 
 gem 'carrierwave'
+gem "fog-aws"
+gem "mini_magick"
 
 gem 'bootsnap', require: false
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
