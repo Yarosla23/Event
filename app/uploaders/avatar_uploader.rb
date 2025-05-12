@@ -3,7 +3,6 @@ class AvatarUploader < CarrierWave::Uploader::Base
   storage :file
 
   def store!
-
     super(model.avatar)
     local_path = file.path
     remote_path = "avatars/#{model.class.to_s.underscore}/#{model.id}/#{file.filename}"

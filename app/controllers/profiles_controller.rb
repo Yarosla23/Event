@@ -4,7 +4,6 @@ class ProfilesController < ApplicationController
 
   def show
     @profile = @user.profile || @user.build_profile
-    
     authorize @profile
 
     render :show
@@ -21,7 +20,6 @@ class ProfilesController < ApplicationController
   def create
     @profile = @user.build_profile(profile_params)
 
-    
     if @profile.valid? 
       @profile.save!
       redirect_to user_profile_path(@user), notice: 'Профиль был создан.'
@@ -39,9 +37,7 @@ class ProfilesController < ApplicationController
   def update
     @profile = current_user.profile
     authorize @profile
-
     if params[:cover_color]
-      logger.debug "Received cover_color: #{params[:cover_color]}"
       if @profile.update_cover_color(params[:cover_color])
         redirect_to user_profile_path(current_user), notice: "Цвет обложки успешно обновлен"
       else
