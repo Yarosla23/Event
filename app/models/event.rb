@@ -1,4 +1,6 @@
 class Event < ApplicationRecord
+  include PgSearch::Model
+
   belongs_to :user
   
   has_one :participant, dependent: :destroy
@@ -12,6 +14,23 @@ class Event < ApplicationRecord
   accepts_nested_attributes_for :event_photos, :participant,
     :logistic,:tickets, :event_rule, 
     allow_destroy: true
+
+  # Настройка поиска
+  pg_search_scope :search_by_all,
+    against: {
+      name: 'A',
+      description: 'B',
+      location: 'C'
+    },
+    using: {
+      tsearch: { prefix: true }
+    }
+
+  pg_search_scope :search_by_tags,
+    against: :tags,
+    using: {
+      tsearch: { prefix: true }
+    }
 
   TYPES = [
     "Поход в спортзал", "Настольные игры", "Тур",
@@ -41,6 +60,14 @@ class Event < ApplicationRecord
 
   def average_rating
     reviews.average(:rating)&.round(2) 
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[name description location start_time end_time created_at updated_at tags event_format]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[participant tickets]
   end
 
   private

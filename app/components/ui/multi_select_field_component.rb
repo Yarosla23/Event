@@ -18,26 +18,25 @@ module Ui
     private
 
     def label_tag
-      tag.label(@label, for: @field_name, class: "block text-sm mb-2 font-medium text-gray-700 dark:text-white")
+      tag.label(@label, for: @field_name, class: "block text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2")
     end
 
     def select_input
-      select_classes = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      select_classes = "mt-1 block w-full text-lg rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
       select_classes += " #{@input_class}" unless @input_class.empty?
-    
-      # Add `multiple: true` to enable multi-select functionality
+
       @form.select(
         @field_name,
         @options,
         { include_blank: @include_blank, multiple: true },
-        { class: select_classes, name: "#{@form.object_name}[#{@field_name}][]" } # ensure correct naming for array
+        { class: select_classes, name: "#{@form.object_name}[#{@field_name}][]" }
       )
     end
 
     def error_message
       return unless error.present?
 
-      tag.span error, class: "text-red-500 text-sm"
+      tag.span error, class: "text-red-500 text-sm mt-2"
     end
 
     def error

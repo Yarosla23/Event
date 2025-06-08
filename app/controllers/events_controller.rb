@@ -1,12 +1,43 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_event, only: %i[show edit update destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authorize_user, only: [:edit, :update, :destroy]
+
   def index
-    @events = EventFilter.new(params).filter
-    respond_to do |format|
-      format.html
-      format.turbo_stream
+    @q = Event.includes(:participant, :tickets).ransack(params[:q])
+    @events = @q.result(distinct: true)
+    
+    # Применяем поиск по тексту, если есть параметр search
+    if params[:search].present?
+      @events = @events.search_by_all(params[:search])
     end
+
+    # Фильтрация по тегам
+    if params[:tags].present?
+      @events = @events.search_by_tags(params[:tags])
+    end
+
+    # Фильтрация по дате
+    if params[:start_time].present?
+      @events = @events.where('start_time >= ?', params[:start_time])
+    end
+
+    # Фильтрация по типу участников
+    if params[:participant_type].present?
+      @events = @events.joins(:participant).where(participants: { participant_type: params[:participant_type] })
+    end
+
+    # Фильтрация по приватности
+    if params[:is_private].present?
+      @events = @events.joins(:participant).where(participants: { is_private: params[:is_private] })
+    end
+
+    # Фильтрация по платности
+    if params[:is_paid].present?
+      @events = @events.joins(:participant).where(participants: { is_paid: params[:is_paid] })
+    end
+
+    @events = @events.order(created_at: :desc)
   end
 
   def my_events
@@ -28,10 +59,10 @@ class EventsController < ApplicationController
   end
 
   def create
-
     @event = current_user.events.build(event_params)
     @event.tags = params[:event][:tags].split(',').map(&:strip)
     authorize @event
+
     if @event.save
       redirect_to @event, notice: 'Мероприятие успешно создано.'
     else
@@ -79,7 +110,6 @@ class EventsController < ApplicationController
     @event.build_logistic unless @event.logistic
     @event.tickets.build if @event.tickets.empty?
     @event.build_event_rule unless @event.event_rule
-
   end
 
   def event_params

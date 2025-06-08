@@ -65,7 +65,7 @@
     <% end %>
   </div>
 
-  <%= render 'events/show/ticket', tickets: @event.tickets %>
+  <%= render 'events/show/ticket', tickets: @event.tickets, event: @event %>
 
   <div class="mt-6 flex justify-between items-center">
     <%if current_user.id == @event.user_id || current_user.admin? || current_user.moderator? %>

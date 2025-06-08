@@ -1,0 +1,52 @@
+<%= link_to event_path(event), class: "flex flex-col bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition-transform hover:scale-105 hover:bg-blue-50 duration-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700" do %>
+  <%= image_tag "party2.png", 
+      class: "object-cover w-full h-56 rounded-t-2xl", 
+      alt: "Изображение мероприятия" %>
+
+  <div class="flex flex-col justify-between p-5">
+    <h5 class="text-xl font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+      <%= event.name %>
+      <span class="<%= event.average_rating != nil ? 'text-yellow-400' : 'text-gray-500' %> text-xl ml-2 mr-1">
+        ★
+      </span>
+      
+      <span class="text-base text-gray-700 dark:text-gray-300"><%= event.average_rating %></span>
+      
+      <span class="ml-2">
+        <% if event.participant.is_private %>
+          <%= inline_svg('icons/lock.svg', class: 'w-6 h-6 text-indigo-600 dark:text-indigo-400') %>
+        <% end %>
+      </span>
+
+      <span class="ml-2">
+        <% if event.participant.is_paid %>
+          <%= inline_svg('icons/dollar.svg', class: 'w-6 h-6 text-green-600') %>
+        <% end %>
+      </span>
+    </h5>
+
+    <p class="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed line-clamp-3">
+      <%= truncate(event.description, length: 300) %>
+    </p>
+
+    <div class="mb-4">
+      <p class="flex items-center text-sm xl:text-lg font-semibold text-white">
+        <span class="px-3 py-1 rounded-full bg-pink-400 dark:bg-pink-500">
+          <%= l(event.start_time, format: :custom) %>
+        </span>
+        <span class="mx-2 text-gray-500 dark:text-gray-400">—</span>
+        <span class="px-3 py-1 rounded-full bg-pink-400 dark:bg-pink-500">
+          <%= l(event.end_time, format: :custom) %>
+        </span>
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      <% event.tags.each do |tag| %>
+        <span class="bg-blue-600 text-white rounded-full py-1 px-3 text-xs">
+          <%= tag %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+<% end %> 

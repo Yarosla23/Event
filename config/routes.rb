@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
 
   resources :events do
+    resources :tickets, only: [:new, :create, :edit, :update, :destroy]
     resources :reviews, only: [:create, :destroy]
   end
   
@@ -22,6 +23,8 @@ Rails.application.routes.draw do
   resources :users do
     member do
       get :my_events
+      get :events
+      get :participations
     end
     resource :profile do
       member do
