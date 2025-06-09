@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   resources :events do
     resources :tickets, only: [:new, :create, :edit, :update, :destroy]
     resources :reviews, only: [:create, :destroy]
+    resources :media_files, only: [:destroy]
+    member do
+      delete 'photos/:photo_id', to: 'events#delete_photo', as: :photo
+    end
   end
   
   resources :venues do

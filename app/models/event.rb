@@ -8,11 +8,11 @@ class Event < ApplicationRecord
   has_one :event_rule, dependent: :destroy
   
   has_many :tickets, dependent: :destroy
-  has_many :event_photos, dependent: :destroy
+  has_many :media_files, as: :attachable, dependent: :destroy
   has_many :reviews, as: :reviewable, dependent: :destroy
 
-  accepts_nested_attributes_for :event_photos, :participant,
-    :logistic,:tickets, :event_rule, 
+  accepts_nested_attributes_for :media_files, :participant,
+    :logistic, :tickets, :event_rule, 
     allow_destroy: true
 
   # Настройка поиска
