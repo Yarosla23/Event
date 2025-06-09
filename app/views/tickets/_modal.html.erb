@@ -1,8 +1,7 @@
-<%# Modal for ticket creation %>
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
-  <div class="relative p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+  <div class="relative p-5  w-full max-w-2xl shadow-lg rounded-md bg-white dark:bg-gray-800">
     <div class="flex justify-between items-center mb-4">
-      <h3 class="text-xl font-semibold text-gray-900">
+      <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
         <%= ticket.new_record? ? "Новый билет" : "Редактирование билета" %>
       </h3>
       <%= link_to "×", "#", 
@@ -16,7 +15,7 @@
     <%= form_with(model: [event, ticket], class: "space-y-4") do |f| %>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <%= f.label :ticket_type, "Тип билета", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.label :ticket_type, "Тип билета", class: "block text-sm font-medium text-gray-700 dark:text-gray-50" %>
           <%= f.select :ticket_type, 
               options_for_select([
                 ['Стандартный', 'standard'],
@@ -31,7 +30,7 @@
         </div>
 
         <div>
-          <%= f.label :price, "Цена", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.label :price, "Цена", class: "block text-sm font-medium text-gray-700 dark:text-gray-50" %>
           <div class="mt-1 relative rounded-md shadow-sm">
             <%= f.number_field :price, 
                 class: "block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 #{'border-red-500' if ticket.errors[:price].any?}",
@@ -46,7 +45,7 @@
         </div>
 
         <div>
-          <%= f.label :currency, "Валюта", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.label :currency, "Валюта", class: "block text-sm font-medium text-gray-700 dark:text-gray-50" %>
           <%= f.select :currency, 
               options_for_select([
                 ['Рубль (₽)', 'RUB'],
@@ -61,7 +60,7 @@
         </div>
 
         <div class="md:col-span-2">
-          <%= f.label :payment_method, "Способы оплаты", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.label :payment_method, "Способы оплаты", class: "block text-sm font-medium text-gray-700 dark:text-gray-50" %>
           <div class="mt-2 space-y-2">
             <%= f.collection_check_boxes :payment_method, 
                 [
@@ -71,7 +70,7 @@
                 ], :first, :last do |b| %>
               <div class="flex items-center">
                 <%= b.check_box class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" %>
-                <%= b.label class: "ml-2 block text-sm text-gray-900" %>
+                <%= b.label class: "ml-2 block text-sm text-gray-900 dark:text-gray-200" %>
               </div>
             <% end %>
           </div>

@@ -43,5 +43,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :media_files, only: [:destroy]
+
   root 'home#index'
 end

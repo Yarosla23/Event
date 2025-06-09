@@ -5,11 +5,11 @@ class Venue < ApplicationRecord
   has_one :facility, dependent: :destroy
   has_one :service, dependent: :destroy
   has_one :rental_info, dependent: :destroy
-
+  has_many :media_files, as: :attachable, dependent: :destroy
   has_many :reviews, as: :reviewable, dependent: :destroy
   
   accepts_nested_attributes_for :reviews, :information, 
-     :rental_info, :facility, :service,
+     :rental_info, :facility, :service, :media_files,
      allow_destroy: true
 
   

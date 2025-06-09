@@ -39,6 +39,19 @@ class VenuesController < ApplicationController
     authorize @venue
 
     if @venue.save
+      if params[:venue][:media_files].present?
+        params[:venue][:media_files].each do |file|
+          next unless file.is_a?(ActionDispatch::Http::UploadedFile)
+          
+          media_file = @venue.media_files.build
+          media_file.file = file
+          media_file.file_type = file.content_type.start_with?('image/') ? 'image' : 'video'
+          media_file.content_type = file.content_type
+          media_file.file_size = file.size
+          media_file.save
+        end
+      end
+
       redirect_to @venue, notice: 'Площадка успешно создана.'
     else
       flash.now[:alert] = 'Не удалось создать площадку. Проверьте введенные данные.'
@@ -58,6 +71,19 @@ class VenuesController < ApplicationController
     authorize @venue
 
     if @venue.update(venue_params)
+      if params[:venue][:media_files].present?
+        params[:venue][:media_files].each do |file|
+          next unless file.is_a?(ActionDispatch::Http::UploadedFile)
+          
+          media_file = @venue.media_files.build
+          media_file.file = file
+          media_file.file_type = file.content_type.start_with?('image/') ? 'image' : 'video'
+          media_file.content_type = file.content_type
+          media_file.file_size = file.size
+          media_file.save
+        end
+      end
+
       redirect_to @venue, notice: 'Площадка была успешно обновлена.'
     else
       flash.now[:alert] = 'Не удалось обновить площадку. Проверьте введенные данные.'
@@ -88,6 +114,7 @@ class VenuesController < ApplicationController
     @venue.build_facility unless @venue.facility
     @venue.build_service unless @venue.service
     @venue.build_rental_info unless @venue.rental_info
+    @venue.media_files.build if @venue.media_files.empty?
   end
 
   def venue_params
@@ -97,7 +124,8 @@ class VenuesController < ApplicationController
       facility_attributes: [:wifi, :air_conditioning, :audio_visual_equipment, :parking, :disabled_access, :kitchen, :toilets_count, :other_facilities, :_destroy],
       information_attributes: [:document, :description, :calendar, :smoking_allowed, :alcohol_allowed, :noise_restrictions, :event_types, :restrictions, :_destroy],
       service_attributes: [:technical_equipment, :furniture, :decoration, :cleaning_after_event, :security, :other_services, :_destroy],
-      rental_info_attributes: [:price, :discounts, :min_rental_duration_hours, :payment_terms, :working_hours_start, :working_hours_end, :rules, :disclaimer, :_destroy]
+      rental_info_attributes: [:price, :discounts, :min_rental_duration_hours, :payment_terms, :working_hours_start, :working_hours_end, :rules, :disclaimer, :_destroy],
+      media_files_attributes: [:id, :file, :title, :description, :_destroy]
     )
   end
 end

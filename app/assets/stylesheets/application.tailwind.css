@@ -28,3 +28,26 @@ body {
 }
 
 */
+
+/* Swiper custom styles */
+.venue-swiper {
+  @apply w-full rounded-lg overflow-hidden;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  @apply text-white;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  @apply text-2xl;
+}
+
+.swiper-pagination-bullet {
+  @apply bg-white;
+}
+
+.swiper-pagination-bullet-active {
+  @apply bg-white;
+}

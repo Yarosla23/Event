@@ -21,13 +21,13 @@ class Ticket < ApplicationRecord
 
   validates :ticket_type, presence: true
   validates :price, presence: true, numericality: { greater_than: 0 }
-  validates :currency, presence: true, inclusion: { in: CURRENCIES.keys, message: "%{value} не может быть использована" }
+  # validates :currency, presence: true, inclusion: { in: CURRENCIES.keys, message: "%{value} не может быть использована" }
   validates :payment_method, presence: true, length: { minimum: 1 }
 
   CURRENCY_TYPES = [
     '₽', '€', '$', '£'
   ]
 
-  validates :currency, presence: true, inclusion: { in: CURRENCY_TYPES, message: "%{value}, не может быть использована"  }
+  # validates :currency, presence: true, inclusion: { in: CURRENCY_TYPES, message: "%{value}, не может быть использована"  }
   # validates :discount_code, allow_nil: true, format: { with: /\A[a-zA-Z0-9]+\z/, message: "only allows alphanumeric characters" }
 end

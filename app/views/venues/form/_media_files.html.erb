@@ -1,0 +1,18 @@
+<div class="p-2 md:p-3 bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg border border-gray-200 dark:border-gray-700">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-4">Медиафайлы</h3>
+  
+  <div id="media-files" class="space-y-4">
+    <%= form.fields_for :media_files do |media_form| %>
+      <%= render 'media_file_fields', f: media_form %>
+    <% end %>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to_add_association 'Добавить файл', form, :media_files,
+        class: "px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600",
+        data: {
+          association_insertion_node: '#media-files',
+          association_insertion_method: 'append'
+        } %>
+  </div>
+</div> 

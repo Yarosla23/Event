@@ -88,6 +88,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_23_200000) do
     t.index ["event_id"], name: "index_logistics_on_event_id"
   end
 
+  create_table "media_files", force: :cascade do |t|
+    t.string "attachable_type", null: false
+    t.bigint "attachable_id", null: false
+    t.string "file"
+    t.string "file_type"
+    t.string "content_type"
+    t.integer "file_size"
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attachable_type", "attachable_id"], name: "index_media_files_on_attachable"
+  end
+
   create_table "participants", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.integer "min_participants"
@@ -184,6 +198,16 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_23_200000) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "venue_photos", force: :cascade do |t|
+    t.bigint "venue_id", null: false
+    t.string "photo"
+    t.string "media_type", default: "photo"
+    t.string "video_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["venue_id"], name: "index_venue_photos_on_venue_id"
+  end
+
   create_table "venues", force: :cascade do |t|
     t.string "name", null: false
     t.text "venue_type", default: [], array: true
@@ -212,5 +236,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_23_200000) do
   add_foreign_key "reviews", "users"
   add_foreign_key "services", "venues"
   add_foreign_key "tickets", "events"
+  add_foreign_key "venue_photos", "venues"
   add_foreign_key "venues", "users"
 end
